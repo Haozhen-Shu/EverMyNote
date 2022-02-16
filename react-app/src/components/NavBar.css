@@ -3,7 +3,7 @@
     background-color: black;
     color: #a6a6a6;
     text-decoration: none;
-    height: 100vh;
+    height: 100%;
 }
 
 .navbar_header{
@@ -123,3 +123,4 @@
     height: 40px;
     padding-right: 10px;
 }
+
