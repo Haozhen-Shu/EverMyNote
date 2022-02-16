@@ -46,16 +46,16 @@ const LoginForm = () => {
   return (
     <div className="login_container">
       <img src={logo} alt="Logo" className="login_img"></img>
-      <h1>MyNotes</h1>
+      <h1 className="login_head">MyNotes</h1>
       <p className="remember">Remember Everything is  Important</p>
       <div className="login_form_container">
-          <form onSubmit={onLogin}>
+        <form onSubmit={onLogin} className="login_form">
             <div>
               {errors.map((error, ind) => (
-                <div key={ind}>{error}</div>
+                <div className="login_error" key={ind}>{error}</div>
               ))}
             </div>
-            <div>
+            <div className="login_input">
               <input
                 name='email'
                 type='text'
@@ -63,8 +63,6 @@ const LoginForm = () => {
                 value={email}
                 onChange={updateEmail}
               />
-            </div>
-            <div>
               <input
                 name='password'
                 type='password'
@@ -72,7 +70,8 @@ const LoginForm = () => {
                 value={password}
                 onChange={updatePassword}
               />
-              <button type='submit'>Login</button>
+              <button type='submit' className="login_btn">Login</button>
+              </div>
             <div className="login-or">
               <div className="login-line"></div>
               <div className="l-or">OR</div>
@@ -83,9 +82,8 @@ const LoginForm = () => {
             }
             <div className='addition'>
               Don't have a account?
-              <Link className='link' to="/accounts/sign-up">Sign Up</Link>
             </div>
-            </div>
+            <Link className='link' to="/sign-up">Create account</Link>
           </form>
         </div>
       </div>

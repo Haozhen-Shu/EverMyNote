@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom';
 import { signUp } from '../../store/session';
+import logo from '../../images/book1.jpeg';
+import './auth.css';
+import { Link } from "react-router-dom";
 
 const SignUpForm = () => {
   const [errors, setErrors] = useState([]);
@@ -43,51 +46,55 @@ const SignUpForm = () => {
   }
 
   return (
-    <form onSubmit={onSignUp}>
-      <div>
-        {errors.map((error, ind) => (
-          <div key={ind}>{error}</div>
-        ))}
-      </div>
-      <div>
-        <label>User Name</label>
-        <input
-          type='text'
-          name='username'
-          onChange={updateUsername}
-          value={username}
-        ></input>
-      </div>
-      <div>
-        <label>Email</label>
-        <input
-          type='text'
-          name='email'
-          onChange={updateEmail}
-          value={email}
-        ></input>
-      </div>
-      <div>
-        <label>Password</label>
-        <input
-          type='password'
-          name='password'
-          onChange={updatePassword}
-          value={password}
-        ></input>
-      </div>
-      <div>
-        <label>Repeat Password</label>
-        <input
-          type='password'
-          name='repeat_password'
-          onChange={updateRepeatPassword}
-          value={repeatPassword}
-          required={true}
-        ></input>
-      </div>
-      <button type='submit'>Sign Up</button>
-    </form>
+     <div className="login_container">
+      <img src={logo} alt="Logo" className="login_img"></img>
+      <h1 className="login_head">MyNotes</h1>
+      <p className="remember">Remember Everything is  Important</p>
+      <div className="login_form_container"></div>
+          <form onSubmit={onSignUp} className="signup_form">
+            <div>
+              {errors.map((error, ind) => (
+                <div className="signup_error" key={ind}>{error}</div>
+              ))}
+            </div>
+            <div className="sinup_input">
+            <input
+                type='text'
+                name='username'
+                onChange={updateUsername}
+                placeholder="Username"
+                value={username}
+              ></input>
+              <input
+                type='text'
+                name='email'
+                onChange={updateEmail}
+                placeholder="Email"
+                value={email}
+              ></input>
+              <input
+                type='password'
+                name='password'
+                onChange={updatePassword}
+                placeholder="Password"
+                value={password}
+              ></input>
+              <input
+                type='password'
+                name='repeat_password'
+                onChange={updateRepeatPassword}
+                placeholder="Confirm Password"
+                value={repeatPassword}
+                required={true}
+              ></input>
+            <button type='submit' className="signup_btn">Sign Up</button>
+            </div>
+        <div className='addition'>
+          Don't have a account?
+        </div>
+        <Link className='link' to="/login">Log In</Link>
+          </form>
+  </div>
   );
 };
 
