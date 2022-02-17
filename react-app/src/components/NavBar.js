@@ -1,5 +1,6 @@
 
 import React from 'react';
+import {useSelector} from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import LogoutButton from './auth/LogoutButton';
 import './NavBar.css';
@@ -11,12 +12,15 @@ import github_logo from '../images/github.png'
 
 
 const NavBar = () => {
+  const user = useSelector(state=>state.session.user);
+  // console.log(user, "uuuuuuuu")
+
   return (
     <div className="navbar">
       <div className="navbar_header">
-        <div className="navbar_url">{}</div>
+        <img src={user.profile_url} className="navbar_url"></img>
         <div className="navbar_profile_name">
-          <p>Welcome name</p>
+          <p>Welcome {user.username}</p>
         </div>
       </div>
       <div className="navbar_search">
@@ -24,7 +28,7 @@ const NavBar = () => {
           <input
           className="search"
           placeholder="Search"
-          value={null}
+          value={undefined}
           onChange={ e=> {}}
           />
         </form>
@@ -32,14 +36,14 @@ const NavBar = () => {
       <div className="navbar_menu">
         <h3 className="navbar_notebooks"> 
           <img src={notebook_logo} className="notebooks_icon"/>
-          <p>Notebooks</p>
+          <p className="navbar_title_notebooks">Notebooks</p>
         </h3>
         <h3 className="navbar_notes">
-          <img src={note_logo} title="note_icons" class="notes_icon" />
+          <img src={note_logo} title="note_icons" className="notes_icon" />
           <p>Notes</p>
         </h3>
         <h3 className="navbar_logout">
-          <img src={logout_logo} class="logout_icon"/>
+          <img src={logout_logo} className="logout_icon"/>
           <LogoutButton />
         </h3>
 

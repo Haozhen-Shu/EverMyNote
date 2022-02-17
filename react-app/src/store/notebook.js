@@ -38,7 +38,7 @@ export const getAllNotebooks = (userid) => async(dispatch) => {
      if (response.ok) {
          const notebooks = await response.json();
          if (notebooks.errors) {
-             console.log(notebooks.errors)
+            //  console.log(notebooks.errors)
              let errors = Object.values(notebooks.errors)
              return errors
          } else {

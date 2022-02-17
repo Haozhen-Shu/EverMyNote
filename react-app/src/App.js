@@ -39,7 +39,7 @@ function App() {
         <ProtectedRoute path='/users/:userId' exact={true} >
           <User />
         </ProtectedRoute>
-        <ProtectedRoute path='/' exact={true} >
+        <ProtectedRoute path='/dashboard' exact={true} >
           <Notebook />
         </ProtectedRoute>
       </Switch>
