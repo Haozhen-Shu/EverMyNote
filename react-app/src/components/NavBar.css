@@ -3,7 +3,12 @@
     background-color: black;
     color: #a6a6a6;
     text-decoration: none;
-    height: 100vh;
+    height: 100%;
+}
+
+.navbar_title_notebooks{
+    text-decoration: none;
+    color:white;
 }
 
 .navbar_header{
@@ -122,4 +127,12 @@
     width: 40px;
     height: 40px;
     padding-right: 10px;
+}
+
+.navbar_url {
+    margin-left: .9rem;
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    width: 40px;
+    height:40px;
 }

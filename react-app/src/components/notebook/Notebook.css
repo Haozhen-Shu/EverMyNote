@@ -1,0 +1,99 @@
+.notebook_container{
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    height: 100vh;
+    max-width: 100vw;
+    background-color: #262626;
+    overflow-x: hidden;
+}
+
+.notebook_main{
+    padding: 30px;
+    color: black;
+    background-color: white;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+    grid-column-start: 2;
+    grid-column-end: 4;
+}
+
+.notebook_header{
+    height: 50px;
+}
+
+h1{
+    font-size: 20px;
+    font-weight: 400
+}
+
+.notebook_count{
+    width: 550px;
+}
+
+.notebook_top{
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.newNotebook_modal_title{
+    font-size: 17px;
+    font-weight: 400;
+    width: 100%;
+}
+
+.notebook_main_logo{
+    width: 20px;
+}
+
+.new_notebook{
+    display: flex;
+    justify-content: space-around;
+    padding-left: 30px;
+    width: 200px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 16px;
+    border: none;
+    background-color: white;
+    color: green;
+}
+
+.notebook_list{
+    margin-top: 0px;
+    padding-top:0px; 
+    border-top:2px solid #737373;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    font-size: 12px;
+    padding: 5px 5px 5px 5px;
+    border-radius: 5px;
+}
+
+li:nth-child  {
+    background-color: #262626;
+}
+
+.notebook_title{
+    width: 28%;
+    text-align:left;
+
+}
+
+.notebook_created_by{
+    width: 20%;
+}
+
+.notebook_updated_at{
+    width: 25%;
+}
+
+.notebook_actions{
+    width : 27%;
+    display: flex;
+    justify-content: space-around;
+    background: light green;
+}
