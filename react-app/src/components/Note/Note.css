@@ -1,0 +1,51 @@
+.note_container{
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    height: 100vh;
+    max-width: 100vw;
+    background-color: #262626;
+    overflow-x: hidden;
+}
+
+.note_main{
+    display: flex;
+    height: 100vh;
+    width: 380px;
+    flex-direction: column;
+    background-color: white;
+    color: black;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border-right: 1px  grey;
+}
+
+.note_main_img{
+    width: 22px;
+    height: 25px;
+    padding-top: 2px;
+    padding-right: 8px;
+}
+
+.note_header{
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #333333;
+    height: auto;
+    padding: 22px 22px 12px 30px;
+    font-size: 20px;
+    line-height:28px;
+    letter-spacing: .03em;
+    min-height: 40px;
+    min-width: 20px;
+    color: black;
+}
+
+.notes_img_notes{
+    display: flex;
+    flex-direction: row;
+}
+
+.notes_count{
+    font-size: 14px;
+    color: black;
+    padding-top: 20px;
+}

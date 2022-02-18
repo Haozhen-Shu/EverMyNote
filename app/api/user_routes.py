@@ -40,15 +40,16 @@ def create_one_notebook(userid):
     form = NotebookForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
     form["userid"].data = userid
-    if form.validate_on_submit() and form.title_valid():
+    print(form['title'], "TTTTTTTTTitle")
+    print(form.data, "Datatattaatat")
+    if form.validate_on_submit()and form.title_valid():
         data = request.get_json()
         notebook = Notebook(userid = userid,
                             title = data['title']
         )
         db.session.add(notebook)
         db.session.commit()
-        all_notebooks = Notebook.query.filter_by(userid=userid)
-        # print(form.errors)
+        all_notebooks = Notebook.query.filter_by(userid=userid).all()
         return {"notebook": notebook.to_dict(), "notebooks":[notebook.to_dict() for notebook in all_notebooks]}
     else:
         return jsonify({"errors": form.errors})
@@ -79,3 +80,5 @@ def remove_one_notebook(userid, notebookid):
     db.session.commit()
     all_notebooks = Notebook.query.filter_by(userid=userid).all()
     return {"notebooks": [notebook.to_dict() for notebook in all_notebooks]}
+
+@user_routes.route()

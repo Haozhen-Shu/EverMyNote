@@ -6,6 +6,11 @@
     height: 100%;
 }
 
+.navbar_title_notebooks{
+    text-decoration: none;
+    color:white;
+}
+
 .navbar_header{
     display: flex;
     align-items: center;

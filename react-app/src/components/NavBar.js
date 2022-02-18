@@ -36,7 +36,7 @@ const NavBar = () => {
       <div className="navbar_menu">
         <h3 className="navbar_notebooks"> 
           <img src={notebook_logo} className="notebooks_icon"/>
-          <p className="navbar_title_notebooks">Notebooks</p>
+          <NavLink to="/dashboard" className="navbar_title_notebooks">Notebooks</NavLink>
         </h3>
         <h3 className="navbar_notes">
           <img src={note_logo} title="note_icons" className="notes_icon" />

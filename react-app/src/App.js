@@ -7,7 +7,8 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import UsersList from './components/UsersList';
 import User from './components/User';
 import { authenticate } from './store/session';
-import Notebook from './components/notebook/Notebook';
+import Notebook from './components/Notebook/Notebook';
+import Note from './components/Note/Note';
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -41,6 +42,9 @@ function App() {
         </ProtectedRoute>
         <ProtectedRoute path='/dashboard' exact={true} >
           <Notebook />
+        </ProtectedRoute>
+        <ProtectedRoute path='/notes' exact={true} >
+          <Note />
         </ProtectedRoute>
       </Switch>
     </BrowserRouter>

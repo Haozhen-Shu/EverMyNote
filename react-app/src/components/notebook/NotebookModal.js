@@ -3,7 +3,7 @@ import { createOneNotebook, getAllNotebooks } from '../../store/notebook';
 import {useDispatch} from 'react-redux';
 import { useEffect, useState } from 'react';
 
-const NotebookModal = ({ user, overlay, setOverlay, showNewNotebookForm, setShowNotebookForm}) => {
+const NotebookModal = ({ user, overlayCreate, setOverlayCreate, showNewNotebookForm, setShowNotebookForm}) => {
     const dispatch = useDispatch();
     const [title, setTitle] = useState("");
     useEffect(() => {
@@ -15,25 +15,23 @@ const NotebookModal = ({ user, overlay, setOverlay, showNewNotebookForm, setShow
 
     const handleOverlay = e => {
         setShowNotebookForm(false)
-        setOverlay(false)
+        setOverlayCreate(false)
     }
 
     const closeNewNotebookForm = e =>{ 
         e.preventDefault();
         setShowNotebookForm(false)
-        setOverlay(false)
+        setOverlayCreate(false)
     }
 
     const handleSubmit = async(e) => {
         e.preventDefault();
         const userid = user.id;
-        console.log(userid, "uuuuuuuuuu")
         const notebook = await dispatch(createOneNotebook(userid, title))
-        console.log(notebook, "aaaaaaaaa")
         // const notebooks = await dispatch(getAllNotebooks(userid))
         if (notebook) {
             setShowNotebookForm(false)
-            setOverlay(false)
+            setOverlayCreate(false)
         }
     }
     

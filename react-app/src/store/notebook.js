@@ -70,10 +70,10 @@ export const getOneNotebook = (userid, notebookid) => async(dispatch) => {
 export const createOneNotebook = (userid, title) => async(dispatch) =>{
     const response = await fetch(`/api/users/${userid}/notebooks`, {
         method: "POST",
-        header: {
-            "Content-Type": "application/json"
+        headers: {
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify({title})
+        body: JSON.stringify({userid, title})
     })
     if (response.ok){
         const notebooks = await response.json();
@@ -92,10 +92,10 @@ export const createOneNotebook = (userid, title) => async(dispatch) =>{
 export const editOneNotebook = (userid, notebookid, title) => async (dispatch) => {
     const response = await fetch(`/api/users/${userid}/notebooks/${notebookid}`, {
         method: "PATCH",
-        header: {
+        headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({title})
+        body: JSON.stringify({userid,notebookid, title})
     })
     if(response.ok) {
         const notebooks = await response.json();
