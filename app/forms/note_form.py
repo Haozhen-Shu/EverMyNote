@@ -9,7 +9,7 @@ class NoteForm(FlaskForm):
     title = StringField("title", validators=[DataRequired()])
     content = TextAreaField("content", validators=[DataRequired()])
 
-    def title_unique(self):
+    def title_valid(self):
         notebookid = self.notebookid.data
         title = self.title.data
         notebook = Note.query.filter_by(notebookid=notebookid, title=title).first()
