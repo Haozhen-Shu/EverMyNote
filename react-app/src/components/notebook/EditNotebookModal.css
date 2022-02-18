@@ -1,0 +1,49 @@
+.background-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(0,0,0,.35);
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+}
+
+.editNotebook-modal{
+    background-color:white;
+    height: 55vh;
+    width: 550px;
+    max-height: 285px;
+    border-radius: 10px;
+}
+
+.editNotebook_modal_title{
+    padding-top: 40px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.edit_input{
+    padding-left: 20px;
+    width: 85%;
+    padding: 8px 15px;
+    margin: 0px 20px 20px 20px;
+    box-sizing: border-box;        
+    border-radius: 4px;
+    border: 1px solid #4d4d4d;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+.edit-modal-buttons{
+    padding-top: 30px;
+    display: flex;
+    justify-content: space-around;
+    padding-right: 30px;
+}

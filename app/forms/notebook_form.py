@@ -7,7 +7,7 @@ class NotebookForm(FlaskForm):
     userid = IntegerField("userid")
     title = StringField('title', validators=[DataRequired()])
 
-    def title_unique(self):
+    def title_valid(self):
         userid = self.userid.data
         title = self.title.data
         notebook = Notebook.query.filter_by(userid=userid, title=title).first()
@@ -15,7 +15,7 @@ class NotebookForm(FlaskForm):
         if notebook:
             self.title.errors.append("Notebook already exists")
             return False
-        elif title="":
+        elif title == "":
             self.title.errors.append("Invalid title")
             return False
         else:
