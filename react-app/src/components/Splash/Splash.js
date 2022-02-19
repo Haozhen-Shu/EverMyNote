@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom';
+import {NavLink, Link} from 'react-router-dom';
 import splash_logo from '../../images/book1.jpeg';
 import './Splash.css';
 
@@ -13,24 +13,28 @@ const  Splash = () => {
                 <div className="splash_slogan">
                     Tame your work, organize your life
                 </div>
-                <div className="splash_sub_slogan">
-                    Remember everything and tackle any project with your notes, tasks, and schedules all in one place.
+                <div className="splash_sub_slogan_container">
+                    <p className="splash_sub_slogan">Remember everything and tackle any project with your notes, tasks, and schedules all in one place.</p>
                 </div>
-                <Link to="/signup" className="splash_signup">
-                    <button>Sign up for free</button>
-                </Link>
+                <div className='splash_signup_containter'>
+                    <Link to="/sign-up" className="splash_signup">
+                        Sign up for free
+                    </Link>
+                </div>
                 <br />
-                <Link to="/login" className="splash-login">
-                    <button>Already have an account? Log in</button>
-                </Link>
+                <div className="splash_login-container">
+                    <NavLink to="/login" className="splash_login">
+                        Already have an account? Log in
+                    </NavLink>
+                </div>
                 <div className="splash_body">
                     <div className="splash_body_img_container">
                         <img className="splash_body_img" src="https://evernote.com/c/assets/homepage-repackaging/task_hero_image@2x__en.png?b8ddc3599750b793" alt="splash body img"></img>
                     </div>
                     <section className="splash_body_sidebar">
-                        <div>
+                        <div className="sidebar_title_p">
                             <h4 className="sub_title">WORK ANYWHERE</h4>
-                            <p className="sub_p">Keep important info handy—your notes sync automatically to all your devices.Keep important info handy—your notes sync automatically to all your devices.</p>
+                            <p className="sub_p">Keep important info handy—your notes sync automatically to all your devices.</p>
                         </div>
                         <div>
                             <h4 className="sub_title">REMEMBER EVERYTHING</h4>
@@ -49,9 +53,8 @@ const  Splash = () => {
             </div>
             <hr/>
             <div className="splash_footer">
-                <Link to="https://github.com/Haozhen-Shu/MyNotes">Github</Link>
-                <Link to="https://www.linkedin.com/in/haozhen-shu-a5136ab7/">LinkedIn</Link>
-
+                <a className="footer_github" href="https://github.com/Haozhen-Shu/MyNotes">Github</a>
+                <a className="footer_linkedin" href="https://www.linkedin.com/in/haozhen-shu-a5136ab7/">LinkedIn</a>
             </div>
         </>
     )
