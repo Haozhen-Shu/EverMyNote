@@ -99,7 +99,7 @@ def get_notebook_note(userid, notebookid, noteid):
 @user_routes.route('/<int:userid>/notebooks/<int:notebookid>/notes', methods=["POST"])
 # @login_required
 def create_one_note(userid, notebookid):
-    data = request.json
+    data = request.get_json()
     form = NoteForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
     form["userid"].data = userid

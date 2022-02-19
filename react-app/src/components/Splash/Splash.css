@@ -1,0 +1,95 @@
+.splash_nav{
+    padding-left: 30px;
+    display: flex;
+    align-items: center;
+    font-size: 35px;
+    font-weight: 700;
+    text-decoration: none;
+    color: black;
+}
+
+.splash_img{
+    width: 45px;
+    height:40px;
+}
+
+.splash_main{
+    text-align:center;
+    justify-content: center;
+    font-family: "Soleil_Light",Helvetica,Arial,sans-serif;
+}
+
+.splash_slogan{
+    display: block;
+    font-size: 50px;
+    font-weight: 540;
+    font-family: "Soleil_Medium",Helvetica,Arial,sans-serif;
+    line-height: 150%;
+}
+
+.splash_sub_slogan{
+    display: block;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 150%;
+    padding-bottom: 30px;
+}
+
+.splash_signup {
+    background: #00a82d;
+    border: 0;
+    border-radius: 3px;
+    color: #fff;
+    letter-spacing: 1.5px;
+    font-family: "Soleil_Bold",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    padding: 16px 80px;
+    line-height: normal;
+    text-decoration: none;
+}
+
+.splash_login{
+    color: black;
+    font-family: "Soleil",Helvetica,Arial,sans-serif;
+    font-size: 18px;
+    line-height: 21px;
+    padding-top: 35px;
+    text-decoration: underline;
+    padding-bottom: 60px;
+}
+
+.splash_body{
+    display: flex;
+    align-items: center;
+}
+
+.splash_body_img{
+    float: left;
+    height: 560px;
+    /* max-width: 100%; */
+    width: 786px;;
+}
+
+.splash_body_sidebar{
+    float: right;
+    min-width: 240px;
+    margin-top: -120px;
+}
+
+.sub_title{
+    font-weight: bold;
+    font-family: "Soleil_Bold",Helvetica,Arial,sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.3px;
+    line-height: 150%;
+    text-align: left;
+}
+
+.sub-p {
+    font-size: 16px;
+    font-family: "Soleil",Helvetica,Arial,sans-serif;
+    line-height: 150%;
+    text-align: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

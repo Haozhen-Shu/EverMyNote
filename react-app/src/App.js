@@ -9,6 +9,7 @@ import User from './components/User';
 import { authenticate } from './store/session';
 import Notebook from './components/Notebook/Notebook';
 import Note from './components/Note/Note';
+import Splash from './components/Splash/Splash';
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -28,6 +29,9 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
+        <Route path='/' exact={true}>
+          <Splash />
+        </Route>
         <Route path='/login' exact={true}>
           <LoginForm />
         </Route>

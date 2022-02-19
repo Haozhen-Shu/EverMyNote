@@ -28,6 +28,8 @@ const setOneNote = (note) => ({
     payload: note
 })
 
+// NOTEBOOK
+
 export const resetNotebooks = () => async (dispatch) => {
     dispatch(removeAllNotebook())
 }
@@ -129,6 +131,62 @@ export const removeOneNotebook = (userid, notebookid) => async (dispatch) => {
     }
 }
 
+//Note
+export const getAllNotes = (userid, notebookid) => async (dispatch) => {
+    const response = await fetch(`/api/users/${userid}/notebooks/${notebookid}/notes`)
+    if (response.ok) {
+        const notes = await response.json();
+        if (notes.errors) {
+            let errors = Object.values(notes.errors)
+            return errors
+        } else {
+            dispatch(setAllNotes(notes.notes))
+        }
+        return null;
+    } else {
+        return "Response errors!"
+    }
+}
+
+export const getOneNote = (userid, notebookid, noteid) => async (dispatch) => {
+    const response = await fetch(`/api/users/${userid}/notebooks/${notebookid}/notes/${noteid}`)
+    if (response.ok) {
+        const note = await response.json();
+        if (note.errors) {
+            let errors = Object.values(note.errors)
+            return errors
+        } else {
+            dispatch(setOneNote(note))
+        }
+        return note;
+    } else {
+        return "Response errors"
+    }
+}
+
+export const createOneNote = (userid, notebookid, noteVal) => async (dispatch) => {
+    const response = await fetch(`/api/users/${userid}/notebooks/${notebookid}/notes`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(noteVal)
+    })
+    if (response.ok) {
+        const data = await response.json()
+        if (data.errors) {
+            let errors = Object.values(data.errors)
+            return {errors: errors}
+        } else {
+            dispatch(setOneNote(data.note))
+            dispatch(setAllNotes(data.notes))
+            dispatch(setAllNotebooks(data.notebooks))
+            return data.note
+        }
+    } else {
+        return "Response errors!"
+    }
+}
 
 const initialState = {
     notebooks: null,
