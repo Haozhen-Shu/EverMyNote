@@ -36,11 +36,11 @@ const NavBar = () => {
       <div className="navbar_menu">
         <h3 className="navbar_notebooks"> 
           <img src={notebook_logo} className="notebooks_icon"/>
-          <NavLink to="/dashboard" className="navbar_title_notebooks">Notebooks</NavLink>
+          <NavLink to="/notebooks" className="navbar_title_notebooks">Notebooks</NavLink>
         </h3>
         <h3 className="navbar_notes">
           <img src={note_logo} title="note_icons" className="notes_icon" />
-          <p>Notes</p>
+          <NavLink to="/notes" className="navbar_title_notebooks">Notes</NavLink>
         </h3>
         <h3 className="navbar_logout">
           <img src={logout_logo} className="logout_icon"/>
@@ -49,10 +49,12 @@ const NavBar = () => {
 
       </div>
       <div className="navbar_links">
-          <img src={linkedIn_logo} className="linkedIn_icon"/>
-          {/* // <a href="https://www.linkedin.com/in/haozhen-shu-a5136ab7/" className="></a> */}
-         <img src={github_logo} className="github_icon"/>
-      {/* <h3 className="  notebooksNavTitle">   <a href="https://github.com/Haozhen-Shu/MyNotes" className="y navhome"><i className=" xx fab fa-github"></i>GitHub</a> </h3> */}
+        <a href="https://www.linkedin.com/in/haozhen-shu-a5136ab7/" target="_blank" rel="noreferrer noopener">
+            <img src={linkedIn_logo} className="linkedIn_icon" />
+        </a>
+        <a href="https://github.com/Haozhen-Shu/MyNotes" target="_blank" rel="noreferrer noopener">
+           <img src={github_logo} className="github_icon"/>
+        </a> 
       </div>
 
     </div>

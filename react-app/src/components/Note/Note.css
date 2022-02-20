@@ -28,7 +28,7 @@
 .note_header{
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid #333333;
+    /* border-bottom: 1px solid #333333; */
     height: auto;
     padding: 22px 22px 12px 30px;
     font-size: 20px;
@@ -48,4 +48,43 @@
     font-size: 14px;
     color: black;
     padding-top: 20px;
+}
+
+.notes_container{
+    height: 90vh;
+    overflow-y: auto;
+}
+
+.notes_list{
+    list-style-type: none;
+}
+
+.note_info{
+    display: block;
+    flex-direction: column;
+    height: 120px;
+    padding-top: 20px;
+    position: sticky;
+    padding-left: 0px;
+    max-width: 380px;
+    max-height: 140px;
+    border-top: 1px solod grey;
+}
+
+.note_title{
+    font-size: 25px;
+}
+
+.note_content{
+    display: flex;
+    margin-top: 10px;
+    font-size: 15px;
+    color: #737373;
+}
+
+.note_update{
+    color: #737373;
+    font: inherit;
+    position: absolute;
+    bottom: 7px;
 }

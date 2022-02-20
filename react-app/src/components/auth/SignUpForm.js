@@ -42,7 +42,7 @@ const SignUpForm = () => {
   };
 
   if (user) {
-    return <Redirect to='/dashboard' />;
+    return <Redirect to='/notebooks' />;
   }
 
   return (
