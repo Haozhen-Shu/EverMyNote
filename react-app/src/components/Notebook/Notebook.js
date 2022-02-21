@@ -6,6 +6,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import { getAllNotebooks, removeOneNotebook } from '../../store/notebook';
 import NotebookModal from './NotebookModal';
 import EditNotebookModal from './EditNotebookModal';
+import Note from '../Note/Note';
+import {NavLink} from 'react-router-dom';
 
 const Notebook = () => {
     const user = useSelector(state =>state.session.user)
@@ -17,8 +19,7 @@ const Notebook = () => {
     const [showNewNotebookForm, setShowNotebookForm] = useState(false)
     const [showEditNotebookForm, setShowEditNotebookForm] = useState(false)
     const [currentid, setCurrentid] = useState(null);
-
-    
+   
     const handleNotebookModal = e => {
         setShowNotebookForm(true)
         setOverlayCreate(true)
@@ -66,8 +67,12 @@ const Notebook = () => {
                     </li>
                     {notebooks && notebooks.map(notebook => (
                         <li key={notebook.id}>
-                        {}
-                        <div className="notebook_title">{notebook.title}</div>
+                        <div className="notebook_title">
+                            <NavLink to={`/notebooks/${notebook.id}`} className="notebook_link_note">
+                                <img src={Notebook_logo} className="notebook_main_logo"></img>
+                                {notebook.title}
+                            </NavLink>
+                        </div>
                         <div className="notebook_created_by">{user.username}</div>
                         <div className="notebook_updated_at">{notebook.updated_at.slice(5,16)}</div>
                         <div className="notebook_actions">

@@ -9,6 +9,8 @@ import User from './components/User';
 import { authenticate } from './store/session';
 import Notebook from './components/Notebook/Notebook';
 import Note from './components/Note/Note';
+import NotesPage from './components/NotesPage/NotesPage';
+import Splash from './components/Splash/Splash';
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -28,6 +30,9 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
+        <Route path='/' exact={true}>
+          <Splash />
+        </Route>
         <Route path='/login' exact={true}>
           <LoginForm />
         </Route>
@@ -40,11 +45,14 @@ function App() {
         <ProtectedRoute path='/users/:userId' exact={true} >
           <User />
         </ProtectedRoute>
-        <ProtectedRoute path='/dashboard' exact={true} >
+        <ProtectedRoute path='/notebooks' exact={true} >
           <Notebook />
         </ProtectedRoute>
-        <ProtectedRoute path='/notes' exact={true} >
+        <ProtectedRoute path='/notebooks/:notebookid' exact={true} >
           <Note />
+        </ProtectedRoute>
+        <ProtectedRoute path='/notes' exact={true} >
+          <NotesPage />
         </ProtectedRoute>
       </Switch>
     </BrowserRouter>

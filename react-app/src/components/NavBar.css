@@ -9,6 +9,8 @@
 .navbar_title_notebooks{
     text-decoration: none;
     color:white;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+    font-size: 16px;
 }
 
 .navbar_header{
@@ -27,19 +29,61 @@
 }
 
 .navbar_search{
+   background-color: grey;
     border-radius: 20px;
     width: 80%;
     height: 35px;
     margin: 10px 10px 10px 10px;
     margin-left: 18px;
+    border: none;
+    color: black;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
     cursor: pointer;
+    text-align: center;
     
 }
 
 .search{
-    border-radius: 7px;
     height: 28px;
     font-size:14px;
+    display: block;
+    color: white;
+    background-color: grey;
+    text-decoration: none;
+    opacity: 1;
+    border-style: none;
+}
+
+.new_note{
+    background-color: #00a82d;
+    border-radius: 20px;
+    width: 80%;
+    height: 35px;
+    margin: 10px 10px 10px 10px;
+    margin-left: 18px;
+    border: none;
+    color: black;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    text-align: center;
+}
+
+.new_note_icon{
+    margin: 10px;
+    font-size: 30px;
+    padding-left: 10px;
+    padding-bottom: 3px;
+}
+
+.add_new_note{
+    font-size: 18px;
+    padding-left: 2px;
+    padding-top: 2px;
+
 }
 
 .navbar_notebooks{

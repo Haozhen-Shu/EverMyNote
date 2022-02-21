@@ -1,0 +1,142 @@
+.splash_nav{
+    padding-left: 40px;
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+    font-weight: 700;
+    text-decoration: none;
+    color: black;
+    gap: 1em;
+}
+
+.splash_img{
+    width: 45px;
+    height:40px;
+}
+
+.splash_main{
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    max-width: 1200px;
+    margin: auto;
+    font-family: "Soleil_Light",Helvetica,Arial,sans-serif;
+}
+
+
+.splash_slogan{
+    display: block;
+    font-size: 40px;
+    font-weight: 600;
+    font-family: "Soleil_Medium",Helvetica,Arial,sans-serif;
+    line-height: 150%;
+}
+
+.splash_sub_slogan_container{
+    width: 100%;
+    display: flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.splash_sub_slogan{
+    display: block;
+    align-items: center;
+    font-size: 20px;
+    text-align: center;
+    width: 62%;
+    font-weight: 400;
+    line-height: 150%;
+    padding-bottom: 5px;
+}
+
+.splash_signup_containter{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.splash_signup {
+    background: #00a82d;
+    border: 0;
+    border-radius: 3px;
+    color: #fff;
+    letter-spacing: 1.5px;
+    font-family: "Soleil_Bold",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    padding: 16px 70px;
+    line-height: normal;
+    text-decoration: none;
+    width: 140px;
+}
+
+.splash_login_container{  
+    font-family: "Soleil",Helvetica,Arial,sans-serif;
+    font-size: 18px;
+    line-height: 21px;
+    padding-top: 35px;
+    text-decoration: underline;
+    padding-bottom: 60px;
+}
+
+.splash_login{
+    color:black;
+}
+
+.splash_body{
+    display: flex;
+    align-items: flex-start;
+    margin-top:30px;
+}
+
+.splash_body_img{
+    float: left;
+    height: auto;
+    max-width: 100%;
+    width: auto;
+}
+
+.splash_body_sidebar{
+    float: right;
+    min-width: 240px;
+    margin-top: -20px;
+    text-align: left;
+   
+}
+
+.sub_title{
+    font-weight: bold;
+    font-family: "Soleil_Bold",Helvetica,Arial,sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    line-height: 200%;
+    text-align: left;
+    padding-bottom: -20px;
+}
+
+.sub-p {
+    font-size: 16px;
+    font-family: "Soleil",Helvetica,Arial,sans-serif;
+    line-height: 200%;
+    letter-spacing: 2px;
+    text-align: left;
+    font-family: "Soleil",Helvetica,Arial,sans-serif;
+}
+
+.splash_footer{
+    display: flex;
+    justify-content: space-around;
+}
+
+ .footer_linkedin { 
+   text-decoration: none;
+   color: black;
+} 
+
+.footer_github{
+    text-decoration: none;
+    color: black;
+}
