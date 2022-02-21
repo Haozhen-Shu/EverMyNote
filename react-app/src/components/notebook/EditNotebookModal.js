@@ -5,6 +5,7 @@ import { editOneNotebook } from '../../store/notebook';
 
 const EditNotebookModal = ({ userid, notebookid, notebooktitle, overlayEdit, setOverlayEdit, showEditNotebookForm, setShowEditNotebookForm}) => {
     const [title, setTitle] = useState(notebooktitle);
+    const [updated_at, setUpdated_at] = useState(null)
     const dispatch = useDispatch();
 
     const closeEditNotebookForm = e => {

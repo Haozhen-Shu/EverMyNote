@@ -63,6 +63,7 @@ export const getOneNotebook = (userid, notebookid) => async(dispatch) => {
             dispatch(setOneNotebook(notebook.notebook))
             dispatch(setAllNotes(notebook.notes))
         }
+        // console.log(notebook, "from store@@@@@@@@@@@@@")
         return notebook
     } else {
         return "Response error!"

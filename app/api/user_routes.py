@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required
 from app.models import User, db, Notebook, Note
 from app.forms import NotebookForm, NoteForm
+import datetime
 
 user_routes = Blueprint('users', __name__)
 
@@ -31,6 +32,7 @@ def get_all_notebooks(userid):
 # @login_required
 def get_one_notebook(userid, notebookid):
     notebook = Notebook.query.filter_by(userid=userid, id=notebookid).first()
+    print(notebook, "from routes RRRRRRR")
     notes = Note.query.filter_by(notebookid=notebookid).all()
     return {"notebook": notebook.to_dict(), "notes": [note.to_dict() for note in notes]}
 
@@ -66,6 +68,7 @@ def edit_one_notebook(userid, notebookid):
         notebook = Notebook.query.get(notebookid)
         if "title" in data.keys() and data["title"] != "":
             notebook.title = data["title"]
+            notebook.updated_at = datetime.datetime.now()
         db.session.commit()
         all_notebooks = Notebook.query.filter_by(userid=userid).all()
         return {"notebooks": [notebook.to_dict() for notebook in all_notebooks]}

@@ -19,8 +19,7 @@ const Notebook = () => {
     const [showNewNotebookForm, setShowNotebookForm] = useState(false)
     const [showEditNotebookForm, setShowEditNotebookForm] = useState(false)
     const [currentid, setCurrentid] = useState(null);
-
-    
+   
     const handleNotebookModal = e => {
         setShowNotebookForm(true)
         setOverlayCreate(true)
@@ -70,6 +69,7 @@ const Notebook = () => {
                         <li key={notebook.id}>
                         <div className="notebook_title">
                             <NavLink to={`/notebooks/${notebook.id}`} className="notebook_link_note">
+                                <img src={Notebook_logo} className="notebook_main_logo"></img>
                                 {notebook.title}
                             </NavLink>
                         </div>

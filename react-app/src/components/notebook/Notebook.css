@@ -20,6 +20,12 @@
     height: 50px;
 }
 
+.notebook_link_note{
+    text-decoration: none;
+    color:black;
+    cursor: pointer;
+    width: 120px;
+}
 h1{
     font-size: 20px;
     font-weight: 400
@@ -43,7 +49,9 @@ h1{
 
 .notebook_main_logo{
     width: 20px;
+    padding-right: 20px;
 }
+
 
 .new_notebook{
     display: flex;
@@ -79,7 +87,9 @@ li:nth-child  {
 
 .notebook_title{
     width: 28%;
-    text-align:left;
+    display: flex;
+    align-items: center;
+    gap:2em;
 
 }
 

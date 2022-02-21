@@ -9,6 +9,7 @@ import User from './components/User';
 import { authenticate } from './store/session';
 import Notebook from './components/Notebook/Notebook';
 import Note from './components/Note/Note';
+import NotesPage from './components/NotesPage/NotesPage';
 import Splash from './components/Splash/Splash';
 
 function App() {
@@ -49,6 +50,9 @@ function App() {
         </ProtectedRoute>
         <ProtectedRoute path='/notebooks/:notebookid' exact={true} >
           <Note />
+        </ProtectedRoute>
+        <ProtectedRoute path='/notes' exact={true} >
+          <NotesPage />
         </ProtectedRoute>
       </Switch>
     </BrowserRouter>
