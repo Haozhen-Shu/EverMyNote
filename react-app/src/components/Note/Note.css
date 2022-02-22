@@ -249,14 +249,21 @@
     font-size: 25px;
 }
 
-.note_editor_content, .note_edit_editor_content{
+.note_editor_content{
     border: none;
     margin-left:30px;
+}
+.note_edit_editor_content{
+    border: none;
+    margin-left:30px;
+    margin-bottom: 20px;
 }
 
  .note_edit_editor_title{
      margin-left: 30px;
      margin-top: 20px;
+     margin-bottom: 20px;
+     font-size: 25px;
      border:none;
  }
 
@@ -265,7 +272,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    height: 320px;
+    height: 450px;
 }
 
 .note_edit_editor_form{
@@ -273,9 +280,17 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: flex-start;
-    height: 320px;
+    height:450px;
 }
 .editor_save_cancel{
     display: flex;
     justify-content: space-around;
+    width: 100%;
 }
+
+.editor_edit_save_cancel{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
