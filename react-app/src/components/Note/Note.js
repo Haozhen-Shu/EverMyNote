@@ -22,13 +22,21 @@ const Note = () => {
     const userid = user.id;
     const {notebookid} = useParams();
     const notes = useSelector(state=>state.notebook.notes)
-    console.log(notes)
     const [notebook, setNotebook] = useState(null)
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [currNote, setCurrNote] = useState("")
-    const [editTitle, setEditTitle] = useState("")
-    const [editContent, setEditContent] = useState("")
+    // const [editTitle, setEditTitle] = useState(currNote.title)
+    // const [editContent, setEditContent] = useState(currNote.content)
+    const [errors, setErrors] = useState([])
+    const [currNoteContent, setCurrNoteContent] = useState("")
+    const [currNoteTitle, setCurrNoteTitle] = useState("")
+
+    const validate = () => {
+        if (!title) {
+            errors.push("Please provide an title")
+        }
+    }
     
     const handleNewNote = () => {
         document.querySelector(".note_editor_container").classList.remove("hidden")
@@ -55,6 +63,10 @@ const Note = () => {
     const handleOpenEditor =(note) => {
         if (note){
           setCurrNote(note)
+        //   console.log(note, "note", currNote, "currNote")
+          setCurrNoteContent(note.content)
+          setCurrNoteTitle(note.title)
+        //   console.log(currNoteContent)
         }
         document.querySelector(".note_editor_container").classList.add("hidden")
         document.querySelector(".note_edit_editor_container").classList.remove("hidden")
@@ -67,8 +79,8 @@ const Note = () => {
         await document.querySelector(".note_editor_container").classList.add("hidden")
         await document.querySelector(".note_edit_editor_container").classList.remove("hidden")
         const noteVal = {
-            title: editTitle,
-            content: editContent
+            title: currNoteTitle,
+            content: currNoteContent
         }
         await dispatch(editOneNote(userid, notebookid, noteid, noteVal))
         // setEditTitle(editTitle)
@@ -251,10 +263,10 @@ const Note = () => {
                         <input
                             className="note_edit_editor_title"
                             type="text"
-                            placeholder={currNote.title}
+                            placeholder={currNoteTitle}
                             // value={editTitle}
-                            value={currNote.title}
-                            onChange={e => setEditTitle(e.target.value)}
+                            value={currNoteTitle}
+                            onChange={e => setCurrNoteTitle(e.target.value)}
                         // onBlur={handleTitleBlur}
                         >
                         </input>
@@ -264,10 +276,10 @@ const Note = () => {
                             rows="20"
                             cols="65"
                             id="content"
-                            placeholder={currNote.content}
+                            placeholder={currNoteContent}
                             // value={editContent}
-                            value={currNote.content}
-                            onChange={e => setEditContent(e.target.value)}
+                            value={currNoteContent}
+                            onChange={e => setCurrNoteContent(e.target.value)}
                         // onBlur={handleContentBlur}
                         >
                         </textarea>
