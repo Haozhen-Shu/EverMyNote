@@ -112,7 +112,8 @@ def create_one_note(userid, notebookid):
         note = Note(userid = userid,
                     notebookid = notebookid,
                     title = data["title"],
-                    content = data["content"]
+                    content = data["content"],
+                    updated_at = datetime.datetime.now()
         )
         db.session.add(note)
         db.session.commit()
@@ -130,11 +131,13 @@ def edit_one_note(userid, notebookid, noteid):
     form["csrf_token"].data = request.cookies["csrf_token"]
     form["userid"].data = userid
     form["notebookid"].data=notebookid
+    data = request.get_json()
+    print(form.data)
     if form.validate_on_submit() and form.title_valid():
-        data = request.get_json()
         note = Note.query.get(noteid)
         note.title = data["title"]
         note.content = data["content"]
+        note.upated_at = datetime.datetime.now()
         db.session.commit()
         all_notes = Note.query.filter_by(userid=userid, notebookid=notebookid).all()
         all_notebooks = Notebook.query.filter_by(userid=userid).all()

@@ -1,4 +1,3 @@
-import { editOneNotebook } from '../../store/notebook';
 import "./Note.css";
 import notebook_logo from '../../images/notebook.png';
 import note_logo from '../../images/note.png';
@@ -8,12 +7,13 @@ import github_logo from '../../images/github.png'
 import fullscreen_logo from '../../images/fullscreen.png';
 import move_logo from '../../images/move.png';
 import {useEffect, useState} from 'react';
-import {getAllNotes, getOneNotebook, createOneNote, editOneNote} from '../../store/notebook';
+import {getAllNotes, getOneNotebook, createOneNote, editOneNote, removeOneNote} from '../../store/notebook';
 import {useDispatch, useSelector} from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
 // import ReactQuill from 'react-quill';
+// import EditNote from './EditNote';
 
 
 const Note = () => {
@@ -23,8 +23,9 @@ const Note = () => {
     const {notebookid} = useParams();
     const notes = useSelector(state=>state.notebook.notes)
     const [notebook, setNotebook] = useState(null)
-    const [title, setTitle] = useState(null)
-    const [content, setContent] = useState(null)
+    const [title, setTitle] = useState("")
+    const [content, setContent] = useState("")
+    const [currNote, setCurrNote] = useState("")
     
     const handleNewNote = () => {
         document.querySelector(".note_editor_container").classList.remove("hidden")
@@ -37,8 +38,9 @@ const Note = () => {
     // const handleContentBlur = () => {
 
     // }
+   
 
-    const handleSubmit = async(e) => {
+    const handleCreateSubmit = async(e) => {
         e.preventDefault();
         const content = document.querySelector(".note_editor_content").value
         const noteVal = {
@@ -53,15 +55,23 @@ const Note = () => {
         document.querySelector(".note_editor_container").classList.add("hidden")
     }
 
-    const handleOpenEditor = async(e, noteid) => {
-        e.preventDefault()
-        await document.querySelector(".note_editor_container").classList.add("hidden")
-        await document.querySelector(".note_edit_editor_container").classList.remove("hidden")
+    const handleOpenEditor =(note) => {
+        if (note){
+          setCurrNote(note)
+        }
+        document.querySelector(".note_editor_container").classList.add("hidden")
+        document.querySelector(".note_edit_editor_container").classList.remove("hidden")
     }
 
-    const handleEditor = async (noteid) => {
-        // e.preventDefault()
-        const content = document.querySelector(".note_editor_content").value
+    const handleEdit = async (e) => {
+        e.preventDefault()
+        const noteid =  currNote.id;    
+        document.querySelector(".note_edit_editor_content").value = e.target.value
+        console.log(document.querySelector(".note_edit_editor_content").value,"element value")
+        console.log(e.target.value,"eeeeeeeee")
+        const content = document.querySelector(".note_edit_editor_content").value
+        console.log(content, "from the components")
+
         await document.querySelector(".note_editor_container").classList.add("hidden")
         await document.querySelector(".note_edit_editor_container").classList.remove("hidden")
         const noteVal = {
@@ -70,6 +80,25 @@ const Note = () => {
         }
         const data = await dispatch(editOneNote(userid, notebookid, noteid, noteVal))
 
+    }
+
+    const closeEditEditor = (e) => {
+        e.preventDefault();
+        document.querySelector(".note_edit_editor_container").classList.add("hidden")
+        setTitle(title)
+        setContent(content)
+    }
+
+    const handleDelete = (note)=> {
+        dispatch(removeOneNote(userid, notebookid, note.id))
+    }
+
+    const createFullscreen = () => {
+        document.querySelector(".note_editor_container").classList.add("fullscreen")
+    }
+
+    const editFullscreen = () => {
+        document.querySelector(".note_edit_editor_container").classList.add("fullscreen")
     }
 
     useEffect(()=> {
@@ -90,7 +119,7 @@ const Note = () => {
                     </div>
                 </div>
                 <div className="navbar_search">
-                    <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" class="C1Pw2rSHz9BEf3xLKAgU"><path fillRule="evenodd" clip-rule="evenodd" d="M13.959 15.127c-2.294 1.728-5.577 1.542-7.68-.556-2.303-2.297-2.318-6.02-.034-8.312 2.285-2.293 6.004-2.29 8.307.009 2.103 2.097 2.299 5.381.579 7.682a.86.86 0 01.055.05l4.028 4.035a.834.834 0 01-1.179 1.179l-4.028-4.035a.869.869 0 01-.048-.052zm-.553-1.725c-1.63 1.635-4.293 1.641-5.95-.012s-1.66-4.318-.03-5.954c1.629-1.635 4.293-1.64 5.95.013 1.657 1.653 1.659 4.318.03 5.953z" fill="currentColor"></path></svg>
+                    <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" className="C1Pw2rSHz9BEf3xLKAgU"><path fillRule="evenodd" clipRule="evenodd" d="M13.959 15.127c-2.294 1.728-5.577 1.542-7.68-.556-2.303-2.297-2.318-6.02-.034-8.312 2.285-2.293 6.004-2.29 8.307.009 2.103 2.097 2.299 5.381.579 7.682a.86.86 0 01.055.05l4.028 4.035a.834.834 0 01-1.179 1.179l-4.028-4.035a.869.869 0 01-.048-.052zm-.553-1.725c-1.63 1.635-4.293 1.641-5.95-.012s-1.66-4.318-.03-5.954c1.629-1.635 4.293-1.64 5.95.013 1.657 1.653 1.659 4.318.03 5.953z" fill="currentColor"></path></svg>
                     <form className="search_form" role="search">
                         <input
                             className="search"
@@ -144,8 +173,11 @@ const Note = () => {
                 <div className="notes_container">
                     <ul className="notes_list">
                     {notes && notes.map(note => (
-                        <li key={note.id} className="note_info" onClick={(e) =>handleOpenEditor(e, note.id )}>
-                            <div className="note_title">{note.title}</div>
+                        <li key={note.id} className="note_info" onClick={() =>handleOpenEditor(note)}>
+                            <div className="note_title_delete">
+                                <div className="note_title">{note.title}</div> 
+                                <button onClick={() =>handleDelete(note)}>Delete</button>
+                            </div>
                             <div className="note_content">{note.content}</div>
                             <div className="note_update">{note.updated_at.slice(5,11)}</div>
                         </li>
@@ -158,7 +190,7 @@ const Note = () => {
                     <div className="note_editor_header">
                         <div className="note_editor_fullscreen_move">
                             <button className="fullscreen_btn"> 
-                                <img className="fullscreen_img" src={fullscreen_logo} alt="fullscreen button"></img>
+                                <img className="fullscreen_img" src={fullscreen_logo} alt="fullscreen button" onClick={createFullscreen}></img>
                             </button>
                             <button className="back_to_notebook">
                                 <img className="note_editor_notebook_logo" src={notebook_logo} alt="notebook logo"></img>
@@ -171,42 +203,42 @@ const Note = () => {
                         </div>
                     </div>
                     <div className="note_editor_update">
-                        Last edited on {notebook && notebook.updated_at.slice(5,17)}
+                        Last edited on {notebook && (notebook.updated_at.slice(5,17))}
                     </div>
-                    <form className="note_editor_form" onSubmit={handleSubmit}>
-                        <input 
-                            className="note_editor_title" 
-                            type="text"
-                            id="title"
-                            placeholder="Title"
-                            value={title}
-                            onChange={e => setTitle(e.target.value)}
-                            // onBlur={handleTitleBlur}
-                            >
-                        </input>
-                        {/* <ReactQuill theme="snow" placeholder="Satrt witing" onBlur={handleContentBlur} onChange={e=>setContent(e.target.value)} /> */}
-                        <textarea
-                            className="note_editor_content"
-                            id="content"
-                            rows="10"
-                            cols="33"
-                            placeholder="Content"
-                            // onBlur={handleContentBlur}
-                            >
-                        </textarea>
-                        <div>
-                            <button type="submit">Save</button>
-                            <button onClick={closeEditor}>Cancel</button>
-                        </div>
-                    </form>
                 </div>
+                <form className="note_editor_form" onSubmit={handleCreateSubmit}>
+                    <input 
+                        className="note_editor_title" 
+                        type="text"
+                        id="title"
+                        value={title}
+                        placeholder="Title"
+                        onChange={e => setTitle(e.target.value)}
+                        // onBlur={handleTitleBlur}
+                        >
+                    </input>
+                    {/* <ReactQuill theme="snow" placeholder="Satrt witing" onBlur={handleContentBlur} onChange={e=>setContent(e.target.value)} /> */}
+                    <textarea
+                        className="note_editor_content"
+                        id="content"
+                        rows="15"
+                        cols="53"
+                        placeholder="Content"
+                        // onBlur={handleContentBlur}
+                        >
+                    </textarea>
+                </form>    
+                    <div className ="editor_save_cancel">
+                        <button type="submit">Save</button>
+                        <button onClick={closeEditor}>Cancel</button>
+                    </div>
             </div>
             <div className="note_edit_editor_container hidden">
-                <div className="note_editor">
+                <div className="note_edit_editor">
                     <div className="note_editor_header">
                         <div className="note_editor_fullscreen_move">
                             <button className="fullscreen_btn">
-                                <img className="fullscreen_img" src={fullscreen_logo} alt="fullscreen button"></img>
+                                <img className="fullscreen_img" src={fullscreen_logo} alt="fullscreen button" onClick={editFullscreen}></img>
                             </button>
                             <button className="back_to_notebook">
                                 <img className="note_editor_notebook_logo" src={notebook_logo} alt="notebook logo"></img>
@@ -221,11 +253,11 @@ const Note = () => {
                     <div className="note_editor_update">
                         Last edited on {notebook && notebook.updated_at.slice(5, 17)}
                     </div>
-                    <form className="note_editor_form" onSubmit={handleEditor}>
+                    <form className="note_edit_editor_form" onSubmit={handleEdit}>
                         <input
-                            className="note_editor_title"
+                            className="note_edit_editor_title"
                             type="text"
-                            placeholder={title}
+                            placeholder={currNote.title}
                             value={title}
                             onChange={e => setTitle(e.target.value)}
                         // onBlur={handleTitleBlur}
@@ -233,21 +265,23 @@ const Note = () => {
                         </input>
                         {/* <ReactQuill theme="snow" placeholder="Satrt witing" onBlur={handleContentBlur} onChange={e=>setContent(e.target.value)} /> */}
                         <textarea
-                            className="note_editor_content"
-                            rows="10"
-                            cols="33"
-                            placeholder={content}
+                            className="note_edit_editor_content"
+                            rows="15"
+                            cols="53"
+                            id="content"
+                            placeholder={currNote.content}
+                            value={content}
+                            onChange={e => setContent(e.target.value)}
                         // onBlur={handleContentBlur}
                         >
                         </textarea>
-                        <div>
+                    </form> 
+                        <div className="editor_save_cancel">
                             <button type="submit">Save</button>
-                            <button onClick={closeEditor}>Cancel</button>
+                            <button onClick={closeEditEditor}>Cancel</button>
                         </div>
-                    </form>
                 </div>
             </div>
-
         </div>
     )
 
