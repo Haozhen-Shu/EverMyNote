@@ -31,22 +31,22 @@ const Note = () => {
     const [currNoteContent, setCurrNoteContent] = useState("")
     const [currNoteTitle, setCurrNoteTitle] = useState("")
 
-    const validate =  () => {
-        if (!title) {
-            errorsCreate.push("Please provide an title")
-        }
-        if (!content) {
-            errorsCreate.push("Please provide valid content")
-        }
-        if (!currNoteTitle) {
-            errorsEdit.push("Please provide an title")
-        }
+    // const validate =  () => {
+    //     if (!title) {
+    //         errorsCreate.push("Please provide an title")
+    //     }
+    //     if (!content) {
+    //         errorsCreate.push("Please provide valid content")
+    //     }
+    //     if (!currNoteTitle) {
+    //         errorsEdit.push("Please provide an title")
+    //     }
 
-        if (!currNoteContent) {
-            errorsEdit.push("Please provide valid content")
-        }
-        return [errorsCreate, errorsEdit]
-    }
+    //     if (!currNoteContent) {
+    //         errorsEdit.push("Please provide valid content")
+    //     }
+    //     return [errorsCreate, errorsEdit]
+    // }
     
     const handleNewNote = () => {
         document.querySelector(".note_editor_container").classList.remove("hidden")
@@ -56,8 +56,8 @@ const Note = () => {
 
     const handleCreateSubmit = async(e) => {
         e.preventDefault();
-        const errors = validate()[0];
-        if (errors.length > 0) return setErrorsCreate(errors)
+        // const errors = validate()[0];
+        // if (errors.length > 0) return setErrorsCreate(errors)
         const noteVal = {
             title: title,
             content: content
@@ -87,8 +87,8 @@ const Note = () => {
 
     const handleEdit = async (e) => {
         e.preventDefault()
-        const errors = validate()[1];
-        if (errors.length > 0) return setErrorsEdit(errors)
+        // const errors = validate()[1];
+        // if (errors.length > 0) return setErrorsEdit(errors)
         const noteid =  currNote.id;    
         await document.querySelector(".note_editor_container").classList.add("hidden")
         await document.querySelector(".note_edit_editor_container").classList.remove("hidden")
