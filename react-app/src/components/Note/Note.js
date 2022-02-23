@@ -5,7 +5,7 @@ import logout_logo from '../../images/logout.png';
 import linkedIn_logo from '../../images/linkedin.png';
 import github_logo from '../../images/github.png'
 import fullscreen_logo from '../../images/fullscreen.png';
-import move_logo from '../../images/move.png';
+// import move_logo from '../../images/move.png';
 import {useEffect, useState} from 'react';
 import {getAllNotes, getOneNotebook, createOneNote, editOneNote, removeOneNote} from '../../store/notebook';
 import {useDispatch, useSelector} from 'react-redux';
@@ -26,16 +26,26 @@ const Note = () => {
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [currNote, setCurrNote] = useState("")
-    // const [editTitle, setEditTitle] = useState(currNote.title)
-    // const [editContent, setEditContent] = useState(currNote.content)
-    const [errors, setErrors] = useState([])
+    const [errorsCreate, setErrorsCreate] = useState([])
+    const [errorsEdit, setErrorsEdit] = useState([])
     const [currNoteContent, setCurrNoteContent] = useState("")
     const [currNoteTitle, setCurrNoteTitle] = useState("")
 
-    const validate = () => {
+    const validate =  () => {
         if (!title) {
-            errors.push("Please provide an title")
+            errorsCreate.push("Please provide an title")
         }
+        if (!content) {
+            errorsCreate.push("Please provide valid content")
+        }
+        if (!currNoteTitle) {
+            errorsEdit.push("Please provide an title")
+        }
+
+        if (!currNoteContent) {
+            errorsEdit.push("Please provide valid content")
+        }
+        return [errorsCreate, errorsEdit]
     }
     
     const handleNewNote = () => {
@@ -46,14 +56,16 @@ const Note = () => {
 
     const handleCreateSubmit = async(e) => {
         e.preventDefault();
+        const errors = validate()[0];
+        if (errors.length > 0) return setErrorsCreate(errors)
         const noteVal = {
             title: title,
             content: content
         }
-
-        console.log(noteVal, "create a new note")
         await dispatch(createOneNote(userid, notebookid, noteVal))
         await document.querySelector(".note_editor_container").classList.add("hidden")
+        setTitle("")
+        setContent("")
     }
 
     const closeEditor = () => {
@@ -75,6 +87,8 @@ const Note = () => {
 
     const handleEdit = async (e) => {
         e.preventDefault()
+        const errors = validate()[1];
+        if (errors.length > 0) return setErrorsEdit(errors)
         const noteid =  currNote.id;    
         await document.querySelector(".note_editor_container").classList.add("hidden")
         await document.querySelector(".note_edit_editor_container").classList.remove("hidden")
@@ -213,6 +227,11 @@ const Note = () => {
                     </div>
                 </div>
                 <form className="note_editor_form" onSubmit={handleCreateSubmit}>
+                    <div>
+                        {errorsCreate && errorsCreate.map((error) => (
+                            <div key={error.id}>{error}</div>
+                        ))}
+                    </div>
                     <input 
                         className="note_editor_title" 
                         type="text"
@@ -260,11 +279,15 @@ const Note = () => {
                         Last edited on {notebook && notebook.updated_at.slice(5, 17)}
                     </div>
                     <form className="note_edit_editor_form" onSubmit={handleEdit}>
+                        <div>
+                            {errorsEdit && errorsEdit.map((error) => (
+                                <div key={error.id}>{error}</div>
+                            ))}
+                        </div>
                         <input
                             className="note_edit_editor_title"
                             type="text"
                             placeholder={currNoteTitle}
-                            // value={editTitle}
                             value={currNoteTitle}
                             onChange={e => setCurrNoteTitle(e.target.value)}
                         // onBlur={handleTitleBlur}
@@ -277,7 +300,6 @@ const Note = () => {
                             cols="65"
                             id="content"
                             placeholder={currNoteContent}
-                            // value={editContent}
                             value={currNoteContent}
                             onChange={e => setCurrNoteContent(e.target.value)}
                         // onBlur={handleContentBlur}
