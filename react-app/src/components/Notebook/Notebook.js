@@ -69,7 +69,7 @@ const Notebook = () => {
                         <li key={notebook.id}>
                         <div className="notebook_title">
                             <NavLink to={`/notebooks/${notebook.id}`} className="notebook_link_note">
-                                <img src={Notebook_logo} className="notebook_main_logo"></img>
+                                <img src={Notebook_logo} className="notebook_main_logo" alt="notebook logo"></img>
                                 {notebook.title}
                             </NavLink>
                         </div>

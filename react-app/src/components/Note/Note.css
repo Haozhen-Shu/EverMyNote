@@ -101,16 +101,196 @@
 }
 
 .hidden{
-    display: none!important
+    display: none!important;
 }
 
-.note_editor {
-    /* display: flex;
+.note_editor_container {
+    display: flex;
     height: 100vh;
-    width: 380px;
-    flex-direction: column; */
+    flex-direction: column;
     background-color: white;
-    /* color: black;
+    color: black;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    border-right: 1px  grey; */
+    border-right: 1px  grey;
 }
+
+.note_editor{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border-bottom: 1px solid #333333;
+}
+
+.note-editor_header{
+    display: flex;
+    justify-content: space-around;
+    height: 60px;
+}
+
+.note_editor_fullscreen_move{
+    display: flex;
+    flex-direction: row;
+    padding-left: 35px;
+    padding-top: 15px;
+    padding-bottom: 25px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-align: center;
+    justify-content: space-around;
+    color: #a6a6a6;
+}
+
+.fullscreen_img{
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    padding: 1px 1px 1px 1px;
+    margin-left: -5px;
+    margin-right: 25px;
+    padding-bottom: 5px;
+}
+
+.fullscreen_btn{
+    display: block;
+    text-align: center;
+    border:none;
+    padding-left: -25px;
+    margin-left: -70px;
+    width: 30px;
+    height: 30px;
+
+}
+
+.note_editor_notebook_logo{
+    width: 20px;
+    height: 26px;
+    padding-right: 8px;
+    padding-top: -10px;
+}
+
+.note_editor_notbook-title{
+    margin-top: 5px;
+}
+
+.note_editor_move_img{
+    width: 33px;
+    border-radius: 5px;
+    padding: 1px 1px 1px 1px;
+    margin-left: 15px;
+    margin-bottom: 5px;
+}
+
+.back_to_notebook{
+    display: flex;
+    justify-content: space-around;
+    border: none;
+    width: 100px;
+    padding: 5px 5px 5px 5px;
+    height:30px;
+    background-color: white;
+}
+
+.note_editor_move{
+    display: block;
+    border: none;
+    background-color: white;
+    height: 30px;
+    margin-left:-100px;
+}
+
+.note_editor_update{
+    text-rendering: optimizeLegibility;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.note_edit_editor_container {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    background-color: white;
+    color: black;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border-right: 1px  grey;
+}
+
+.note_editor_form{
+    margin-top:20px;
+}
+
+.note_edit_editor_form{
+    border-top: 1px solid black;
+}
+
+.form_editor_title{
+    padding-left: 20px;
+}
+
+.note_editor_title{
+    margin-left: 30px;
+}
+
+.note_title_delete{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.fullscreen{
+    z-index: 9999; 
+    width: 100%; 
+    height: 100%; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+}
+
+.note_editor_title {
+    border: none;
+    font-size: 25px;
+}
+
+.note_editor_content{
+    border: none;
+    margin-left:30px;
+}
+.note_edit_editor_content{
+    border: none;
+    margin-left:30px;
+    margin-bottom: 20px;
+}
+
+ .note_edit_editor_title{
+     margin-left: 30px;
+     margin-top: 20px;
+     margin-bottom: 20px;
+     font-size: 25px;
+     border:none;
+ }
+
+.note_editor_form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 450px;
+}
+
+.note_edit_editor_form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+    height:450px;
+}
+.editor_save_cancel{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.editor_edit_save_cancel{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+

@@ -197,10 +197,11 @@ export const editOneNote =(userid, notebookid, noteid, noteVal) => async(dispatc
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(userid, notebookid, noteid, noteVal)
+        body: JSON.stringify(noteVal)
     })
     if (response.ok) {
         const data = await response.json();
+        console.log(data, "from the store")
         if (data.errors) {
             let errors = Object.values(data.errors)
             return errors
@@ -215,7 +216,7 @@ export const editOneNote =(userid, notebookid, noteid, noteVal) => async(dispatc
     }
 }
 
-const removeOneNote = (userid, notebookid, noteid) => async (dispatch) => {
+export const removeOneNote = (userid, notebookid, noteid) => async (dispatch) => {
     const response = await fetch(`/api/users/${userid}/notebooks/${notebookid}/notes/${noteid}`, {
         method: "DELETE"
     })

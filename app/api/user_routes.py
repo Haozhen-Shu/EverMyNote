@@ -8,28 +8,28 @@ user_routes = Blueprint('users', __name__)
 
 
 @user_routes.route('/')
-# @login_required
+@login_required
 def users():
     users = User.query.all()
     return {'users': [user.to_dict() for user in users]}
 
 
 @user_routes.route('/<int:id>')
-# @login_required
+@login_required
 def user(id):
     user = User.query.get(id)
     return user.to_dict()
 
 ### Notebook
 @user_routes.route('/<int:userid>/notebooks')
-# @login_required
+@login_required
 def get_all_notebooks(userid):
     all_notebooks = Notebook.query.filter_by(userid=userid).all()
     return {"notebooks": [notebook.to_dict() for notebook in all_notebooks]}
 
 
 @user_routes.route('/<int:userid>/notebooks/<int:notebookid>')
-# @login_required
+@login_required
 def get_one_notebook(userid, notebookid):
     notebook = Notebook.query.filter_by(userid=userid, id=notebookid).first()
     print(notebook, "from routes RRRRRRR")
@@ -37,7 +37,7 @@ def get_one_notebook(userid, notebookid):
     return {"notebook": notebook.to_dict(), "notes": [note.to_dict() for note in notes]}
 
 @user_routes.route('/<int:userid>/notebooks', methods=["POST"])
-# @login_required
+@login_required
 def create_one_notebook(userid):
     form = NotebookForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
@@ -58,7 +58,7 @@ def create_one_notebook(userid):
 #         # jsonify serializes data to JavaScript Object Notation (JSON) format
 
 @user_routes.route('/<int:userid>/notebooks/<int:notebookid>', methods=["PATCH"])
-# @login_required
+@login_required
 def edit_one_notebook(userid, notebookid):
     form  = NotebookForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
@@ -76,7 +76,7 @@ def edit_one_notebook(userid, notebookid):
         return jsonify({"errors": form.errors})
 
 @user_routes.route('/<int:userid>/notebooks/<int:notebookid>', methods=["DELETE"])
-# @login_required
+@login_required
 def remove_one_notebook(userid, notebookid):
     notebook = Notebook.query.filter_by(id=notebookid).first()
     db.session.delete(notebook)
@@ -87,20 +87,20 @@ def remove_one_notebook(userid, notebookid):
 
 ### Note
 @user_routes.route('/<int:userid>/notebooks/<int:notebookid>/notes')
-# @login_required
+@login_required
 def get_notebook_notes(userid, notebookid):
     notebook_notes = Note.query.filter_by(userid=userid, notebookid=notebookid).all()
     return {"notes": [note.to_dict() for note in notebook_notes]}
 
 
 @user_routes.route('/<int:userid>/notebooks/<int:notebookid>/notes/<int:noteid>')
-# @login_required
+@login_required
 def get_notebook_note(userid, notebookid, noteid):
     notebook_note = Note.query.filter_by(id=noteid).first()
     return notebook_note.to_dict()
 
 @user_routes.route('/<int:userid>/notebooks/<int:notebookid>/notes', methods=["POST"])
-# @login_required
+@login_required
 def create_one_note(userid, notebookid):
     data = request.get_json()
     form = NoteForm()
@@ -112,7 +112,8 @@ def create_one_note(userid, notebookid):
         note = Note(userid = userid,
                     notebookid = notebookid,
                     title = data["title"],
-                    content = data["content"]
+                    content = data["content"],
+                    updated_at = datetime.datetime.now()
         )
         db.session.add(note)
         db.session.commit()
@@ -124,17 +125,19 @@ def create_one_note(userid, notebookid):
 
 
 @user_routes.route('/<int:userid>/notebooks/<int:notebookid>/notes/<int:noteid>', methods=["PATCH"])
-# @login_required
+@login_required
 def edit_one_note(userid, notebookid, noteid):
     form = NoteForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
     form["userid"].data = userid
     form["notebookid"].data=notebookid
+    data = request.get_json()
+    print(form.data)
     if form.validate_on_submit() and form.title_valid():
-        data = request.get_json()
         note = Note.query.get(noteid)
         note.title = data["title"]
         note.content = data["content"]
+        note.upated_at = datetime.datetime.now()
         db.session.commit()
         all_notes = Note.query.filter_by(userid=userid, notebookid=notebookid).all()
         all_notebooks = Notebook.query.filter_by(userid=userid).all()
@@ -144,7 +147,7 @@ def edit_one_note(userid, notebookid, noteid):
 
 
 @user_routes.route('/<int:userid>/notebooks/<int:notebookid>/notes/<int:noteid>', methods=["DELETE"])
-# @login_required 
+@login_required 
 def remove_one_note(userid, notebookid, noteid):
     note = Note.query.get(noteid)
     db.session.delete(note)
