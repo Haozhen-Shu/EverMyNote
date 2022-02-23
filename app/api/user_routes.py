@@ -156,10 +156,42 @@ def remove_one_note(userid, notebookid, noteid):
     all_notebooks = Notebook.query.filter_by(userid=userid).all()
     return {"notes": [note.to_dict() for note in all_notes], "notebooks": [notebook.to_dict() for notebook in all_notebooks]}
 
-
+#NotePage
 
 @user_routes.route('/<int:userid>/notes')
 # @login_required
 def get_all_notes(userid):
     all_notes = Note.query.filter_by(userid=userid).all()
     return {"notes": [note.to_dict() for note in all_notes]}
+
+
+@user_routes.route('<int:userid>/notes/<int:noteid>')
+@login_required
+def get_one_note(userid, noteid):
+    one_note = Note.query.filter_by(id=noteid).first()
+    return one_note.to_dict()
+
+
+@user_routes.route('/<int:userid>/notes', methods=["POST"])
+@login_required
+def create_one_note(userid, notebookid):
+    data = request.get_json()
+    form = NoteForm()
+    form["csrf_token"].data = request.cookies["csrf_token"]
+    form["userid"].data = userid
+    form["notebookid"].data=notebookid
+    if form.validate_on_submit() and form.title_valid():
+        # data = request.get_json()
+        note = Note(userid = userid,
+                    notebookid = notebookid,
+                    title = data["title"],
+                    content = data["content"],
+                    updated_at = datetime.datetime.now()
+        )
+        db.session.add(note)
+        db.session.commit()
+        all_notes = Note.query.filter_by(userid=userid, notebookid=notebookid).all()
+        all_notebooks = Note.query.filter_by(userid=userid).all()
+        return {"note": note.to_dict(), "notes": [note.to_dict() for note in all_notes], "notebooks": [notebook.to_dict() for notebook in all_notebooks]}
+    else:
+        return jsonify({"errors": form.errors})
