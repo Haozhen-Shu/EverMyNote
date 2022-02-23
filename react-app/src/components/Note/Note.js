@@ -31,22 +31,27 @@ const Note = () => {
     const [currNoteContent, setCurrNoteContent] = useState("")
     const [currNoteTitle, setCurrNoteTitle] = useState("")
 
-    // const validate =  () => {
-    //     if (!title) {
-    //         errorsCreate.push("Please provide an title")
-    //     }
-    //     if (!content) {
-    //         errorsCreate.push("Please provide valid content")
-    //     }
-    //     if (!currNoteTitle) {
-    //         errorsEdit.push("Please provide an title")
-    //     }
+    const validateCreate =  () => {
+        if (!title) {
+            errorsCreate.push("Please provide an title")
+        }
+        if (!content) {
+            errorsCreate.push("Please provide valid content")
+        }
+        return errorsCreate
+    }
 
-    //     if (!currNoteContent) {
-    //         errorsEdit.push("Please provide valid content")
-    //     }
-    //     return [errorsCreate, errorsEdit]
-    // }
+    const validateEdit = () => {
+        if (!currNoteTitle) {
+            errorsEdit.push("Please provide an title")
+        }
+
+        if (!currNoteContent) {
+            errorsEdit.push("Please provide valid content")
+        }
+
+        return errorsEdit
+    }
     
     const handleNewNote = () => {
         document.querySelector(".note_editor_container").classList.remove("hidden")
@@ -56,8 +61,8 @@ const Note = () => {
 
     const handleCreateSubmit = async(e) => {
         e.preventDefault();
-        // const errors = validate()[0];
-        // if (errors.length > 0) return setErrorsCreate(errors)
+        const errors = validateCreate();
+        if (errors.length > 0) return setErrorsCreate(errors)
         const noteVal = {
             title: title,
             content: content
@@ -87,8 +92,8 @@ const Note = () => {
 
     const handleEdit = async (e) => {
         e.preventDefault()
-        // const errors = validate()[1];
-        // if (errors.length > 0) return setErrorsEdit(errors)
+        const errors = validateEdit;
+        if (errors.length > 0) return setErrorsEdit(errors)
         const noteid =  currNote.id;    
         await document.querySelector(".note_editor_container").classList.add("hidden")
         await document.querySelector(".note_edit_editor_container").classList.remove("hidden")
@@ -114,6 +119,7 @@ const Note = () => {
 
     const handleDelete = (note)=> {
         dispatch(removeOneNote(userid, notebookid, note.id))
+        document.querySelector(".note_edit_editor_container").classList.add("hidden")
     }
 
 
@@ -194,9 +200,9 @@ const Note = () => {
                 <div className="notes_container">
                     <ul className="notes_list">
                     {notes && notes.map(note => (
-                        <li key={note.id} className="note_info" onClick={() =>handleOpenEditor(note)}>
+                        <li key={note.id} className="note_info" >
                             <div className="note_title_delete">
-                                <div className="note_title">{note.title}</div> 
+                                <div className="note_title" onClick={() => handleOpenEditor(note)}>{note.title}</div> 
                                 <button onClick={() =>handleDelete(note)}>Delete</button>
                             </div>
                             <div className="note_content">{note.content}</div>
@@ -228,8 +234,8 @@ const Note = () => {
                 </div>
                 <form className="note_editor_form" onSubmit={handleCreateSubmit}>
                     <div>
-                        {errorsCreate && errorsCreate.map((error) => (
-                            <div key={error.id}>{error}</div>
+                        {errorsCreate && errorsCreate.map((error, ind) => (
+                            <div key={error.ind}>{error}</div>
                         ))}
                     </div>
                     <input 
@@ -245,7 +251,7 @@ const Note = () => {
                     <textarea
                         className="note_editor_content"
                         id="content"
-                        rows="20"
+                        rows="17"
                         cols="65"
                         placeholder="Content"
                         value={content}
@@ -280,8 +286,8 @@ const Note = () => {
                     </div>
                     <form className="note_edit_editor_form" onSubmit={handleEdit}>
                         <div>
-                            {errorsEdit && errorsEdit.map((error) => (
-                                <div key={error.id}>{error}</div>
+                            {errorsEdit && errorsEdit.map((error, ind) => (
+                                <div key={error.ind}>{error}</div>
                             ))}
                         </div>
                         <input
@@ -296,7 +302,7 @@ const Note = () => {
                         {/* <ReactQuill theme="snow" placeholder="Satrt witing" onBlur={handleContentBlur} onChange={e=>setContent(e.target.value)} /> */}
                         <textarea
                             className="note_edit_editor_content"
-                            rows="20"
+                            rows="17"
                             cols="65"
                             id="content"
                             placeholder={currNoteContent}

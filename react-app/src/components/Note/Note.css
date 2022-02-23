@@ -256,7 +256,7 @@
 .note_edit_editor_content{
     border: none;
     margin-left:30px;
-    margin-bottom: 20px;
+    /* margin-bottom: 10px; */
 }
 
  .note_edit_editor_title{
@@ -272,7 +272,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    height: 450px;
+    height: 360px;
 }
 
 .note_edit_editor_form{
@@ -280,7 +280,7 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: flex-start;
-    height:450px;
+    height:360px;
 }
 .editor_save_cancel{
     display: flex;

@@ -10,6 +10,7 @@ const SignUpForm = () => {
   const [errors, setErrors] = useState([]);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [profile_url, setProfile_url] = useState('')
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const user = useSelector(state => state.session.user);
@@ -17,10 +18,21 @@ const SignUpForm = () => {
 
   const onSignUp = async (e) => {
     e.preventDefault();
+    if (!profile_url) {
+      profile_url = "https://upload.wikimedia.org/wikipedia/commons/c/ce/Question-mark-face.jpg";
+    }
     if (password === repeatPassword) {
-      const data = await dispatch(signUp(username, email, password));
+      const userVal = {
+        username: username,
+        email: email,
+        password: password,
+        profile_url:profile_url
+      }
+      const data = await dispatch(signUp(userVal));
       if (data) {
         setErrors(data)
+      } else {
+        setErrors(['Passwords do not match'])
       }
     }
   };
@@ -32,6 +44,10 @@ const SignUpForm = () => {
   const updateEmail = (e) => {
     setEmail(e.target.value);
   };
+
+  const updateProfileUrl = (e) => {
+    setProfile_url(e.target.value);
+  }
 
   const updatePassword = (e) => {
     setPassword(e.target.value);
@@ -71,6 +87,13 @@ const SignUpForm = () => {
                 onChange={updateEmail}
                 placeholder="Email"
                 value={email}
+              ></input>
+              <input
+                type='text'
+                name='profile_url'
+                onChange={updateProfileUrl}
+                placeholder="Profile_url(optional)"
+                value={profile_url}
               ></input>
               <input
                 type='password'
