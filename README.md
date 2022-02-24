@@ -107,8 +107,6 @@ hurt to run it again.
 11. Under Settings find "Config Vars" and add any additional/secret .env
 variables.
 
-12. profit
-
 ### For M1 Mac users
 
 (Replaces **Step 8**)
