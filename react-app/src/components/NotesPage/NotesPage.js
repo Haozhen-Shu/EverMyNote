@@ -27,7 +27,7 @@ const NotesPage = () => {
     const [errorsEdit, setErrorsEdit] = useState([])
     const [currNoteContent, setCurrNoteContent] = useState("")
     const [currNoteTitle, setCurrNoteTitle] = useState("")
-    const [currNoteNotebookid, setCurrNoteNotebookid] = useState()
+    const [currNoteNotebookid, setCurrNoteNotebookid] = useState(0)
 
     const [searchContent, setSearchContent] = useState("")
     const [allTitles, setAllTitles] = useState()
@@ -77,11 +77,14 @@ const NotesPage = () => {
     if (notes) {
         for (let i = 0; i < notes.length; i++) {
             titleList.push(notes[i].title)
-            notebookidList.push(notes[i].notebookid)
         }
     }
 
-    
+    if (allnotebooks) {
+        for (let i = 0; i <allnotebooks.length; i++) {
+            notebookidList.push(allnotebooks[i].id)
+        }
+    }
 
     const validateCreate = () => {
         const errorsCreateList = [];
@@ -94,12 +97,16 @@ const NotesPage = () => {
         if (titleList && titleList.includes(title)) {
             errorsCreateList.push("Please provide a unique title.")
         }
-        if (!notebookidList.includes(notebookid)) {
+        if (notebookid && notebookidList && !notebookidList.includes(Number(notebookid))) {
             errorsCreateList.push("This notebook does not belong to you!")
         }
         setErrorsCreate(errorsCreateList)
         return errorsCreateList
     }
+    console.log(notebookidList, "list")
+    console.log(notebookid, "id")
+    console.log(Number(notebookid), "numberid")
+    console.log((notebookidList.includes(Number(notebookid))))
 
     const validateEdit = () => {
         const errorsEditList = [];
@@ -114,17 +121,13 @@ const NotesPage = () => {
         if (titleList && (title != currNoteTitle) && (titleList.includes(title))) {
             errorsEditList.push("Please provide a unique title.")
         }
-        // if(!(notebookidList.includes(currNoteNotebookid))) {
         if (notebookidList && currNoteNotebookid && (!(notebookidList.includes(Number(currNoteNotebookid))))) {
             errorsEditList.push("This notebook does not belong to you!")
         }
         setErrorsEdit(errorsEditList)
         return errorsEditList
     }
-    console.log(notebookidList)
-    console.log(currNoteNotebookid)
-    console.log(Number(currNoteNotebookid))
-    console.log((notebookidList.includes(Number(currNoteNotebookid))))
+    
 
 
     //submit handling
@@ -184,6 +187,7 @@ const NotesPage = () => {
             content: currNoteContent,
             notebookid: currNoteNotebookid
         }
+        console.log(noteVal, "nnnnnnnn")
         const data = await dispatch(editUserOneNote(userid, noteid, noteVal))
         if (data.errors) {
             setErrorsEdit(data.errors)
