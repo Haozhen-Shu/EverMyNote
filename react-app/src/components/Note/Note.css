@@ -201,6 +201,7 @@
     text-rendering: optimizeLegibility;
     font-size: 14px;
     margin-bottom: 20px;
+    margin-left:20px;
 }
 
 .note_edit_editor_container {

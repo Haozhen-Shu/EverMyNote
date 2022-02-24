@@ -121,11 +121,19 @@ const NotesPage = () => {
         setErrorsEdit(errorsEditList)
         return errorsEditList
     }
+    console.log(notebookidList)
+    console.log(currNoteNotebookid)
+    console.log(Number(currNoteNotebookid))
+    console.log((notebookidList.includes(Number(currNoteNotebookid))))
 
 
     //submit handling
     const handleNewNote = () => {
         document.querySelector(".note_editor_container").classList.remove("hidden")
+        setTitle("")
+        setContent("")
+        setNotebookid(0)
+        setErrorsCreate([])
     }
 
 
@@ -220,7 +228,7 @@ const NotesPage = () => {
         <div className="note_container">
             <div className="navbar">
                 <div className="navbar_header">
-                    <img src={user.profile_url} className="navbar_url" alt="user profile url"></img>
+                    {/* <img src={user.profile_url} className="navbar_url" alt="user profile url"></img> */}
                     <div className="navbar_profile_name">
                         <p>Welcome {user.username}</p>
                     </div>

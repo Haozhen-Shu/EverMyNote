@@ -34,14 +34,14 @@ const EditNotebookModal = ({ userid, notebookid, notebooktitle, overlayEdit, set
         setOverlayEdit(false)
     }
     
-    const handleSubmit = async(e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         const errors = validate();
         if (errors.length > 0) return setErrors(errors)
-        const notebook = await dispatch(editOneNotebook(userid, notebookid, title))
+        const notebook = dispatch(editOneNotebook(userid, notebookid, title))
         if (notebook) {
-            setShowEditNotebookForm(false)
             setOverlayEdit(false)
+            setShowEditNotebookForm(false)
         }
     }
     

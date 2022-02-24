@@ -5,6 +5,7 @@ import { signUp } from '../../store/session';
 import logo from '../../images/book1.jpeg';
 import './auth.css';
 import { Link } from "react-router-dom";
+import question_face from '../../images/Question-mark-face.jpeg'
 
 const SignUpForm = () => {
   const [errors, setErrors] = useState([]);
@@ -30,8 +31,9 @@ const SignUpForm = () => {
     if (password.length < 5) {
       errors.push("Password should be longer than 5.")
     }
-     if(typeof profile_url != "string") {
-       profile_url = "https://upload.wikimedia.org/wikipedia/commons/c/ce/Question-mark-face.jpg";
+    //  if(typeof profile_url != "string") {
+    if (!profile_url || (!profile_url.includes(".png") || (!profile_url.includes(".jpeg")))) {
+       setProfile_url(question_face);
      }
     return errors
   }
