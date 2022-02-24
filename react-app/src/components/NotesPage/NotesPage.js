@@ -7,46 +7,80 @@ import github_logo from '../../images/github.png'
 import fullscreen_logo from '../../images/fullscreen.png';
 // import move_logo from '../../images/move.png';
 import { useEffect, useState } from 'react';
-import { getAllNotes, getOneNotebook, createOneNote, editOneNote, removeOneNote } from '../../store/notebook';
+import { getUserNotes, getUserOneNote, createUserOneNote, editUserOneNote, removeUserOneNote} from '../../store/note';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
-// import ReactQuill from 'react-quill';
 // import EditNote from './EditNote';
 
 
-const NotePage = () => {
+const NotesPage = () => {
     const dispatch = useDispatch()
     const user = useSelector(state => state.session.user);
     const userid = user.id;
-    const { notebookid } = useParams();
-    const notes = useSelector(state => state.notebook.notes)
-    const [notebook, setNotebook] = useState(null)
+    const notes = useSelector(state => state.note.notes)
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
+    const [notebookid, setNotebookid] = useState()
     const [currNote, setCurrNote] = useState("")
     const [errorsCreate, setErrorsCreate] = useState([])
     const [errorsEdit, setErrorsEdit] = useState([])
     const [currNoteContent, setCurrNoteContent] = useState("")
     const [currNoteTitle, setCurrNoteTitle] = useState("")
+    const [currNoteNotebookid, setCurrNoteNotebookid] = useState()
+    const notebooks = useSelector(state => state.notebook.notebooks)
 
-    // const validate =  () => {
-    //     if (!title) {
-    //         errorsCreate.push("Please provide an title")
-    //     }
-    //     if (!content) {
-    //         errorsCreate.push("Please provide valid content")
-    //     }
-    //     if (!currNoteTitle) {
-    //         errorsEdit.push("Please provide an title")
-    //     }
+    let titleList = [];
+    let notebookidList = []
+    if (notebooks) {
+        for (let i = 0; i < notebooks.length; i++) {
+            titleList.push(notebooks[i].title)
+            notebookidList.push(notebooks[i].id)
+        }
+    }
 
-    //     if (!currNoteContent) {
-    //         errorsEdit.push("Please provide valid content")
-    //     }
-    //     return [errorsCreate, errorsEdit]
-    // }
+    if (notes) {
+        for (let i = 0; i < notes.length; i++) {
+            titleList.push(notes[i].title)
+        }
+    }
+
+    console.log(notebooks)
+
+    const validateCreate = () => {
+        console.log(title in titleList)
+        const errorsCreateList = [];
+        if (!title) {
+            errorsCreateList.push("Please provide an title.")
+        }
+        if (!content) {
+            errorsCreateList.push("Please provide valid content.")
+        }
+        if (titleList && titleList.includes(title)) {
+            errorsCreateList.push("Please provide a unique title.")
+        }
+        if (!notebookidList.includes(notebookid))
+        setErrorsCreate(errorsCreateList)
+        return errorsCreateList
+    }
+
+    const validateEdit = () => {
+        const errorsEditList = [];
+        if (!currNoteTitle) {
+            errorsEditList.push("Please provide an title")
+        }
+
+        if (!currNoteContent) {
+            errorsEditList.push("Please provide valid content")
+        }
+
+        if (titleList && (title != currNoteTitle) && (titleList.includes(title))) {
+            errorsEditList.push("Please provide a unique title.")
+        }
+        setErrorsEdit(errorsEditList)
+        return errorsEditList
+    }
 
     const handleNewNote = () => {
         document.querySelector(".note_editor_container").classList.remove("hidden")
@@ -56,16 +90,18 @@ const NotePage = () => {
 
     const handleCreateSubmit = async (e) => {
         e.preventDefault();
-        // const errors = validate()[0];
-        // if (errors.length > 0) return setErrorsCreate(errors)
+        const errorsCreateList = validateCreate();
+        if (errorsCreateList.length > 0) return
         const noteVal = {
             title: title,
-            content: content
+            content: content,
+            notebookid: notebookid
         }
-        await dispatch(createOneNote(userid, notebookid, noteVal))
+        await dispatch(createUserOneNote(userid, noteVal))
         await document.querySelector(".note_editor_container").classList.add("hidden")
         setTitle("")
         setContent("")
+        setNotebookid(0)
     }
 
     const closeEditor = () => {
@@ -85,35 +121,41 @@ const NotePage = () => {
         document.querySelector(".new_note").classList.add("hidden")
     }
 
-    const handleEdit = async (e) => {
-        e.preventDefault()
-        // const errors = validate()[1];
-        // if (errors.length > 0) return setErrorsEdit(errors)
-        const noteid = currNote.id;
-        await document.querySelector(".note_editor_container").classList.add("hidden")
-        await document.querySelector(".note_edit_editor_container").classList.remove("hidden")
-        const noteVal = {
-            title: currNoteTitle,
-            content: currNoteContent
-        }
-        await dispatch(editOneNote(userid, notebookid, noteid, noteVal))
-        // setEditTitle(editTitle)
-        // setEditContent(editContent)
-        await document.querySelector(".note_edit_editor_container").classList.add("hidden")
-        await document.querySelector(".new_note").classList.remove("hidden")
+    // const handleEdit = async (e) => {
+    //     e.preventDefault()
 
-    }
+    //     const noteid = currNote.id;
+    //     await document.querySelector(".note_editor_container").classList.add("hidden")
+    //     await document.querySelector(".note_edit_editor_container").classList.remove("hidden")
+    //     const errorsEditList = validateEdit();
+    //     if (errorsEditList.length > 0) return
+    //     const noteVal = {
+    //         title: currNoteTitle,
+    //         content: currNoteContent
+    //         notebookid: currNoteNotebookid
+    //     }
+    //     const data = await dispatch(editUserOneNote(userid, noteid, noteVal))
+    //     if (data.errors) {
+    //         setErrorsEdit(data.errors)
+    //     }
 
-    const closeEditEditor = (e) => {
-        e.preventDefault();
-        document.querySelector(".note_edit_editor_container").classList.add("hidden")
-        document.querySelector(".new_note").classList.remove("hidden")
-        setTitle(title)
-        setContent(content)
-    }
+    //     await document.querySelector(".note_edit_editor_container").classList.add("hidden")
+    //     await document.querySelector(".new_note").classList.remove("hidden")
+
+    // }
+
+    // const closeEditEditor = (e) => {
+    //     e.preventDefault();
+    //     document.querySelector(".note_edit_editor_container").classList.add("hidden")
+    //     document.querySelector(".new_note").classList.remove("hidden")
+    //     setCurrNoteTitle(title)
+    //     setCurrNoteContent(content)
+    //     setErrorsEdit([])
+    // }
 
     const handleDelete = (note) => {
-        dispatch(removeOneNote(userid, notebookid, note.id))
+        dispatch(removeUserOneNote(userid, note.id))
+        document.querySelector(".note_edit_editor_container").classList.add("hidden")
     }
 
 
@@ -122,12 +164,13 @@ const NotePage = () => {
     }
 
     useEffect(() => {
-        dispatch(getAllNotes(userid, notebookid))
+        dispatch(getUserNotes(userid))
     }, [dispatch])
-
-    useEffect(() => {
-        dispatch(getOneNotebook(userid, notebookid)).then(res => setNotebook(res.notebook))
-    }, [dispatch])
+    
+    // console.log(notes)
+    // useEffect(() => {
+    //     dispatch(getUserOneNote(userid, notebookid)).then(res => setNotebook(res.notebook))
+    // }, [dispatch])
 
     // console.log(currNote, "cccccccccc")
     return (
@@ -185,7 +228,6 @@ const NotePage = () => {
                 <div className="note_header">
                     <div className="notes_img_notes">
                         <img src={notebook_logo} className="note_main_img" alt="notebook logo" />
-                        <div className="notes_notebook_title">{notebook && notebook.title}</div>
                     </div>
                     <div className="notes_count">
                         {notes && notes.length} Notes
@@ -194,9 +236,9 @@ const NotePage = () => {
                 <div className="notes_container">
                     <ul className="notes_list">
                         {notes && notes.map(note => (
-                            <li key={note.id} className="note_info" onClick={() => handleOpenEditor(note)}>
+                            <li key={note.title} className="note_info" >
                                 <div className="note_title_delete">
-                                    <div className="note_title">{note.title}</div>
+                                    <div className="note_title" onClick={() => handleOpenEditor(note)}>{note.title}</div>
                                     <button onClick={() => handleDelete(note)}>Delete</button>
                                 </div>
                                 <div className="note_content">{note.content}</div>
@@ -215,21 +257,17 @@ const NotePage = () => {
                             </button>
                             <button className="back_to_notebook">
                                 <img className="note_editor_notebook_logo" src={notebook_logo} alt="notebook logo"></img>
-                                <div className="note_editor_notbook-title">{notebook && notebook.title}</div>
                             </button>
-                            {/* <button className="note_editor_move">
-                                <img className="note_editor_move_img" src={move_logo} alt="note logo"></img>
-                            </button> */}
                         </div>
                     </div>
                     <div className="note_editor_update">
-                        Last edited on {notebook && (notebook.updated_at.slice(5, 17))}
+                        Last edited on {currNote && (currNote.updated_at.slice(5, 17))}
                     </div>
                 </div>
                 <form className="note_editor_form" onSubmit={handleCreateSubmit}>
                     <div>
                         {errorsCreate && errorsCreate.map((error) => (
-                            <div key={error.id}>{error}</div>
+                            <div key={error} className="errors_note_create">{error}</div>
                         ))}
                     </div>
                     <input
@@ -238,19 +276,23 @@ const NotePage = () => {
                         value={title}
                         placeholder="Title"
                         onChange={e => setTitle(e.target.value)}
-                    // onBlur={handleTitleBlur}
                     >
                     </input>
-                    {/* <ReactQuill theme="snow" placeholder="Satrt witing" onBlur={handleContentBlur} onChange={e=>setContent(e.target.value)} /> */}
+                    <input 
+                        type="number"
+                        value={notebookid}
+                        className="note_editor_notebookid"
+                        placeholder="Notebookid"
+                        onChange={e=>setNotebookid(e.target.value)}
+                    ></input>
                     <textarea
                         className="note_editor_content"
                         id="content"
-                        rows="20"
+                        rows="14"
                         cols="65"
                         placeholder="Content"
                         value={content}
                         onChange={e => setContent(e.target.value)}
-                    // onBlur={handleContentBlur}
                     >
                     </textarea>
                     <div className="editor_save_cancel">
@@ -259,7 +301,7 @@ const NotePage = () => {
                     </div>
                 </form>
             </div>
-            <div className="note_edit_editor_container hidden">
+            {/* <div className="note_edit_editor_container hidden">
                 <div className="note_edit_editor">
                     <div className="note_editor_header">
                         <div className="note_editor_fullscreen_move">
@@ -270,9 +312,6 @@ const NotePage = () => {
                                 <img className="note_editor_notebook_logo" src={notebook_logo} alt="notebook logo"></img>
                                 <div className="note_editor_notbook-title">{notebook && notebook.title}</div>
                             </button>
-                            {/* <button className="note_editor_move">
-                                <img className="note_editor_move_img" src={move_logo} alt="nove logo"></img>
-                            </button> */}
                         </div>
                     </div>
                     <div className="note_editor_update">
@@ -280,8 +319,8 @@ const NotePage = () => {
                     </div>
                     <form className="note_edit_editor_form" onSubmit={handleEdit}>
                         <div>
-                            {errorsEdit && errorsEdit.map((error) => (
-                                <div key={error.id}>{error}</div>
+                            {errorsEdit && errorsEdit.map((error, ind) => (
+                                <div key={error} className="errors_note_create">{error}</div>
                             ))}
                         </div>
                         <input
@@ -290,19 +329,16 @@ const NotePage = () => {
                             placeholder={currNoteTitle}
                             value={currNoteTitle}
                             onChange={e => setCurrNoteTitle(e.target.value)}
-                        // onBlur={handleTitleBlur}
                         >
                         </input>
-                        {/* <ReactQuill theme="snow" placeholder="Satrt witing" onBlur={handleContentBlur} onChange={e=>setContent(e.target.value)} /> */}
                         <textarea
                             className="note_edit_editor_content"
-                            rows="20"
+                            rows="17"
                             cols="65"
                             id="content"
                             placeholder={currNoteContent}
                             value={currNoteContent}
                             onChange={e => setCurrNoteContent(e.target.value)}
-                        // onBlur={handleContentBlur}
                         >
                         </textarea>
                         <div className="editor_edit_save_cancel">
@@ -310,11 +346,11 @@ const NotePage = () => {
                             <button onClick={closeEditEditor}>Cancel</button>
                         </div>
                     </form>
-                </div>
-            </div>
+                </div> */}
+            {/* </div> */}
         </div>
     )
 
 }
 
-export default NotePage;
+export default NotesPage;

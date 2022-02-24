@@ -22,7 +22,7 @@ def username_exists(form, field):
 def username_length(form, field):
     username = field.data
     # checking if username is less than 3 or more than 45 chars.
-    if len(username) < 3:
+    if len(username) < 3 or len(username > 45):
         raise ValidationError('Username must be between 3 and 45 characters.')
 
 class SignUpForm(FlaskForm):

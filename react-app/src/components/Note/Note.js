@@ -12,7 +12,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
-// import ReactQuill from 'react-quill';
 // import EditNote from './EditNote';
 
 
@@ -30,27 +29,52 @@ const Note = () => {
     const [errorsEdit, setErrorsEdit] = useState([])
     const [currNoteContent, setCurrNoteContent] = useState("")
     const [currNoteTitle, setCurrNoteTitle] = useState("")
+    const notebooks = useSelector(state => state.notebook.notebooks)
+
+    let titleList = []
+    if (notebooks){
+        for (let i = 0; i < notebooks.length; i++) {
+            titleList.push(notebooks[i].title)
+        }
+    }
+
+    if (notes) {
+        for (let i = 0; i < notes.length; i++) {
+            titleList.push(notes[i].title)
+        }
+    }
 
     const validateCreate =  () => {
+        console.log(title in titleList)
+        const errorsCreateList =[];
         if (!title) {
-            errorsCreate.push("Please provide an title")
+            errorsCreateList.push("Please provide an title.")
         }
         if (!content) {
-            errorsCreate.push("Please provide valid content")
+            errorsCreateList.push("Please provide valid content.")
         }
-        return errorsCreate
+        if ( titleList && titleList.includes(title)) {
+            errorsCreateList.push("Please provide a unique title.")
+        }
+        setErrorsCreate(errorsCreateList)
+        return errorsCreateList
     }
 
     const validateEdit = () => {
+        const errorsEditList =[];
         if (!currNoteTitle) {
-            errorsEdit.push("Please provide an title")
+            errorsEditList.push("Please provide an title")
         }
 
         if (!currNoteContent) {
-            errorsEdit.push("Please provide valid content")
+            errorsEditList.push("Please provide valid content")
         }
 
-        return errorsEdit
+        if (titleList && (title!=currNoteTitle) && (titleList.includes(title))){
+            errorsEditList.push("Please provide a unique title.")
+        }
+        setErrorsEdit(errorsEditList)
+        return errorsEditList
     }
     
     const handleNewNote = () => {
@@ -61,8 +85,8 @@ const Note = () => {
 
     const handleCreateSubmit = async(e) => {
         e.preventDefault();
-        const errors = validateCreate();
-        if (errors.length > 0) return setErrorsCreate(errors)
+         const errorsCreateList = validateCreate();
+        if (errorsCreateList.length > 0) return 
         const noteVal = {
             title: title,
             content: content
@@ -92,18 +116,21 @@ const Note = () => {
 
     const handleEdit = async (e) => {
         e.preventDefault()
-        const errors = validateEdit;
-        if (errors.length > 0) return setErrorsEdit(errors)
+        
         const noteid =  currNote.id;    
         await document.querySelector(".note_editor_container").classList.add("hidden")
         await document.querySelector(".note_edit_editor_container").classList.remove("hidden")
+        const errorsEditList = validateEdit();
+        if (errorsEditList.length > 0) return 
         const noteVal = {
             title: currNoteTitle,
             content: currNoteContent
         }
-        await dispatch(editOneNote(userid, notebookid, noteid, noteVal))
-        // setEditTitle(editTitle)
-        // setEditContent(editContent)
+        const data = await dispatch(editOneNote(userid, notebookid, noteid, noteVal))
+        if (data.errors){
+            setErrorsEdit(data.errors)
+        }
+        
         await document.querySelector(".note_edit_editor_container").classList.add("hidden")
         await document.querySelector(".new_note").classList.remove("hidden")
 
@@ -113,8 +140,9 @@ const Note = () => {
         e.preventDefault();
         document.querySelector(".note_edit_editor_container").classList.add("hidden")
         document.querySelector(".new_note").classList.remove("hidden")
-        setTitle(title)
-        setContent(content)
+        setCurrNoteTitle(title)
+        setCurrNoteContent(content)
+        setErrorsEdit([])
     }
 
     const handleDelete = (note)=> {
@@ -200,7 +228,7 @@ const Note = () => {
                 <div className="notes_container">
                     <ul className="notes_list">
                     {notes && notes.map(note => (
-                        <li key={note.id} className="note_info" >
+                        <li key={note.title} className="note_info" >
                             <div className="note_title_delete">
                                 <div className="note_title" onClick={() => handleOpenEditor(note)}>{note.title}</div> 
                                 <button onClick={() =>handleDelete(note)}>Delete</button>
@@ -234,8 +262,8 @@ const Note = () => {
                 </div>
                 <form className="note_editor_form" onSubmit={handleCreateSubmit}>
                     <div>
-                        {errorsCreate && errorsCreate.map((error, ind) => (
-                            <div key={error.ind}>{error}</div>
+                        {errorsCreate && errorsCreate.map((error) => (
+                            <div key={error} className="errors_note_create">{error}</div>
                         ))}
                     </div>
                     <input 
@@ -287,7 +315,7 @@ const Note = () => {
                     <form className="note_edit_editor_form" onSubmit={handleEdit}>
                         <div>
                             {errorsEdit && errorsEdit.map((error, ind) => (
-                                <div key={error.ind}>{error}</div>
+                                <div key={error} className="errors_note_create">{error}</div>
                             ))}
                         </div>
                         <input

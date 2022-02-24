@@ -16,24 +16,35 @@ const SignUpForm = () => {
   const user = useSelector(state => state.session.user);
   const dispatch = useDispatch();
 
+  const validate = () => {
+    const errors = []
+    if (username.length < 3 || username.length > 45){
+      errors.push("Username must be between 3 and 45 characters.")
+    }
+    if (!email.includes("@")){
+      errors.push("Please provide a valid email.")
+    }
+    if (password != repeatPassword){
+      errors.push("Password do not match.")
+    }
+    if (password.length < 5) {
+      errors.push("Password should be longer than 5.")
+    }
+     if(typeof profile_url != "string") {
+       profile_url = "https://upload.wikimedia.org/wikipedia/commons/c/ce/Question-mark-face.jpg";
+     }
+    return errors
+  }
+
   const onSignUp = async (e) => {
     e.preventDefault();
-    if (!profile_url) {
-      profile_url = "https://upload.wikimedia.org/wikipedia/commons/c/ce/Question-mark-face.jpg";
-    }
+    const errors = validate();
+    if (errors.length > 0) return setErrors(errors)
     if (password === repeatPassword) {
-      const userVal = {
-        username: username,
-        email: email,
-        password: password,
-        profile_url:profile_url
-      }
-      const data = await dispatch(signUp(userVal));
+      const data = await dispatch(signUp(username, email, password, profile_url));
       if (data) {
         setErrors(data)
-      } else {
-        setErrors(['Passwords do not match'])
-      }
+      } 
     }
   };
 
@@ -92,7 +103,7 @@ const SignUpForm = () => {
                 type='text'
                 name='profile_url'
                 onChange={updateProfileUrl}
-                placeholder="Profile_url(optional)"
+                placeholder="Profile_url"
                 value={profile_url}
               ></input>
               <input

@@ -229,6 +229,11 @@
     margin-left: 30px;
 }
 
+.note_editor_notebookid{
+    margin-left: 30px;
+    border:none;
+}
+
 .note_title_delete{
     display: flex;
     flex-direction: row;
@@ -294,3 +299,7 @@
     width: 100%;
 }
 
+.errors_note_create{
+    color:red;
+    margin-left:30px;
+}

@@ -69,4 +69,7 @@
 }
 
 
-
+.create_title_error{
+    margin-left: 20px;;
+    color: red;
+}

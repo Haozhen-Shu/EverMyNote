@@ -157,65 +157,69 @@ def remove_one_note(userid, notebookid, noteid):
     return {"notes": [note.to_dict() for note in all_notes], "notebooks": [notebook.to_dict() for notebook in all_notebooks]}
 
 
-###notepage
-# @user_routes.route('/<int:userid>/notes')
-# # @login_required
-# def get_all_notes(userid):
-#     all_notes = Note.query.filter_by(userid=userid).all()
-#     return {"notes": [note.to_dict() for note in all_notes]}
+##notepage
+@user_routes.route('/<int:userid>/notes')
+# @login_required
+def get_all_notes(userid):
+    all_notes = Note.query.filter_by(userid=userid).all()
+    return {"notes": [note.to_dict() for note in all_notes]}
 
-# @user_routes.route('/<int:userid>/notes/<int:noteid>')
-# # @login_required
-# def get_one_note(userid, noteid):
-#     one_note = Note.query.filter_by(id=noteid).first()
-#     return one_note.to_dict()
+@user_routes.route('/<int:userid>/notes/<int:noteid>')
+# @login_required
+def get_one_note(userid, noteid):
+    one_note = Note.query.filter_by(id=noteid).first()
+    if one_note:
+        return one_note.to_dict()
+    else:
+        return jsonify({"errors": "Note can not be found!"})
 
-# @user_routes.route('/<int:userid>/notes', methods=["POST"])
-# # @login_required
-# def create_one_note(userid):
-#     data = request.get_json()
-#     form = NoteForm()
-#     form["csrf_token"].data = request.cookies["csrf_token"]
-#     form["userid"].data = userid
-#     if form.validate_on_submit() and form.title_valid():
-#         note = Note(userid = userid,
-#                     title = data["title"],
-#                     content = data["content"],
-#                     notebookid = data["notebookid"]
-#         )
-#         db.session.add(note)
-#         db.session.commit()
-#         all_notes = Note.query.filter_by(userid=userid).all()
-#         return {"note": note.to_dict(), "notes": [note.to_dict() for note in all_notes]}
-#     else:
-#         return jsonify({"errors": form.errors})
+@user_routes.route('/<int:userid>/notes', methods=["POST"])
+# @login_required
+def create_one_note_back(userid):
+    data = request.get_json()
+    form = NoteForm()
+    form["csrf_token"].data = request.cookies["csrf_token"]
+    form["userid"].data = userid
+    if form.validate_on_submit() and form.title_valid():
+        note = Note(userid = userid,
+                    title = data["title"],
+                    content = data["content"],
+                    notebookid = data["notebookid"]
+        )
+        db.session.add(note)
+        db.session.commit()
+        all_notes = Note.query.filter_by(userid=userid).all()
+        return {"note": note.to_dict(), "notes": [note.to_dict() for note in all_notes]}
+    else:
+        return jsonify({"errors": form.errors})
 
-# @user_routes.route('/<int:userid>/notes/<int:noteid>', methods=["PATCH"])
-# # @login_required
-# def edit_note(userid,noteid):
-#     form = NoteForm()
-#     form["csrf_token"].data = request.cookies["csrf_token"]
-#     form["userid"].data = userid
-#     data = request.get_json()
-#     print(form.data)
-#     if form.validate_on_submit() and form.title_valid():
-#         note = Note.query.get(noteid)
-#         note.notebookid = data["notebookid"]
-#         note.title = data["title"]
-#         note.content = data["content"]
-#         note.upated_at = datetime.datetime.now()
-#         db.session.commit()
-#         all_notes = Note.query.filter_by(userid=userid).all()
-#         return {"note": note.to_dict(), "notes": [note.to_dict() for note in all_notes]}
-#     else:
-#         return jsonify({"errors": form.errors})
+@user_routes.route('/<int:userid>/notes/<int:noteid>', methods=["PATCH"])
+# @login_required
+def edit_one_note_back(userid,noteid):
+    form = NoteForm()
+    form["csrf_token"].data = request.cookies["csrf_token"]
+    form["userid"].data = userid
+    data = request.get_json()
+    # print(form.data)
+    if form.validate_on_submit() and form.title_valid():
+        note = Note.query.get(noteid)
+        note.notebookid = data["notebookid"]
+        note.title = data["title"]
+        note.content = data["content"]
+        note.upated_at = datetime.datetime.now()
+        db.session.commit()
+        all_notes = Note.query.filter_by(userid=userid).all()
+        return {"note": note.to_dict(), "notes": [note.to_dict() for note in all_notes]}
+    else:
+        return jsonify({"errors": form.errors})
 
-# @user_routes.route('/<int:userid>/notes/<int:noteid>', methods=["DELETE"])
-# # @login_required 
-# def remove_one_note(userid, noteid):
-#     note = Note.query.get(noteid)
-#     db.session.delete(note)
-#     db.session.commit()
-#     all_notes = Note.query.filter_by(userid=userid).all()
-#     return {"notes": [note.to_dict() for note in all_notes], "notebooks": [notebook.to_dict() for notebook in all_notebooks]}
+@user_routes.route('/<int:userid>/notes/<int:noteid>', methods=["DELETE"])
+# @login_required 
+def remove_one_note_back(userid, noteid):
+    note = Note.query.get(noteid)
+    if note: 
+        db.session.delete(note)
+        db.session.commit()
+    all_notes = Note.query.filter_by(userid=userid).all()
+    return {"notes": [note.to_dict() for note in all_notes]}
 

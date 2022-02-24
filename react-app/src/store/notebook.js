@@ -48,7 +48,7 @@ export const getAllNotebooks = (userid) => async(dispatch) => {
          }
          return null;
      } else {
-         return "Response errors!"
+         return ["Response errors!"]
      }
 }
 
@@ -66,7 +66,7 @@ export const getOneNotebook = (userid, notebookid) => async(dispatch) => {
         // console.log(notebook, "from store@@@@@@@@@@@@@")
         return notebook
     } else {
-        return "Response error!"
+        return ["Response error!"]
     }
 }
 
@@ -88,7 +88,7 @@ export const createOneNotebook = (userid, title) => async(dispatch) =>{
         }
         return notebooks.notebook
     } else {
-        return "Response errors!"
+        return ["Response errors!"]
     }
 }
 
@@ -110,7 +110,7 @@ export const editOneNotebook = (userid, notebookid, title) => async (dispatch) =
         }
         return null;
     } else {
-        return "Response errors"
+        return ["Response errors"]
     }
 }
 
@@ -128,7 +128,7 @@ export const removeOneNotebook = (userid, notebookid) => async (dispatch) => {
         } 
         return null;
     } else {
-        return "Response errors!"
+        return ["Response errors!"]
     }
 }
 
@@ -147,7 +147,7 @@ export const getAllNotes = (userid, notebookid) => async (dispatch) => {
         }
         return null;
     } else {
-        return "Response errors!"
+        return ["Response errors!"]
     }
 }
 
@@ -163,7 +163,7 @@ export const getOneNote = (userid, notebookid, noteid) => async (dispatch) => {
         }
         return note;
     } else {
-        return "Response errors"
+        return ["Response errors"]
     }
 }
 
@@ -187,7 +187,7 @@ export const createOneNote = (userid, notebookid, noteVal) => async (dispatch) =
             return data.note
         }
     } else {
-        return "Response errors!"
+        return ["Response errors!"]
     }
 }
 
@@ -212,7 +212,7 @@ export const editOneNote =(userid, notebookid, noteid, noteVal) => async(dispatc
             return data.note
         }
     } else {
-        return "Response Errors!"
+        return ["Response Errors!"]
     }
 }
 
@@ -231,7 +231,7 @@ export const removeOneNote = (userid, notebookid, noteid) => async (dispatch) =>
            return null
         }
     } else {
-        return "Response Errors!"
+        return ["Response Errors!"]
     }
 }
 
@@ -242,7 +242,7 @@ const initialState = {
     currNote: null
 }
 
-export default function reducer(state = initialState, action) {
+export default function NotebookReducer(state = initialState, action) {
     switch (action.type) {
         case SET_ALL_NOTEBOOKS:
             return {...state, notebooks: action.payload}
