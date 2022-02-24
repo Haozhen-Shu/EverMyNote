@@ -40,8 +40,8 @@ const EditNotebookModal = ({ userid, notebookid, notebooktitle, overlayEdit, set
         if (errors.length > 0) return setErrors(errors)
         const notebook = dispatch(editOneNotebook(userid, notebookid, title))
         if (notebook) {
-            setShowEditNotebookForm(false)
             setOverlayEdit(false)
+            setShowEditNotebookForm(false)
         }
     }
     

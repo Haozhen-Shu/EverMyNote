@@ -10,6 +10,9 @@ import Note from '../Note/Note';
 import {NavLink} from 'react-router-dom';
 
 const Notebook = () => {
+    // if (document.querySelector(".new_note")){
+    //     document.querySelector(".new_note").classList.add("hidden")
+    // }
     const user = useSelector(state =>state.session.user)
     const dispatch = useDispatch()
     const notebooks = useSelector(state=> state.notebook.notebooks)
