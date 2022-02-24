@@ -159,13 +159,13 @@ def remove_one_note(userid, notebookid, noteid):
 
 ##notepage
 @user_routes.route('/<int:userid>/notes')
-# @login_required
+@login_required
 def get_all_notes(userid):
     all_notes = Note.query.filter_by(userid=userid).all()
     return {"notes": [note.to_dict() for note in all_notes]}
 
 @user_routes.route('/<int:userid>/notes/<int:noteid>')
-# @login_required
+@login_required
 def get_one_note(userid, noteid):
     one_note = Note.query.filter_by(id=noteid).first()
     if one_note:
@@ -174,7 +174,7 @@ def get_one_note(userid, noteid):
         return jsonify({"errors": "Note can not be found!"})
 
 @user_routes.route('/<int:userid>/notes', methods=["POST"])
-# @login_required
+@login_required
 def create_one_note_back(userid):
     data = request.get_json()
     form = NoteForm()
@@ -194,7 +194,7 @@ def create_one_note_back(userid):
         return jsonify({"errors": form.errors})
 
 @user_routes.route('/<int:userid>/notes/<int:noteid>', methods=["PATCH"])
-# @login_required
+@login_required
 def edit_one_note_back(userid,noteid):
     form = NoteForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
@@ -214,7 +214,7 @@ def edit_one_note_back(userid,noteid):
         return jsonify({"errors": form.errors})
 
 @user_routes.route('/<int:userid>/notes/<int:noteid>', methods=["DELETE"])
-# @login_required 
+@login_required 
 def remove_one_note_back(userid, noteid):
     note = Note.query.get(noteid)
     if note: 
@@ -222,4 +222,11 @@ def remove_one_note_back(userid, noteid):
         db.session.commit()
     all_notes = Note.query.filter_by(userid=userid).all()
     return {"notes": [note.to_dict() for note in all_notes]}
+
+@user_routes.route('/<int:userid>/search')
+# @login_required 
+def search(userid):
+    notebooks = Notebook.query.filter_by(userid=userid).all()
+    notes = Note.query.filter_by(userid=userid).all()
+    return {"notes": [note.to_dict() for note in notes], "notebooks":[notebook.to_dict() for notebook in notebooks]}
 

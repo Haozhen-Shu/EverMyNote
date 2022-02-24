@@ -227,11 +227,13 @@
 
 .note_editor_title{
     margin-left: 30px;
+    width: 200px;
 }
 
 .note_editor_notebookid{
     margin-left: 30px;
     border:none;
+    width:40px;
 }
 
 .note_title_delete{
@@ -302,4 +304,15 @@
 .errors_note_create{
     color:red;
     margin-left:30px;
+}
+
+.title_notebookid{
+    display: flex;
+    align-items: center;
+    /* justify-content: space-around; */
+    width:500px;
+}
+
+.belongs_notbook{
+    font-size: 12px;
 }

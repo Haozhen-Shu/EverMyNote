@@ -6,11 +6,10 @@ import linkedIn_logo from '../../images/linkedin.png';
 import github_logo from '../../images/github.png'
 import fullscreen_logo from '../../images/fullscreen.png';
 // import move_logo from '../../images/move.png';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getUserNotes, getUserOneNote, createUserOneNote, editUserOneNote, removeUserOneNote} from '../../store/note';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory} from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
 // import EditNote from './EditNote';
 
@@ -22,34 +21,66 @@ const NotesPage = () => {
     const notes = useSelector(state => state.note.notes)
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
-    const [notebookid, setNotebookid] = useState()
+    const [notebookid, setNotebookid] = useState(0)
     const [currNote, setCurrNote] = useState("")
     const [errorsCreate, setErrorsCreate] = useState([])
     const [errorsEdit, setErrorsEdit] = useState([])
     const [currNoteContent, setCurrNoteContent] = useState("")
     const [currNoteTitle, setCurrNoteTitle] = useState("")
     const [currNoteNotebookid, setCurrNoteNotebookid] = useState()
-    const notebooks = useSelector(state => state.notebook.notebooks)
+
+    const [searchContent, setSearchContent] = useState("")
+    const [allTitles, setAllTitles] = useState()
+    const history = useHistory();
+
+    useEffect(() => {
+        (async () => {
+            const titles = await fetch(`/api/users/${user.id}/search`)
+            const Titles = await titles.json();
+            setAllTitles(Titles)
+
+        })();
+    }, [dispatch]);
+
+    let allnotebooks;
+    let allnotes;
+    if (allTitles) {
+        allnotebooks = allTitles.notebooks;
+        allnotes = allTitles.notes;
+    }
+
+
+    const handleSearch = () => {
+        if (allnotebooks) {
+            for (let i = 0; i < allnotebooks.length; i++) {
+                if (searchContent == allnotebooks[i].title) {
+                    history.push(`/notebooks/${allnotebooks[i].id}`)
+                }
+            }
+        } else if (notes) {
+            for (let i = 0; i < notes.length; i++) {
+                if (searchContent == notes[i].title) {
+                    history.push(`/notebooks/${notes[i].notebookid}`)
+                }
+            }
+        } else {
+            return "Notebook or note not found!"
+        }
+    }
 
     let titleList = [];
     let notebookidList = []
-    if (notebooks) {
-        for (let i = 0; i < notebooks.length; i++) {
-            titleList.push(notebooks[i].title)
-            notebookidList.push(notebooks[i].id)
-        }
-    }
 
     if (notes) {
         for (let i = 0; i < notes.length; i++) {
             titleList.push(notes[i].title)
+            notebookidList.push(notes[i].id)
         }
     }
 
-    console.log(notebooks)
+    
 
     const validateCreate = () => {
-        console.log(title in titleList)
         const errorsCreateList = [];
         if (!title) {
             errorsCreateList.push("Please provide an title.")
@@ -60,7 +91,7 @@ const NotesPage = () => {
         if (titleList && titleList.includes(title)) {
             errorsCreateList.push("Please provide a unique title.")
         }
-        if (!notebookidList.includes(notebookid))
+        // if (!notebookidList.includes(notebookid))
         setErrorsCreate(errorsCreateList)
         return errorsCreateList
     }
@@ -114,6 +145,7 @@ const NotesPage = () => {
             //   console.log(note, "note", currNote, "currNote")
             setCurrNoteContent(note.content)
             setCurrNoteTitle(note.title)
+            setCurrNoteNotebookid(note.notebookid)
             //   console.log(currNoteContent)
         }
         document.querySelector(".note_editor_container").classList.add("hidden")
@@ -121,37 +153,37 @@ const NotesPage = () => {
         document.querySelector(".new_note").classList.add("hidden")
     }
 
-    // const handleEdit = async (e) => {
-    //     e.preventDefault()
+    const handleEdit = async (e) => {
+        e.preventDefault()
 
-    //     const noteid = currNote.id;
-    //     await document.querySelector(".note_editor_container").classList.add("hidden")
-    //     await document.querySelector(".note_edit_editor_container").classList.remove("hidden")
-    //     const errorsEditList = validateEdit();
-    //     if (errorsEditList.length > 0) return
-    //     const noteVal = {
-    //         title: currNoteTitle,
-    //         content: currNoteContent
-    //         notebookid: currNoteNotebookid
-    //     }
-    //     const data = await dispatch(editUserOneNote(userid, noteid, noteVal))
-    //     if (data.errors) {
-    //         setErrorsEdit(data.errors)
-    //     }
+        const noteid = currNote.id;
+        await document.querySelector(".note_editor_container").classList.add("hidden")
+        await document.querySelector(".note_edit_editor_container").classList.remove("hidden")
+        const errorsEditList = validateEdit();
+        if (errorsEditList.length > 0) return
+        const noteVal = {
+            title: currNoteTitle,
+            content: currNoteContent,
+            notebookid: currNoteNotebookid
+        }
+        const data = await dispatch(editUserOneNote(userid, noteid, noteVal))
+        if (data.errors) {
+            setErrorsEdit(data.errors)
+        }
 
-    //     await document.querySelector(".note_edit_editor_container").classList.add("hidden")
-    //     await document.querySelector(".new_note").classList.remove("hidden")
+        await document.querySelector(".note_edit_editor_container").classList.add("hidden")
+        await document.querySelector(".new_note").classList.remove("hidden")
 
-    // }
+    }
 
-    // const closeEditEditor = (e) => {
-    //     e.preventDefault();
-    //     document.querySelector(".note_edit_editor_container").classList.add("hidden")
-    //     document.querySelector(".new_note").classList.remove("hidden")
-    //     setCurrNoteTitle(title)
-    //     setCurrNoteContent(content)
-    //     setErrorsEdit([])
-    // }
+    const closeEditEditor = (e) => {
+        e.preventDefault();
+        document.querySelector(".note_edit_editor_container").classList.add("hidden")
+        document.querySelector(".new_note").classList.remove("hidden")
+        setCurrNoteTitle(title)
+        setCurrNoteContent(content)
+        setErrorsEdit([])
+    }
 
     const handleDelete = (note) => {
         dispatch(removeUserOneNote(userid, note.id))
@@ -173,6 +205,7 @@ const NotesPage = () => {
     // }, [dispatch])
 
     // console.log(currNote, "cccccccccc")
+    // console.log(notebookidList, "nnnnnnnnn")
     return (
         <div className="note_container">
             <div className="navbar">
@@ -184,12 +217,12 @@ const NotesPage = () => {
                 </div>
                 <div className="navbar_search">
                     <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" className="C1Pw2rSHz9BEf3xLKAgU"><path fillRule="evenodd" clipRule="evenodd" d="M13.959 15.127c-2.294 1.728-5.577 1.542-7.68-.556-2.303-2.297-2.318-6.02-.034-8.312 2.285-2.293 6.004-2.29 8.307.009 2.103 2.097 2.299 5.381.579 7.682a.86.86 0 01.055.05l4.028 4.035a.834.834 0 01-1.179 1.179l-4.028-4.035a.869.869 0 01-.048-.052zm-.553-1.725c-1.63 1.635-4.293 1.641-5.95-.012s-1.66-4.318-.03-5.954c1.629-1.635 4.293-1.64 5.95.013 1.657 1.653 1.659 4.318.03 5.953z" fill="currentColor"></path></svg>
-                    <form className="search_form" role="search">
+                    <form className="search_form" role="search" onSubmit={handleSearch}>
                         <input
                             className="search"
                             placeholder="Search"
-                            value={undefined}
-                            onChange={e => { }}
+                            value={searchContent}
+                            onChange={e => setSearchContent(e.target.value)}
                         />
                     </form>
                 </div>
@@ -227,7 +260,7 @@ const NotesPage = () => {
             <div className="note_main">
                 <div className="note_header">
                     <div className="notes_img_notes">
-                        <img src={notebook_logo} className="note_main_img" alt="notebook logo" />
+                        <img src={note_logo} className="note_main_img" alt="notebook logo" />
                     </div>
                     <div className="notes_count">
                         {notes && notes.length} Notes
@@ -255,9 +288,9 @@ const NotesPage = () => {
                             <button className="fullscreen_btn">
                                 <img className="fullscreen_img" src={fullscreen_logo} alt="fullscreen button" onClick={handleFullscreen}></img>
                             </button>
-                            <button className="back_to_notebook">
+                            {/* <button className="back_to_notebook">
                                 <img className="note_editor_notebook_logo" src={notebook_logo} alt="notebook logo"></img>
-                            </button>
+                            </button> */}
                         </div>
                     </div>
                     <div className="note_editor_update">
@@ -270,21 +303,24 @@ const NotesPage = () => {
                             <div key={error} className="errors_note_create">{error}</div>
                         ))}
                     </div>
-                    <input
-                        className="note_editor_title"
-                        type="text"
-                        value={title}
-                        placeholder="Title"
-                        onChange={e => setTitle(e.target.value)}
-                    >
-                    </input>
-                    <input 
-                        type="number"
-                        value={notebookid}
-                        className="note_editor_notebookid"
-                        placeholder="Notebookid"
-                        onChange={e=>setNotebookid(e.target.value)}
-                    ></input>
+                    <div className="title_notebookid">
+                        <input
+                            className="note_editor_title"
+                            type="text"
+                            value={title}
+                            placeholder="Title"
+                            onChange={e => setTitle(e.target.value)}
+                        >
+                        </input>
+                        <label className="belongs_notbook">Belongs to Notebook</label>
+                        <input 
+                            type="number"
+                            value={notebookid}
+                            className="note_editor_notebookid"
+                            placeholder="Notebookid"
+                            onChange={e=>setNotebookid(e.target.value)}
+                        ></input>
+                    </div>
                     <textarea
                         className="note_editor_content"
                         id="content"
@@ -301,7 +337,7 @@ const NotesPage = () => {
                     </div>
                 </form>
             </div>
-            {/* <div className="note_edit_editor_container hidden">
+            <div className="note_edit_editor_container hidden">
                 <div className="note_edit_editor">
                     <div className="note_editor_header">
                         <div className="note_editor_fullscreen_move">
@@ -310,12 +346,11 @@ const NotesPage = () => {
                             </button>
                             <button className="back_to_notebook">
                                 <img className="note_editor_notebook_logo" src={notebook_logo} alt="notebook logo"></img>
-                                <div className="note_editor_notbook-title">{notebook && notebook.title}</div>
                             </button>
                         </div>
                     </div>
                     <div className="note_editor_update">
-                        Last edited on {notebook && notebook.updated_at.slice(5, 17)}
+                        Last edited on {currNote && currNote.updated_at.slice(5, 17)}
                     </div>
                     <form className="note_edit_editor_form" onSubmit={handleEdit}>
                         <div>
@@ -323,17 +358,27 @@ const NotesPage = () => {
                                 <div key={error} className="errors_note_create">{error}</div>
                             ))}
                         </div>
-                        <input
-                            className="note_edit_editor_title"
-                            type="text"
-                            placeholder={currNoteTitle}
-                            value={currNoteTitle}
-                            onChange={e => setCurrNoteTitle(e.target.value)}
-                        >
-                        </input>
+                        <div className="title_notebookid">
+                            <input
+                                className="note_edit_editor_title"
+                                type="text"
+                                placeholder={currNoteTitle}
+                                value={currNoteTitle}
+                                onChange={e => setCurrNoteTitle(e.target.value)}
+                            >
+                            </input>
+                            <label className="belongs_notbook">Belongs to Notebook</label>
+                            <input
+                                type="number"
+                                value={currNoteNotebookid}
+                                className="note_editor_notebookid"
+                                placeholder={currNoteNotebookid}
+                                onChange={e => setCurrNoteNotebookid(e.target.value)}
+                            ></input>
+                        </div>
                         <textarea
                             className="note_edit_editor_content"
-                            rows="17"
+                            rows="14"
                             cols="65"
                             id="content"
                             placeholder={currNoteContent}
@@ -346,8 +391,8 @@ const NotesPage = () => {
                             <button onClick={closeEditEditor}>Cancel</button>
                         </div>
                     </form>
-                </div> */}
-            {/* </div> */}
+                </div> 
+            </div> 
         </div>
     )
 

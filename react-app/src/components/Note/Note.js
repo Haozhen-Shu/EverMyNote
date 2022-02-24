@@ -9,8 +9,7 @@ import fullscreen_logo from '../../images/fullscreen.png';
 import {useEffect, useState} from 'react';
 import {getAllNotes, getOneNotebook, createOneNote, editOneNote, removeOneNote} from '../../store/notebook';
 import {useDispatch, useSelector} from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
+import { useParams, NavLink, useHistory } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
 // import EditNote from './EditNote';
 
@@ -30,6 +29,44 @@ const Note = () => {
     const [currNoteContent, setCurrNoteContent] = useState("")
     const [currNoteTitle, setCurrNoteTitle] = useState("")
     const notebooks = useSelector(state => state.notebook.notebooks)
+    const [searchContent, setSearchContent] = useState("")
+    const [allTitles, setAllTitles] = useState()
+    const history = useHistory();
+
+    useEffect(() => {
+        (async () => {
+            const titles = await fetch(`/api/users/${user.id}/search`)
+            const Titles = await titles.json();
+            setAllTitles(Titles)
+
+        })();
+    }, [dispatch]);
+
+    let allnotebooks;
+    let allnotes;
+    if (allTitles) {
+        allnotebooks = allTitles.notebooks;
+        allnotes = allTitles.notes;
+    }
+
+
+    const handleSearch = () => {
+        if (allnotebooks) {
+            for (let i = 0; i < allnotebooks.length; i++) {
+                if (searchContent == allnotebooks[i].title) {
+                    history.push(`/notebooks/${allnotebooks[i].id}`)
+                }
+            }
+        } else if (allnotes) {
+            for (let i = 0; i < allnotes.length; i++) {
+                if (searchContent == allnotes[i].title) {
+                    history.push(`/notebooks/${allnotes[i].notebookid}`)
+                }
+            }
+        } else {
+            return "Notebook or note not found!"
+        }
+    }
 
     let titleList = []
     if (notebooks){
@@ -175,12 +212,12 @@ const Note = () => {
                 </div>
                 <div className="navbar_search">
                     <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" className="C1Pw2rSHz9BEf3xLKAgU"><path fillRule="evenodd" clipRule="evenodd" d="M13.959 15.127c-2.294 1.728-5.577 1.542-7.68-.556-2.303-2.297-2.318-6.02-.034-8.312 2.285-2.293 6.004-2.29 8.307.009 2.103 2.097 2.299 5.381.579 7.682a.86.86 0 01.055.05l4.028 4.035a.834.834 0 01-1.179 1.179l-4.028-4.035a.869.869 0 01-.048-.052zm-.553-1.725c-1.63 1.635-4.293 1.641-5.95-.012s-1.66-4.318-.03-5.954c1.629-1.635 4.293-1.64 5.95.013 1.657 1.653 1.659 4.318.03 5.953z" fill="currentColor"></path></svg>
-                    <form className="search_form" role="search">
+                    <form className="search_form" role="search" onSubmit={handleSearch}> 
                         <input
                             className="search"
                             placeholder="Search"
-                            value={undefined}
-                            onChange={e => { }}
+                            value={searchContent}
+                            onChange={e => setSearchContent(e.target.value)}
                         />
                     </form>
                 </div>

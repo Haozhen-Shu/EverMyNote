@@ -1,42 +1,57 @@
 
-import {React, useState} from 'react';
-import {useSelector} from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import {React, useState, useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import { NavLink, useHistory } from 'react-router-dom';
 import LogoutButton from './auth/LogoutButton';
 import './NavBar.css';
 import notebook_logo from '../images/notebook.png';
 import note_logo from '../images/note.png';
 import logout_logo from '../images/logout.png';
 import linkedIn_logo from '../images/linkedin.png';
-import github_logo from '../images/github.png'
+import github_logo from '../images/github.png';
+import searchResults from '../store/search';
 
 
 const NavBar = () => {
   const user = useSelector(state=>state.session.user);
   const [searchContent, setSearchContent] = useState("")
-  const notebooks = useSelector(state => state.notebook.notebooks)
-  const notes = useSelector(state => state.notebook.notes)
+  const [allTitles, setAllTitles] = useState()
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-  let notebooksTitleList = [];
-  let notesTitleList = []
+  useEffect(()=> {
+    (async () => {
+      const titles = await fetch(`/api/users/${user.id}/search`)
+      const Titles = await titles.json();
+      setAllTitles(Titles)
 
-  if (notebooks) {
-    for (let i = 0; i < notebooks.length; i++) {
-      notebooksTitleList.push(notebooks[i.title])
-    }
-  }
+    })();
+  },[dispatch]);
 
-  if (notes) {
-    for (let i = 0; i < notes.length; i++) {
-      notesTitleList.push(notes[i.title])
-    }
-  }
-  // console.log(user, "uuuuuuuu")
+  let notebooks;
+  let notes;
+  if (allTitles){
+    notebooks = allTitles.notebooks;
+    notes = allTitles.notes;
+   }
 
+  
   const handleSearch = () => {
-      // if (searchContent in notebooksTitleList) {
-      //   return <Redirect to=`/users/`>
-      // }
+    if (notebooks) {
+      for (let i = 0; i < notebooks.length; i++) {
+        if (searchContent == notebooks[i].title) {
+          history.push(`/notebooks/${notebooks[i].id}`)
+        }
+      }
+    } else if (notes) {
+      for (let i = 0; i < notes.length; i++) {
+        if (searchContent == notes[i].title) {
+          history.push(`/notebooks/${notes[i].notebookid}`)
+        }
+      }
+    } else {
+      return "Notebook or note not found!"
+    }
   }
 
   return (
