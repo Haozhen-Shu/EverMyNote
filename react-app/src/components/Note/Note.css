@@ -227,6 +227,13 @@
 
 .note_editor_title{
     margin-left: 30px;
+    width: 200px;
+}
+
+.note_editor_notebookid{
+    margin-left: 30px;
+    border:none;
+    width:40px;
 }
 
 .note_title_delete{
@@ -256,7 +263,7 @@
 .note_edit_editor_content{
     border: none;
     margin-left:30px;
-    margin-bottom: 20px;
+    /* margin-bottom: 10px; */
 }
 
  .note_edit_editor_title{
@@ -272,7 +279,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    height: 450px;
+    height: 360px;
 }
 
 .note_edit_editor_form{
@@ -280,7 +287,7 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: flex-start;
-    height:450px;
+    height:360px;
 }
 .editor_save_cancel{
     display: flex;
@@ -294,3 +301,18 @@
     width: 100%;
 }
 
+.errors_note_create{
+    color:red;
+    margin-left:30px;
+}
+
+.title_notebookid{
+    display: flex;
+    align-items: center;
+    /* justify-content: space-around; */
+    width:500px;
+}
+
+.belongs_notbook{
+    font-size: 12px;
+}

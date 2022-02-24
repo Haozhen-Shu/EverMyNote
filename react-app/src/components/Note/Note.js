@@ -9,10 +9,8 @@ import fullscreen_logo from '../../images/fullscreen.png';
 import {useEffect, useState} from 'react';
 import {getAllNotes, getOneNotebook, createOneNote, editOneNote, removeOneNote} from '../../store/notebook';
 import {useDispatch, useSelector} from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
+import { useParams, NavLink, useHistory } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
-// import ReactQuill from 'react-quill';
 // import EditNote from './EditNote';
 
 
@@ -30,23 +28,91 @@ const Note = () => {
     const [errorsEdit, setErrorsEdit] = useState([])
     const [currNoteContent, setCurrNoteContent] = useState("")
     const [currNoteTitle, setCurrNoteTitle] = useState("")
+    const notebooks = useSelector(state => state.notebook.notebooks)
+    const [searchContent, setSearchContent] = useState("")
+    const [allTitles, setAllTitles] = useState()
+    const history = useHistory();
 
-    // const validate =  () => {
-    //     if (!title) {
-    //         errorsCreate.push("Please provide an title")
-    //     }
-    //     if (!content) {
-    //         errorsCreate.push("Please provide valid content")
-    //     }
-    //     if (!currNoteTitle) {
-    //         errorsEdit.push("Please provide an title")
-    //     }
+    useEffect(() => {
+        (async () => {
+            const titles = await fetch(`/api/users/${user.id}/search`)
+            const Titles = await titles.json();
+            setAllTitles(Titles)
 
-    //     if (!currNoteContent) {
-    //         errorsEdit.push("Please provide valid content")
-    //     }
-    //     return [errorsCreate, errorsEdit]
-    // }
+        })();
+    }, [dispatch]);
+
+    let allnotebooks;
+    let allnotes;
+    if (allTitles) {
+        allnotebooks = allTitles.notebooks;
+        allnotes = allTitles.notes;
+    }
+
+
+    const handleSearch = () => {
+        if (allnotebooks) {
+            for (let i = 0; i < allnotebooks.length; i++) {
+                if (searchContent == allnotebooks[i].title) {
+                    history.push(`/notebooks/${allnotebooks[i].id}`)
+                }
+            }
+        } else if (allnotes) {
+            for (let i = 0; i < allnotes.length; i++) {
+                if (searchContent == allnotes[i].title) {
+                    history.push(`/notebooks/${allnotes[i].notebookid}`)
+                }
+            }
+        } else {
+            return "Notebook or note not found!"
+        }
+    }
+
+    let titleList = []
+    if (notebooks){
+        for (let i = 0; i < notebooks.length; i++) {
+            titleList.push(notebooks[i].title)
+        }
+    }
+
+    if (notes) {
+        for (let i = 0; i < notes.length; i++) {
+            titleList.push(notes[i].title)
+        }
+    }
+
+    const validateCreate =  () => {
+        console.log(title in titleList)
+        const errorsCreateList =[];
+        if (!title) {
+            errorsCreateList.push("Please provide an title.")
+        }
+        if (!content) {
+            errorsCreateList.push("Please provide valid content.")
+        }
+        if ( titleList && titleList.includes(title)) {
+            errorsCreateList.push("Please provide a unique title.")
+        }
+        setErrorsCreate(errorsCreateList)
+        return errorsCreateList
+    }
+
+    const validateEdit = () => {
+        const errorsEditList =[];
+        if (!currNoteTitle) {
+            errorsEditList.push("Please provide an title")
+        }
+
+        if (!currNoteContent) {
+            errorsEditList.push("Please provide valid content")
+        }
+
+        if (titleList && (title!=currNoteTitle) && (titleList.includes(title))){
+            errorsEditList.push("Please provide a unique title.")
+        }
+        setErrorsEdit(errorsEditList)
+        return errorsEditList
+    }
     
     const handleNewNote = () => {
         document.querySelector(".note_editor_container").classList.remove("hidden")
@@ -56,8 +122,8 @@ const Note = () => {
 
     const handleCreateSubmit = async(e) => {
         e.preventDefault();
-        // const errors = validate()[0];
-        // if (errors.length > 0) return setErrorsCreate(errors)
+         const errorsCreateList = validateCreate();
+        if (errorsCreateList.length > 0) return 
         const noteVal = {
             title: title,
             content: content
@@ -87,18 +153,21 @@ const Note = () => {
 
     const handleEdit = async (e) => {
         e.preventDefault()
-        // const errors = validate()[1];
-        // if (errors.length > 0) return setErrorsEdit(errors)
+        
         const noteid =  currNote.id;    
         await document.querySelector(".note_editor_container").classList.add("hidden")
         await document.querySelector(".note_edit_editor_container").classList.remove("hidden")
+        const errorsEditList = validateEdit();
+        if (errorsEditList.length > 0) return 
         const noteVal = {
             title: currNoteTitle,
             content: currNoteContent
         }
-        await dispatch(editOneNote(userid, notebookid, noteid, noteVal))
-        // setEditTitle(editTitle)
-        // setEditContent(editContent)
+        const data = await dispatch(editOneNote(userid, notebookid, noteid, noteVal))
+        if (data.errors){
+            setErrorsEdit(data.errors)
+        }
+        
         await document.querySelector(".note_edit_editor_container").classList.add("hidden")
         await document.querySelector(".new_note").classList.remove("hidden")
 
@@ -108,12 +177,14 @@ const Note = () => {
         e.preventDefault();
         document.querySelector(".note_edit_editor_container").classList.add("hidden")
         document.querySelector(".new_note").classList.remove("hidden")
-        setTitle(title)
-        setContent(content)
+        setCurrNoteTitle(title)
+        setCurrNoteContent(content)
+        setErrorsEdit([])
     }
 
     const handleDelete = (note)=> {
         dispatch(removeOneNote(userid, notebookid, note.id))
+        document.querySelector(".note_edit_editor_container").classList.add("hidden")
     }
 
 
@@ -141,12 +212,12 @@ const Note = () => {
                 </div>
                 <div className="navbar_search">
                     <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" className="C1Pw2rSHz9BEf3xLKAgU"><path fillRule="evenodd" clipRule="evenodd" d="M13.959 15.127c-2.294 1.728-5.577 1.542-7.68-.556-2.303-2.297-2.318-6.02-.034-8.312 2.285-2.293 6.004-2.29 8.307.009 2.103 2.097 2.299 5.381.579 7.682a.86.86 0 01.055.05l4.028 4.035a.834.834 0 01-1.179 1.179l-4.028-4.035a.869.869 0 01-.048-.052zm-.553-1.725c-1.63 1.635-4.293 1.641-5.95-.012s-1.66-4.318-.03-5.954c1.629-1.635 4.293-1.64 5.95.013 1.657 1.653 1.659 4.318.03 5.953z" fill="currentColor"></path></svg>
-                    <form className="search_form" role="search">
+                    <form className="search_form" role="search" onSubmit={handleSearch}> 
                         <input
                             className="search"
                             placeholder="Search"
-                            value={undefined}
-                            onChange={e => { }}
+                            value={searchContent}
+                            onChange={e => setSearchContent(e.target.value)}
                         />
                     </form>
                 </div>
@@ -194,9 +265,9 @@ const Note = () => {
                 <div className="notes_container">
                     <ul className="notes_list">
                     {notes && notes.map(note => (
-                        <li key={note.id} className="note_info" onClick={() =>handleOpenEditor(note)}>
+                        <li key={note.title} className="note_info" >
                             <div className="note_title_delete">
-                                <div className="note_title">{note.title}</div> 
+                                <div className="note_title" onClick={() => handleOpenEditor(note)}>{note.title}</div> 
                                 <button onClick={() =>handleDelete(note)}>Delete</button>
                             </div>
                             <div className="note_content">{note.content}</div>
@@ -229,7 +300,7 @@ const Note = () => {
                 <form className="note_editor_form" onSubmit={handleCreateSubmit}>
                     <div>
                         {errorsCreate && errorsCreate.map((error) => (
-                            <div key={error.id}>{error}</div>
+                            <div key={error} className="errors_note_create">{error}</div>
                         ))}
                     </div>
                     <input 
@@ -245,7 +316,7 @@ const Note = () => {
                     <textarea
                         className="note_editor_content"
                         id="content"
-                        rows="20"
+                        rows="17"
                         cols="65"
                         placeholder="Content"
                         value={content}
@@ -280,8 +351,8 @@ const Note = () => {
                     </div>
                     <form className="note_edit_editor_form" onSubmit={handleEdit}>
                         <div>
-                            {errorsEdit && errorsEdit.map((error) => (
-                                <div key={error.id}>{error}</div>
+                            {errorsEdit && errorsEdit.map((error, ind) => (
+                                <div key={error} className="errors_note_create">{error}</div>
                             ))}
                         </div>
                         <input
@@ -296,7 +367,7 @@ const Note = () => {
                         {/* <ReactQuill theme="snow" placeholder="Satrt witing" onBlur={handleContentBlur} onChange={e=>setContent(e.target.value)} /> */}
                         <textarea
                             className="note_edit_editor_content"
-                            rows="20"
+                            rows="17"
                             cols="65"
                             id="content"
                             placeholder={currNoteContent}

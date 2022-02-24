@@ -160,6 +160,10 @@ nav {
     text-decoration: none;
 }
 
-.login_error .signup_error{
+.login_error {
     color:red
+}
+
+.signup_error{
+    color: red
 }
