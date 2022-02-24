@@ -33,6 +33,7 @@ const NotesPage = () => {
     const [allTitles, setAllTitles] = useState()
     const history = useHistory();
 
+    // search 
     useEffect(() => {
         (async () => {
             const titles = await fetch(`/api/users/${user.id}/search`)
@@ -57,10 +58,10 @@ const NotesPage = () => {
                     history.push(`/notebooks/${allnotebooks[i].id}`)
                 }
             }
-        } else if (notes) {
-            for (let i = 0; i < notes.length; i++) {
-                if (searchContent == notes[i].title) {
-                    history.push(`/notebooks/${notes[i].notebookid}`)
+        } else if (allnotes) {
+            for (let i = 0; i < allnotes.length; i++) {
+                if (searchContent == allnotes[i].title) {
+                    history.push(`/notebooks/${allnotes[i].notebookid}`)
                 }
             }
         } else {
@@ -68,13 +69,15 @@ const NotesPage = () => {
         }
     }
 
+    // Error handling
+
     let titleList = [];
     let notebookidList = []
 
     if (notes) {
         for (let i = 0; i < notes.length; i++) {
             titleList.push(notes[i].title)
-            notebookidList.push(notes[i].id)
+            notebookidList.push(notes[i].notebookid)
         }
     }
 
@@ -91,7 +94,9 @@ const NotesPage = () => {
         if (titleList && titleList.includes(title)) {
             errorsCreateList.push("Please provide a unique title.")
         }
-        // if (!notebookidList.includes(notebookid))
+        if (!notebookidList.includes(notebookid)) {
+            errorsCreateList.push("This notebook does not belong to you!")
+        }
         setErrorsCreate(errorsCreateList)
         return errorsCreateList
     }
@@ -109,14 +114,19 @@ const NotesPage = () => {
         if (titleList && (title != currNoteTitle) && (titleList.includes(title))) {
             errorsEditList.push("Please provide a unique title.")
         }
+        // if(!(notebookidList.includes(currNoteNotebookid))) {
+        if (notebookidList && currNoteNotebookid && (!(notebookidList.includes(Number(currNoteNotebookid))))) {
+            errorsEditList.push("This notebook does not belong to you!")
+        }
         setErrorsEdit(errorsEditList)
         return errorsEditList
     }
 
+
+    //submit handling
     const handleNewNote = () => {
         document.querySelector(".note_editor_container").classList.remove("hidden")
     }
-
 
 
     const handleCreateSubmit = async (e) => {

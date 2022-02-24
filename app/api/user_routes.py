@@ -225,7 +225,7 @@ def remove_one_note_back(userid, noteid):
     return {"notes": [note.to_dict() for note in all_notes]}
 
 @user_routes.route('/<int:userid>/search')
-# @login_required 
+@login_required 
 def search(userid):
     notebooks = Notebook.query.filter_by(userid=userid).all()
     notes = Note.query.filter_by(userid=userid).all()
