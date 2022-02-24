@@ -20,7 +20,7 @@ EverMyNote uses an Python(Flask) server based on Docker container with a Postgre
 
 ### SQLAlchemy
 EverMyNote use SQLAlchemy do build the models.
-###
+### Alembic
 EverMyNote use Alembic to migrate the database.
 
 ## Getting started
