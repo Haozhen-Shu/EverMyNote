@@ -23,6 +23,7 @@ EverMyNote use SQLAlchemy do build the models.
 ### Alembic
 EverMyNote use Alembic to migrate the database.
 
+
 ## Getting started
 
 1. Clone this repository (only this branch)
