@@ -33,6 +33,7 @@ const Note = () => {
     const [allTitles, setAllTitles] = useState()
     const history = useHistory();
     const [preNoteTitle, setPreNoteTitle] = useState("")
+    
 
     useEffect(() => {
         (async () => {
@@ -132,8 +133,8 @@ const Note = () => {
             title: title,
             content: content
         }
-         dispatch(createOneNote(userid, notebookid, noteVal))
-         document.querySelector(".note_editor_container").classList.add("hidden")
+        dispatch(createOneNote(userid, notebookid, noteVal))
+        document.querySelector(".note_editor_container").classList.add("hidden")
         setTitle("")
         setContent("")
     }
@@ -237,10 +238,10 @@ const Note = () => {
                         <img src={notebook_logo} className="notebooks_icon" alt="notebook icon" />
                         <NavLink to="/notebooks" className="navbar_title_notebooks">Notebooks</NavLink>
                     </h3>
-                    <h3 className="navbar_notes">
+                    {/* <h3 className="navbar_notes">
                         <img src={note_logo} title="note_icons" className="notes_icon" alt="note icon"/>
                         <NavLink to="/notes" className="navbar_title_notebooks">Notes</NavLink>
-                    </h3>
+                    </h3> */}
                     <h3 className="navbar_logout">
                         <img src={logout_logo} className="logout_icon" alt="logout icon" />
                         <LogoutButton />
@@ -264,7 +265,7 @@ const Note = () => {
                         <div className="notes_notebook_title">{notebook && notebook.title}</div>
                     </div>
                     <div className="notes_count">
-                        {notes && notes.length} Notes
+                        {notes.length} Notes
                     </div>
                 </div>
                 <div className="notes_container">
