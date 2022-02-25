@@ -124,7 +124,7 @@ const Note = () => {
 
     
 
-    const handleCreateSubmit = async(e) => {
+    const handleCreateSubmit = (e) => {
         e.preventDefault();
          const errorsCreateList = validateCreate();
         if (errorsCreateList.length > 0) return 
@@ -132,8 +132,8 @@ const Note = () => {
             title: title,
             content: content
         }
-        await dispatch(createOneNote(userid, notebookid, noteVal))
-        await document.querySelector(".note_editor_container").classList.add("hidden")
+         dispatch(createOneNote(userid, notebookid, noteVal))
+         document.querySelector(".note_editor_container").classList.add("hidden")
         setTitle("")
         setContent("")
     }
