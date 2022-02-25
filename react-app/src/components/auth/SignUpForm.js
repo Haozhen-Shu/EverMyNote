@@ -11,7 +11,7 @@ const SignUpForm = () => {
   const [errors, setErrors] = useState([]);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [profile_url, setProfile_url] = useState('')
+  const [profile_url, setProfile_url] = useState("")
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const user = useSelector(state => state.session.user);
@@ -32,9 +32,9 @@ const SignUpForm = () => {
       errors.push("Password should be longer than 5.")
     }
     //  if(typeof profile_url != "string") {
-    if (!profile_url || (!profile_url.includes(".png") || (!profile_url.includes(".jpeg")))) {
-       setProfile_url(question_face);
-     }
+    // if (!profile_url || (!profile_url.includes(".png") || (!profile_url.includes(".jpeg")))) {
+    //    setProfile_url(question_face);
+    //  }
     return errors
   }
 
@@ -43,10 +43,20 @@ const SignUpForm = () => {
     const errors = validate();
     if (errors.length > 0) return setErrors(errors)
     if (password === repeatPassword) {
-      const data = await dispatch(signUp(username, email, password, profile_url));
-      if (data) {
-        setErrors(data)
-      } 
+      if (profile_url.length === 0) {
+        const data = await dispatch(signUp(username, email, password, question_face));
+        if (data) {
+          setErrors(data)
+        } 
+        // setProfile_url(question_face);
+        // console.log("@@@@@@@@@@")
+      } else {
+        const data = await dispatch(signUp(username, email, password, profile_url));
+        if (data) {
+          setErrors(data)
+        } 
+
+      }
     }
   };
 

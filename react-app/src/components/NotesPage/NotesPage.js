@@ -28,6 +28,8 @@ const NotesPage = () => {
     const [currNoteContent, setCurrNoteContent] = useState("")
     const [currNoteTitle, setCurrNoteTitle] = useState("")
     const [currNoteNotebookid, setCurrNoteNotebookid] = useState(0)
+    const [preNoteTitle, setPreNoteTitle] =useState("")
+    const [notebooktitle, setNotebooktitle] = useState("")
 
     const [searchContent, setSearchContent] = useState("")
     const [allTitles, setAllTitles] = useState()
@@ -73,6 +75,7 @@ const NotesPage = () => {
 
     let titleList = [];
     let notebookidList = []
+    let notebookTitleList = [];
 
     if (notes) {
         for (let i = 0; i < notes.length; i++) {
@@ -83,6 +86,7 @@ const NotesPage = () => {
     if (allnotebooks) {
         for (let i = 0; i <allnotebooks.length; i++) {
             notebookidList.push(allnotebooks[i].id)
+            notebookTitleList.push(allnotebooks[i].title)
         }
     }
 
@@ -115,9 +119,11 @@ const NotesPage = () => {
         }
 
         if (!currNoteContent) {
-            errorsEditList.push("Please provide valid content")
+            errorsEditList.push("Please provide valid content.")
         }
-
+        if (preNoteTitle && currNoteTitle && (preNoteTitle == currNoteTitle)) {
+            errorsEditList.push("Please provide a different title.")
+        }
         if (titleList && (title != currNoteTitle) && (titleList.includes(title))) {
             errorsEditList.push("Please provide a unique title.")
         }
@@ -149,6 +155,8 @@ const NotesPage = () => {
             content: content,
             notebookid: notebookid
         }
+
+        console.log(noteVal, "noteVal")
         await dispatch(createUserOneNote(userid, noteVal))
         await document.querySelector(".note_editor_container").classList.add("hidden")
         setTitle("")
@@ -167,6 +175,7 @@ const NotesPage = () => {
             setCurrNoteContent(note.content)
             setCurrNoteTitle(note.title)
             setCurrNoteNotebookid(note.notebookid)
+            setPreNoteTitle(note.title)
             //   console.log(currNoteContent)
         }
         document.querySelector(".note_editor_container").classList.add("hidden")
@@ -187,11 +196,12 @@ const NotesPage = () => {
             content: currNoteContent,
             notebookid: currNoteNotebookid
         }
-        console.log(noteVal, "nnnnnnnn")
+        // console.log(noteVal, "nnnnnnnn")
         const data = await dispatch(editUserOneNote(userid, noteid, noteVal))
-        if (data.errors) {
-            setErrorsEdit(data.errors)
-        }
+        // if (data.errors) {
+        //     console.log(data.errors, "eeeeeee")
+        //     setErrorsEdit(data.errors)
+        // }
 
         await document.querySelector(".note_edit_editor_container").classList.add("hidden")
         await document.querySelector(".new_note").classList.remove("hidden")
@@ -228,6 +238,7 @@ const NotesPage = () => {
 
     // console.log(currNote, "cccccccccc")
     // console.log(notebookidList, "nnnnnnnnn")
+    console.log(notebookid, "notebookid")
     return (
         <div className="note_container">
             <div className="navbar">
@@ -297,7 +308,7 @@ const NotesPage = () => {
                                     <button onClick={() => handleDelete(note)}>Delete</button>
                                 </div>
                                 <div className="note_content" onClick={() => handleOpenEditor(note)}>{note.content}</div>
-                                <div className="note_update">{note.updated_at.slice(5, 11)}</div>
+                                <div className="note_update" onClick={() => handleOpenEditor(note)}>{note.updated_at.slice(5, 11)}</div>
                             </li>
                         ))}
                     </ul>
@@ -340,6 +351,11 @@ const NotesPage = () => {
                                 <option key={item} value={item}>{item}</option>
                             ))}
                         </select>
+                        {/* <select name="notebooktitle" value={notebooktitle} className="note_editor_notebookid" onChange={e => setNotebooktitle(e.target.value)}>
+                            {notebookTitleList.map(item => (
+                                <option key={item} value={item}>{item}</option>
+                            ))}
+                        </select> */}
                         {/* <input 
                             type="number"
                             value={notebookid}

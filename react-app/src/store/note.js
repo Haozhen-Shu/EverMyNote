@@ -52,7 +52,8 @@ export const createUserOneNote = (userid, noteVal) => async(dispatch) => {
         body: JSON.stringify(noteVal)
     })
     if (response.ok) {
-        const data = await response.json()
+        const data = await response.json();
+        console.log(data)
         if (data.errors) {
             let errors = Object.values(data.errors)
             return {errors: errors}

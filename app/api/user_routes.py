@@ -132,7 +132,6 @@ def edit_one_note(userid, notebookid, noteid):
     form["userid"].data = userid
     form["notebookid"].data=notebookid
     data = request.get_json()
-    print(form.data)
     if form.validate_on_submit() and form.title_valid():
         note = Note.query.get(noteid)
         note.title = data["title"]
@@ -181,6 +180,7 @@ def create_one_note_back(userid):
     form = NoteForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
     form["userid"].data = userid
+    print(form.data)
     if form.validate_on_submit() and form.title_valid():
         note = Note(userid = userid,
                     title = data["title"],
@@ -201,7 +201,7 @@ def edit_one_note_back(userid,noteid):
     form["csrf_token"].data = request.cookies["csrf_token"]
     form["userid"].data = userid
     data = request.get_json()
-    # print(form.data)
+    print(form.data, "@@@@@@@@@")
     if form.validate_on_submit() and form.title_valid():
         note = Note.query.get(noteid)
         note.notebookid = data["notebookid"]
@@ -210,6 +210,7 @@ def edit_one_note_back(userid,noteid):
         note.upated_at = datetime.datetime.now()
         db.session.commit()
         all_notes = Note.query.filter_by(userid=userid).all()
+        print(note, "oooooooooooooo")
         return {"note": note.to_dict(), "notes": [note.to_dict() for note in all_notes]}
     else:
         return jsonify({"errors": form.errors})

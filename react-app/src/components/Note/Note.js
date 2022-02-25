@@ -32,6 +32,7 @@ const Note = () => {
     const [searchContent, setSearchContent] = useState("")
     const [allTitles, setAllTitles] = useState()
     const history = useHistory();
+    const [preNoteTitle, setPreNoteTitle] = useState("")
 
     useEffect(() => {
         (async () => {
@@ -48,8 +49,8 @@ const Note = () => {
         allnotebooks = allTitles.notebooks;
         allnotes = allTitles.notes;
     }
-    console.log(allnotebooks, "kkkkkk");
-    console.log(allnotes,"eeeeee")
+    // console.log(allnotebooks, "kkkkkk");
+    // console.log(allnotes,"eeeeee")
 
     const handleSearch = () => {
         if (allnotebooks) {
@@ -83,7 +84,7 @@ const Note = () => {
     }
 
     const validateCreate =  () => {
-        console.log(title in titleList)
+        // console.log(title in titleList)
         const errorsCreateList =[];
         if (!title) {
             errorsCreateList.push("Please provide an title.")
@@ -107,7 +108,9 @@ const Note = () => {
         if (!currNoteContent) {
             errorsEditList.push("Please provide valid content")
         }
-
+        if (preNoteTitle && currNoteTitle && (preNoteTitle == currNoteTitle)) {
+            errorsEditList.push("Please provide a different title.")
+        }
         if (titleList && (title!=currNoteTitle) && (titleList.includes(title))){
             errorsEditList.push("Please provide a unique title.")
         }
@@ -145,6 +148,7 @@ const Note = () => {
         //   console.log(note, "note", currNote, "currNote")
           setCurrNoteContent(note.content)
           setCurrNoteTitle(note.title)
+          setPreNoteTitle(note.title)
         //   console.log(currNoteContent)
         }
         document.querySelector(".note_editor_container").classList.add("hidden")
