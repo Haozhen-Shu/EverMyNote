@@ -18,7 +18,8 @@ const NavBar = () => {
   const [allTitles, setAllTitles] = useState()
   const dispatch = useDispatch();
   const history = useHistory();
-
+  
+  
   useEffect(()=> {
     (async () => {
       const titles = await fetch(`/api/users/${user.id}/search`)
@@ -28,31 +29,45 @@ const NavBar = () => {
     })();
   },[dispatch]);
 
-  let notebooks;
-  let notes;
+  let allnotebooks;
+  let allnotes;
   if (allTitles){
-    notebooks = allTitles.notebooks;
-    notes = allTitles.notes;
+    allnotebooks = allTitles.notebooks;
+    allnotes = allTitles.notes;
    }
-
+  
+  console.log(allnotebooks)
+  console.log(allnotes)
+  
   
   const handleSearch = () => {
-    if (notebooks) {
-      for (let i = 0; i < notebooks.length; i++) {
-        if (searchContent == notebooks[i].title) {
-          history.push(`/notebooks/${notebooks[i].id}`)
+    if (allnotebooks) {
+      for (let i = 0; i < allnotebooks.length; i++) {
+        if (searchContent == allnotebooks[i].title) {
+          // console.log(searchContent, "ccccccc")
+          // console.log(allnotebooks[i].title, "tttttt")
+          history.push(`/notebooks/${allnotebooks[i].id}`)
         }
       }
-    } else if (notes) {
-      for (let i = 0; i < notes.length; i++) {
-        if (searchContent == notes[i].title) {
-          history.push(`/notebooks/${notes[i].notebookid}`)
+    }
+
+    console.log(searchContent, "ccccccc")
+    console.log(allnotes, "tttttt")
+     if (allnotes) {
+      for (let i = 0; i < allnotes.length; i++) {
+        if (searchContent == allnotes[i].title) {
+          // console.log(searchContent, "ccccccc")
+          // console.log(allnotes[i].title, "tttttt")
+          history.push(`/notebooks/${allnotes[i].notebookid}`)
         }
       }
-    } else {
-      return "Notebook or note not found!"
+    // } else {
+    //   return "Notebook or note not found!"
     }
   }
+  
+  // console.log(searchContent, "ccccccc")
+  // console.log(allnotes, "tttttt")
 
   return (
     <div className="navbar">

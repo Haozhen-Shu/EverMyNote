@@ -103,10 +103,10 @@ const NotesPage = () => {
         setErrorsCreate(errorsCreateList)
         return errorsCreateList
     }
-    console.log(notebookidList, "list")
-    console.log(notebookid, "id")
-    console.log(Number(notebookid), "numberid")
-    console.log((notebookidList.includes(Number(notebookid))))
+    // console.log(notebookidList, "list")
+    // console.log(notebookid, "id")
+    // console.log(Number(notebookid), "numberid")
+    // console.log((notebookidList.includes(Number(notebookid))))
 
     const validateEdit = () => {
         const errorsEditList = [];
@@ -296,7 +296,7 @@ const NotesPage = () => {
                                     <div className="note_title" onClick={() => handleOpenEditor(note)}>{note.title}</div>
                                     <button onClick={() => handleDelete(note)}>Delete</button>
                                 </div>
-                                <div className="note_content">{note.content}</div>
+                                <div className="note_content" onClick={() => handleOpenEditor(note)}>{note.content}</div>
                                 <div className="note_update">{note.updated_at.slice(5, 11)}</div>
                             </li>
                         ))}
@@ -335,13 +335,18 @@ const NotesPage = () => {
                         >
                         </input>
                         <label className="belongs_notbook">Belongs to Notebook</label>
-                        <input 
+                        <select name="notebookid" value={notebookid} className="note_editor_notebookid" onChange={e => setNotebookid(e.target.value)}>
+                            {notebookidList.map(item => (
+                                <option key={item} value={item}>{item}</option>
+                            ))}
+                        </select>
+                        {/* <input 
                             type="number"
                             value={notebookid}
                             className="note_editor_notebookid"
                             placeholder="Notebookid"
                             onChange={e=>setNotebookid(e.target.value)}
-                        ></input>
+                        ></input> */}
                     </div>
                     <textarea
                         className="note_editor_content"
@@ -390,13 +395,18 @@ const NotesPage = () => {
                             >
                             </input>
                             <label className="belongs_notbook">Belongs to Notebook</label>
-                            <input
+                            <select name="currNoteNotebookid" value={currNoteNotebookid} className="note_editor_notebookid" onChange={e => setCurrNoteNotebookid(e.target.value)}>
+                                {notebookidList.map(item => (
+                                    <option key={item} value={item}>{item}</option>
+                                ))}
+                            </select>
+                            {/* <input
                                 type="number"
                                 value={currNoteNotebookid}
                                 className="note_editor_notebookid"
                                 placeholder={currNoteNotebookid}
                                 onChange={e => setCurrNoteNotebookid(e.target.value)}
-                            ></input>
+                            ></input> */}
                         </div>
                         <textarea
                             className="note_edit_editor_content"

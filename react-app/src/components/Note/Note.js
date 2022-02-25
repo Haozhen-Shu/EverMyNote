@@ -48,18 +48,19 @@ const Note = () => {
         allnotebooks = allTitles.notebooks;
         allnotes = allTitles.notes;
     }
-
+    console.log(allnotebooks, "kkkkkk");
+    console.log(allnotes,"eeeeee")
 
     const handleSearch = () => {
         if (allnotebooks) {
             for (let i = 0; i < allnotebooks.length; i++) {
-                if (searchContent == allnotebooks[i].title) {
+                if (searchContent.toLowerCase() == allnotebooks[i].title.toLowerCase()) {
                     history.push(`/notebooks/${allnotebooks[i].id}`)
                 }
             }
         } else if (allnotes) {
             for (let i = 0; i < allnotes.length; i++) {
-                if (searchContent == allnotes[i].title) {
+                if (searchContent.toLowerCase() == allnotes[i].title.toLowerCase()) {
                     history.push(`/notebooks/${allnotes[i].notebookid}`)
                 }
             }
@@ -270,7 +271,7 @@ const Note = () => {
                                 <div className="note_title" onClick={() => handleOpenEditor(note)}>{note.title}</div> 
                                 <button onClick={() =>handleDelete(note)}>Delete</button>
                             </div>
-                            <div className="note_content">{note.content}</div>
+                            <div className="note_content" onClick={() => handleOpenEditor(note)}>{note.content}</div>
                             <div className="note_update">{note.updated_at.slice(5,11)}</div>
                         </li>
                     ))}
