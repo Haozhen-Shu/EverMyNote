@@ -36,8 +36,8 @@ const NavBar = () => {
     allnotes = allTitles.notes;
    }
   
-  console.log(allnotebooks)
-  console.log(allnotes)
+  // console.log(allnotebooks)
+  // console.log(allnotes)
   
   
   const handleSearch = () => {
@@ -51,8 +51,8 @@ const NavBar = () => {
       }
     }
 
-    console.log(searchContent, "ccccccc")
-    console.log(allnotes, "tttttt")
+    // console.log(searchContent, "ccccccc")
+    // console.log(allnotes, "tttttt")
      if (allnotes) {
       for (let i = 0; i < allnotes.length; i++) {
         if (searchContent == allnotes[i].title) {
