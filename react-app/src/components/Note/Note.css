@@ -130,14 +130,14 @@
 }
 
 .note_editor_fullscreen_move{
-    display: flex;
-    flex-direction: row;
-    padding-left: 35px;
-    padding-top: 15px;
-    padding-bottom: 25px;
+    display: flex; 
+    flex-direction: row; 
+    padding-left: 30px;
+    padding-top: 30px;
+    padding-bottom: 20px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    text-align: center;
-    justify-content: space-around;
+    text-align:center;
+    justify-content: flex-start;
     color: #a6a6a6;
 }
 
@@ -155,8 +155,8 @@
     display: block;
     text-align: center;
     border:none;
-    padding-left: -25px;
-    margin-left: -70px;
+    /* padding-left: -25px;
+    margin-left: -70px; */
     width: 30px;
     height: 30px;
 
@@ -202,7 +202,7 @@
 .note_editor_update{
     text-rendering: optimizeLegibility;
     font-size: 14px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     margin-left: 20px;
 }
 
@@ -266,7 +266,6 @@
 .note_edit_editor_content{
     border: none;
     margin-left:30px;
-    /* margin-bottom: 10px; */
 }
 
  .note_edit_editor_title{
@@ -275,7 +274,6 @@
      margin-bottom: 20px;
      font-size: 25px;
      border:none;
-     /* width: 200px; */
  }
 
 .note_editor_form{
@@ -315,7 +313,6 @@
 .title_notebookid{
     display: flex;
     align-items: center;
-    /* justify-content: space-around; */
     width:600px;
 }
 

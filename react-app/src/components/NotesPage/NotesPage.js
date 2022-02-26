@@ -91,8 +91,8 @@ const NotesPage = () => {
         }
     }
 
-    console.log(notebookidList, "idididid")
-    console.log(notebookTitleList, "tititlelel")
+    // console.log(notebookidList, "idididid")
+    // console.log(notebookTitleList, "tititlelel")
 
     const validateCreate = () => {
         const errorsCreateList = [];
@@ -150,7 +150,7 @@ const NotesPage = () => {
     }
 
 
-    const handleCreateSubmit = async (e) => {
+    const handleCreateSubmit =  (e) => {
         e.preventDefault();
         const errorsCreateList = validateCreate();
         if (errorsCreateList.length > 0) return
@@ -163,9 +163,9 @@ const NotesPage = () => {
             // notebookid: document.querySelector(".note_editor_notebookid").value
         }
 
-        console.log(noteVal, "noteVal")
-        await dispatch(createUserOneNote(userid, noteVal))
-        await document.querySelector(".note_editor_container").classList.add("hidden")
+        // console.log(noteVal, "noteVal")
+        dispatch(createUserOneNote(userid, noteVal))
+        document.querySelector(".note_editor_container").classList.add("hidden")
         setTitle("")
         setContent("")
         setNotebookid(0)
@@ -399,9 +399,9 @@ const NotesPage = () => {
                             <button className="fullscreen_btn">
                                 <img className="fullscreen_img" src={fullscreen_logo} alt="fullscreen button" onClick={handleFullscreen}></img>
                             </button>
-                            <button className="back_to_notebook">
+                            {/* <button className="back_to_notebook">
                                 <img className="note_editor_notebook_logo" src={notebook_logo} alt="notebook logo"></img>
-                            </button>
+                            </button> */}
                         </div>
                     </div>
                     <div className="note_editor_update">

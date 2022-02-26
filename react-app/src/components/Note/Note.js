@@ -43,6 +43,11 @@ const Note = () => {
         })();
     }, [dispatch]);
 
+    useEffect(() => {
+        dispatch(getAllNotes(userid, notebookid))
+    }, [dispatch])
+
+
     let allnotebooks;
     let allnotes;
     if (allTitles) {
@@ -124,7 +129,7 @@ const Note = () => {
 
     
 
-    const handleCreateSubmit = (e) => {
+    const handleCreateSubmit = async(e) => {
         e.preventDefault();
          const errorsCreateList = validateCreate();
         if (errorsCreateList.length > 0) return 
@@ -132,8 +137,9 @@ const Note = () => {
             title: title,
             content: content
         }
-         dispatch(createOneNote(userid, notebookid, noteVal))
-         document.querySelector(".note_editor_container").classList.add("hidden")
+        await dispatch(createOneNote(userid, notebookid, noteVal))
+        console.log(notes)
+        document.querySelector(".note_editor_container").classList.add("hidden")
         setTitle("")
         setContent("")
     }
@@ -197,14 +203,14 @@ const Note = () => {
         document.querySelector(".note_edit_editor_container").classList.toggle("fullscreen")
     }
 
-    useEffect(()=> {
-        dispatch(getAllNotes(userid, notebookid))
-    }, [dispatch])
+    // useEffect(()=> {
+    //     dispatch(getAllNotes(userid, notebookid))
+    // }, [dispatch])
 
     useEffect(()=> {
         dispatch(getOneNotebook(userid, notebookid)).then(res=>setNotebook(res.notebook))
     }, [dispatch])
-    
+    // console.log(notes)
     // console.log(currNote, "cccccccccc")
     return (
         <div className="note_container">
@@ -264,7 +270,8 @@ const Note = () => {
                         <div className="notes_notebook_title">{notebook && notebook.title}</div>
                     </div>
                     <div className="notes_count">
-                        {notes && notes.length} Notes
+                        {/* {notes && notes.length} */}
+                         Notes
                     </div>
                 </div>
                 <div className="notes_container">

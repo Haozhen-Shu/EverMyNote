@@ -58,8 +58,8 @@ export const createUserOneNote = (userid, noteVal) => async(dispatch) => {
             let errors = Object.values(data.errors)
             return {errors: errors}
         } else {
-            dispatch(getNote(data.note))
             dispatch(getNotes(data.notes))
+            dispatch(getNote(data.note))
             return data.note
         } 
     } else {
