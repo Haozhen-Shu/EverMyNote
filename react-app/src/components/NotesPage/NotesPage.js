@@ -198,11 +198,11 @@ const NotesPage = () => {
         await document.querySelector(".note_edit_editor_container").classList.remove("hidden")
         const errorsEditList = validateEdit();
         if (errorsEditList.length > 0) return
-        console.log(document.querySelector(".note_editor_notebooktitle").value, "notebooktitle")
-        console.log(notebookTitleList, "list")
+        // console.log(document.querySelector(".note_editor_notebooktitle").value, "notebooktitle")
+        // console.log(notebookTitleList, "list")
         const idx = notebookTitleList.indexOf(document.querySelector(".note_editor_notebooktitle").value)
         const currNoteNotebookid = notebookidList[idx]
-        console.log(currNoteNotebookid, "notebookid")
+        // console.log(currNoteNotebookid, "notebookid")
         const noteVal = {
             title: currNoteTitle,
             content: currNoteContent,
@@ -250,7 +250,7 @@ const NotesPage = () => {
 
     // console.log(currNote, "cccccccccc")
     // console.log(notebookidList, "nnnnnnnnn")
-    console.log(notebookid, "notebookid")
+    // console.log(notebookid, "notebookid")
     return (
         <div className="note_container">
             <div className="navbar">

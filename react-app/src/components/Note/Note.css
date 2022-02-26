@@ -236,7 +236,7 @@
 .note_editor_notebookid{
     margin-left: 30px;
     border:none;
-    width:40px;
+    width:80px;
 }
 
 .note_title_delete{
@@ -275,6 +275,7 @@
      margin-bottom: 20px;
      font-size: 25px;
      border:none;
+     /* width: 200px; */
  }
 
 .note_editor_form{
@@ -315,9 +316,10 @@
     display: flex;
     align-items: center;
     /* justify-content: space-around; */
-    width:500px;
+    width:600px;
 }
 
 .belongs_notbook{
     font-size: 12px;
+    margin-right:30px;
 }
