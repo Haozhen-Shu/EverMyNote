@@ -30,6 +30,7 @@ const NotesPage = () => {
     const [currNoteNotebookid, setCurrNoteNotebookid] = useState(0)
     const [preNoteTitle, setPreNoteTitle] =useState("")
     const [notebooktitle, setNotebooktitle] = useState("")
+    const [currNoteNotebooktitle, setCurrNoteNotebooktitle] = useState("")
 
     const [searchContent, setSearchContent] = useState("")
     const [allTitles, setAllTitles] = useState()
@@ -90,6 +91,9 @@ const NotesPage = () => {
         }
     }
 
+    // console.log(notebookidList, "idididid")
+    // console.log(notebookTitleList, "tititlelel")
+
     const validateCreate = () => {
         const errorsCreateList = [];
         if (!title) {
@@ -146,23 +150,22 @@ const NotesPage = () => {
     }
 
 
-    const handleCreateSubmit = async (e) => {
+    const handleCreateSubmit =  (e) => {
         e.preventDefault();
         const errorsCreateList = validateCreate();
         if (errorsCreateList.length > 0) return
-        // if (notebookid == 0){
-        //     setNotebookid()
-        // }
+        const idx = notebookTitleList.indexOf(document.querySelector(".note_editor_notebookid").value)
+        const notebookid = notebookidList[idx]
         const noteVal = {
             title: title,
             content: content,
-            // notebookid: notebookid
-            notebookid: document.querySelector(".note_editor_notebookid").value
+            notebookid: notebookid
+            // notebookid: document.querySelector(".note_editor_notebookid").value
         }
 
-        console.log(noteVal, "noteVal")
-        await dispatch(createUserOneNote(userid, noteVal))
-        await document.querySelector(".note_editor_container").classList.add("hidden")
+        // console.log(noteVal, "noteVal")
+        dispatch(createUserOneNote(userid, noteVal))
+        document.querySelector(".note_editor_container").classList.add("hidden")
         setTitle("")
         setContent("")
         setNotebookid(0)
@@ -195,6 +198,11 @@ const NotesPage = () => {
         await document.querySelector(".note_edit_editor_container").classList.remove("hidden")
         const errorsEditList = validateEdit();
         if (errorsEditList.length > 0) return
+        // console.log(document.querySelector(".note_editor_notebooktitle").value, "notebooktitle")
+        // console.log(notebookTitleList, "list")
+        const idx = notebookTitleList.indexOf(document.querySelector(".note_editor_notebooktitle").value)
+        const currNoteNotebookid = notebookidList[idx]
+        // console.log(currNoteNotebookid, "notebookid")
         const noteVal = {
             title: currNoteTitle,
             content: currNoteContent,
@@ -241,7 +249,7 @@ const NotesPage = () => {
     // }, [dispatch])
 
     // console.log(currNote, "cccccccccc")
-    console.log(notebookidList, "nnnnnnnnn")
+    // console.log(notebookidList, "nnnnnnnnn")
     // console.log(notebookid, "notebookid")
     return (
         <div className="note_container">
@@ -350,16 +358,16 @@ const NotesPage = () => {
                         >
                         </input>
                         <label className="belongs_notbook">Belongs to Notebook</label>
-                        <select name="notebookid" value={notebookid} className="note_editor_notebookid" onChange={e => setNotebookid(e.target.value)}>
+                        {/* <select name="notebookid" value={notebookid} className="note_editor_notebookid" onChange={e => setNotebookid(e.target.value)}>
                             {notebookidList.map(item => (
                                 <option key={item} value={item}>{item}</option>
                             ))}
-                        </select>
-                        {/* <select name="notebooktitle" value={notebooktitle} className="note_editor_notebookid" onChange={e => setNotebooktitle(e.target.value)}>
+                        </select> */}
+                        <select name="notebooktitle" value={notebooktitle} className="note_editor_notebookid" onChange={e => setNotebooktitle(e.target.value)}>
                             {notebookTitleList.map(item => (
                                 <option key={item} value={item}>{item}</option>
                             ))}
-                        </select> */}
+                        </select>
                         {/* <input 
                             type="number"
                             value={notebookid}
@@ -391,9 +399,9 @@ const NotesPage = () => {
                             <button className="fullscreen_btn">
                                 <img className="fullscreen_img" src={fullscreen_logo} alt="fullscreen button" onClick={handleFullscreen}></img>
                             </button>
-                            <button className="back_to_notebook">
+                            {/* <button className="back_to_notebook">
                                 <img className="note_editor_notebook_logo" src={notebook_logo} alt="notebook logo"></img>
-                            </button>
+                            </button> */}
                         </div>
                     </div>
                     <div className="note_editor_update">
@@ -415,8 +423,13 @@ const NotesPage = () => {
                             >
                             </input>
                             <label className="belongs_notbook">Belongs to Notebook</label>
-                            <select name="currNoteNotebookid" value={currNoteNotebookid} className="note_editor_notebookid" onChange={e => setCurrNoteNotebookid(e.target.value)}>
+                            {/* <select name="currNoteNotebookid" value={currNoteNotebookid} className="note_editor_notebookid" onChange={e => setCurrNoteNotebookid(e.target.value)}>
                                 {notebookidList.map(item => (
+                                    <option key={item} value={item}>{item}</option>
+                                ))}
+                            </select> */}
+                            <select name="currNoteNotebooktitle" value={currNoteNotebooktitle} className="note_editor_notebooktitle" onChange={e => setCurrNoteNotebooktitle(e.target.value)}>
+                                {notebookTitleList.map(item => (
                                     <option key={item} value={item}>{item}</option>
                                 ))}
                             </select>
