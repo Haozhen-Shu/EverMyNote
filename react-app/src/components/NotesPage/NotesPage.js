@@ -150,10 +150,14 @@ const NotesPage = () => {
         e.preventDefault();
         const errorsCreateList = validateCreate();
         if (errorsCreateList.length > 0) return
+        // if (notebookid == 0){
+        //     setNotebookid()
+        // }
         const noteVal = {
             title: title,
             content: content,
-            notebookid: notebookid
+            // notebookid: notebookid
+            notebookid: document.querySelector(".note_editor_notebookid").value
         }
 
         console.log(noteVal, "noteVal")
