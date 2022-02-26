@@ -115,7 +115,7 @@ const SignUpForm = () => {
                 type='text'
                 name='profile_url'
                 onChange={updateProfileUrl}
-                placeholder="Profile_url"
+                placeholder="Profile_url(optional)"
                 value={profile_url}
               ></input>
               <input

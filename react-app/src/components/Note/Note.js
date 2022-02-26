@@ -33,6 +33,7 @@ const Note = () => {
     const [allTitles, setAllTitles] = useState()
     const history = useHistory();
     const [preNoteTitle, setPreNoteTitle] = useState("")
+    
 
     useEffect(() => {
         (async () => {
@@ -138,7 +139,7 @@ const Note = () => {
             content: content
         }
         await dispatch(createOneNote(userid, notebookid, noteVal))
-        console.log(notes)
+        // console.log(notes)
         document.querySelector(".note_editor_container").classList.add("hidden")
         setTitle("")
         setContent("")
