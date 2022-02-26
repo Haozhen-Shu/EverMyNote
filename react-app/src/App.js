@@ -51,9 +51,9 @@ function App() {
         <ProtectedRoute path='/notebooks/:notebookid' exact={true} >
           <Note />
         </ProtectedRoute>
-        {/* <ProtectedRoute path='/notes' exact={true} >
+        <ProtectedRoute path='/notes' exact={true} >
           <NotesPage />
-        </ProtectedRoute> */}
+        </ProtectedRoute>
       </Switch>
     </BrowserRouter>
   );

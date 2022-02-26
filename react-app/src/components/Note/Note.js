@@ -238,10 +238,10 @@ const Note = () => {
                         <img src={notebook_logo} className="notebooks_icon" alt="notebook icon" />
                         <NavLink to="/notebooks" className="navbar_title_notebooks">Notebooks</NavLink>
                     </h3>
-                    {/* <h3 className="navbar_notes">
+                    <h3 className="navbar_notes">
                         <img src={note_logo} title="note_icons" className="notes_icon" alt="note icon"/>
                         <NavLink to="/notes" className="navbar_title_notebooks">Notes</NavLink>
-                    </h3> */}
+                    </h3>
                     <h3 className="navbar_logout">
                         <img src={logout_logo} className="logout_icon" alt="logout icon" />
                         <LogoutButton />
