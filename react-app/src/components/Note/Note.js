@@ -271,7 +271,7 @@ const Note = () => {
                         <div className="notes_notebook_title">{notebook && notebook.title}</div>
                     </div>
                     <div className="notes_count">
-                        {/* {notes && notes.length} */}
+                        {notes && notes.length}
                          Notes
                     </div>
                 </div>
