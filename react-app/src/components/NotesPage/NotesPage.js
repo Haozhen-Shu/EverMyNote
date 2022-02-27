@@ -182,6 +182,9 @@ const NotesPage = () => {
             setCurrNoteContent(note.content)
             setCurrNoteTitle(note.title)
             setCurrNoteNotebookid(note.notebookid)
+            const idx1 = notebookidList.indexOf(note.notebookid)
+            const notebooktitle1 = notebookTitleList[idx1]
+            setCurrNoteNotebooktitle(notebooktitle1)
             setPreNoteTitle(note.title)
             //   console.log(currNoteContent)
         }
@@ -251,6 +254,7 @@ const NotesPage = () => {
     // console.log(currNote, "cccccccccc")
     // console.log(notebookidList, "nnnnnnnnn")
     // console.log(notebookid, "notebookid")
+    console.log(notes)
     return (
         <div className="note_container">
             <div className="navbar">
