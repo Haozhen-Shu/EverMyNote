@@ -35,36 +35,32 @@ const NavBar = () => {
     allnotebooks = allTitles.notebooks;
     allnotes = allTitles.notes;
    }
+
+
   
-  // console.log(allnotebooks)
-  // console.log(allnotes)
-  
-  
+  console.log(allnotebooks)
+  console.log(allnotes)
+
+
   const handleSearch = () => {
     if (allnotebooks) {
       for (let i = 0; i < allnotebooks.length; i++) {
-        if (searchContent == allnotebooks[i].title) {
-          // console.log(searchContent, "ccccccc")
-          // console.log(allnotebooks[i].title, "tttttt")
+        if (searchContent.toLowerCase() == allnotebooks[i].title.toLowerCase()) {
           history.push(`/notebooks/${allnotebooks[i].id}`)
         }
       }
     }
-
-    // console.log(searchContent, "ccccccc")
-    // console.log(allnotes, "tttttt")
-     if (allnotes) {
-      for (let i = 0; i < allnotes.length; i++) {
-        if (searchContent == allnotes[i].title) {
-          // console.log(searchContent, "ccccccc")
-          // console.log(allnotes[i].title, "tttttt")
-          history.push(`/notebooks/${allnotes[i].notebookid}`)
+      else if (allnotes) {
+        for (let i = 0; i < allnotes.length; i++) {
+          if (searchContent.toLowerCase() == allnotes[i].title.toLowerCase()) {
+            history.push(`/notebooks/${allnotes[i].notebookid}`)
+          }
         }
       }
-    // } else {
-    //   return "Notebook or note not found!"
-    }
+      else history.push("/notebooks")
   }
+  
+  
   
   // console.log(searchContent, "ccccccc")
   // console.log(allnotes, "tttttt")
@@ -72,7 +68,7 @@ const NavBar = () => {
   return (
     <div className="navbar">
       <div className="navbar_header">
-        {/* <img src={user.profile_url} className="navbar_url" alt="navbar_url"></img> */}
+        <img src={user.profile_url} className="navbar_url" alt="navbar_url"></img>
         <div className="navbar_profile_name">
           <p>Welcome {user.username}</p>
         </div>

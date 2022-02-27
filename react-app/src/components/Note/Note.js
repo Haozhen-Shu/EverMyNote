@@ -55,8 +55,8 @@ const Note = () => {
         allnotebooks = allTitles.notebooks;
         allnotes = allTitles.notes;
     }
-    // console.log(allnotebooks, "kkkkkk");
-    // console.log(allnotes,"eeeeee")
+    console.log(allnotebooks, "kkkkkk");
+    console.log(allnotes,"eeeeee")
 
     const handleSearch = () => {
         if (allnotebooks) {
@@ -65,14 +65,14 @@ const Note = () => {
                     history.push(`/notebooks/${allnotebooks[i].id}`)
                 }
             }
-        } else if (allnotes) {
+         if (allnotes) {
             for (let i = 0; i < allnotes.length; i++) {
                 if (searchContent.toLowerCase() == allnotes[i].title.toLowerCase()) {
                     history.push(`/notebooks/${allnotes[i].notebookid}`)
                 }
             }
-        } else {
-            return "Notebook or note not found!"
+        }   
+        history.push("/notebooks")
         }
     }
 
@@ -217,7 +217,7 @@ const Note = () => {
         <div className="note_container">
             <div className="navbar">
                 <div className="navbar_header">
-                    {/* <img src={user.profile_url} className="navbar_url" alt="user profile url"></img> */}
+                    <img src={user.profile_url} className="navbar_url" alt="user profile url"></img>
                     <div className="navbar_profile_name">
                         <p>Welcome {user.username}</p>
                     </div>
