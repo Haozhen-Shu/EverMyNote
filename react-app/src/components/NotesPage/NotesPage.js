@@ -182,6 +182,9 @@ const NotesPage = () => {
             setCurrNoteContent(note.content)
             setCurrNoteTitle(note.title)
             setCurrNoteNotebookid(note.notebookid)
+            const idx1 = notebookidList.indexOf(note.notebookid)
+            const notebooktitle1 = notebookTitleList[idx1]
+            setCurrNoteNotebooktitle(notebooktitle1)
             setPreNoteTitle(note.title)
             //   console.log(currNoteContent)
         }
