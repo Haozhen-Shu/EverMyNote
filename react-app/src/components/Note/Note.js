@@ -217,7 +217,7 @@ const Note = () => {
         <div className="note_container">
             <div className="navbar">
                 <div className="navbar_header">
-                    {/* <img src={user.profile_url} className="navbar_url" alt="user profile url"></img> */}
+                    <img src={user.profile_url} className="navbar_url" alt="user profile url"></img>
                     <div className="navbar_profile_name">
                         <p>Welcome {user.username}</p>
                     </div>

@@ -72,7 +72,7 @@ const NavBar = () => {
   return (
     <div className="navbar">
       <div className="navbar_header">
-        {/* <img src={user.profile_url} className="navbar_url" alt="navbar_url"></img> */}
+        <img src={user.profile_url} className="navbar_url" alt="navbar_url"></img>
         <div className="navbar_profile_name">
           <p>Welcome {user.username}</p>
         </div>
