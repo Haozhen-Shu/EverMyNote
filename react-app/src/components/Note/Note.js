@@ -114,12 +114,12 @@ const Note = () => {
         if (!currNoteContent) {
             errorsEditList.push("Please provide valid content")
         }
-        if (preNoteTitle && currNoteTitle && (preNoteTitle == currNoteTitle)) {
-            errorsEditList.push("Please provide a different title.")
-        }
-        if (titleList && (title!=currNoteTitle) && (titleList.includes(title))){
-            errorsEditList.push("Please provide a unique title.")
-        }
+        // if (preNoteTitle && currNoteTitle && (preNoteTitle == currNoteTitle)) {
+        //     errorsEditList.push("Please provide a different title.")
+        // }
+        // if (titleList && (title!=currNoteTitle) && (titleList.includes(title))){
+        //     errorsEditList.push("Please provide a unique title.")
+        // }
         setErrorsEdit(errorsEditList)
         return errorsEditList
     }

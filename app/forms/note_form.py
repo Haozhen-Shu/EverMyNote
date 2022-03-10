@@ -13,10 +13,10 @@ class NoteForm(FlaskForm):
         notebookid = self.notebookid.data
         title = self.title.data
         notebook = Note.query.filter_by(notebookid=notebookid, title=title).first()
-        if notebook:
-            self.title.errors.append("Title already exists")
-            return False
-        elif title == "":
+        # if notebook:
+        #     self.title.errors.append("Title already exists")
+        #     return False
+        if title == "":
             self.title.errors.append("Invalid Title")
             return False
         else:
