@@ -12,6 +12,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import { useParams, NavLink, useHistory } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
 // import EditNote from './EditNote';
+import textEditor from './textEditor'
 
 
 const Note = () => {
@@ -33,7 +34,6 @@ const Note = () => {
     const [allTitles, setAllTitles] = useState()
     const history = useHistory();
     const [preNoteTitle, setPreNoteTitle] = useState("")
-    
 
     useEffect(() => {
         (async () => {
@@ -258,7 +258,7 @@ const Note = () => {
                     <a href="https://www.linkedin.com/in/haozhen-shu-a5136ab7/" target="_blank" rel="noreferrer noopener">
                         <img src={linkedIn_logo} className="linkedIn_icon"  alt="linkedIn icon"/>
                     </a>
-                    <a href="https://github.com/Haozhen-Shu/MyNotes" target="_blank" rel="noreferrer noopener">
+                    <a href="https://github.com/Haozhen-Shu/EverMyNote" target="_blank" rel="noreferrer noopener">
                         <img src={github_logo} className="github_icon" alt="github logo"/>
                     </a>
                 </div>
