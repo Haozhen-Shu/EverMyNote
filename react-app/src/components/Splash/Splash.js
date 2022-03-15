@@ -7,7 +7,7 @@ const  Splash = () => {
         <>
             <div className="splash_nav">
                 <img className="splash_img" src={splash_logo} alt="Splash Logo"></img>
-                <p>MyNotes</p>
+                <p>EverMyNote</p>
             </div>
             <div className="splash_main">
                 <div className="splash_slogan">
