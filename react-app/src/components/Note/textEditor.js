@@ -4,9 +4,9 @@ import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
 import DOMPurify from "dompurify";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import style from "./RichText.module.css";
-const textEditor = () => {
-const [editorState, setEditorState] = useState(() =>
+
+const TextEditor = ({setContent}) => {
+  const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
   const [convertedContent, setConvertedContent] = useState(null);
@@ -20,23 +20,23 @@ const [editorState, setEditorState] = useState(() =>
   };
   const createMarkup = (html) => {
     return {
-      __html: DOMPurify.sanitize(html),
+      __html: DOMPurify.sanitize(html)
     };
   };
   return (
-    <div className={style.App}>
+    <div>
       <Editor
         editorState={editorState}
         onEditorStateChange={handleEditorChange}
-        wrapperClassName={style.wrapperClass}
-        editorClassName={style.editorClass}
-        toolbarClassName={style.toolbarClass}
+        wrapperClassName="wrapperClass"
+        editorClassName="editorClass"
+        toolbarClassName="toolbarClass"
       />
-      <div
-        className={style.preview}
+      {/* <div
+        className="preview"
         dangerouslySetInnerHTML={createMarkup(convertedContent)}
-      ></div>
+      ></div> */}
     </div>
   );
 };
-export default textEditor;
+export default TextEditor;

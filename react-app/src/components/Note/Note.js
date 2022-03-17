@@ -12,7 +12,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import { useParams, NavLink, useHistory } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
 // import EditNote from './EditNote';
-import textEditor from './textEditor'
+import TextEditor from './textEditor';
 
 
 const Note = () => {
@@ -34,6 +34,7 @@ const Note = () => {
     const [allTitles, setAllTitles] = useState()
     const history = useHistory();
     const [preNoteTitle, setPreNoteTitle] = useState("")
+    // const new_content = editorState.getCurrentContent().getPlainText('\u0001')
 
     useEffect(() => {
         (async () => {
@@ -325,8 +326,9 @@ const Note = () => {
                         // onBlur={handleTitleBlur}
                         >
                     </input>
+                    <TextEditor  setContent={setContent} />
                     {/* <ReactQuill theme="snow" placeholder="Satrt witing" onBlur={handleContentBlur} onChange={e=>setContent(e.target.value)} /> */}
-                    <textarea
+                    {/* <textarea
                         className="note_editor_content"
                         id="content"
                         rows="17"
@@ -336,7 +338,7 @@ const Note = () => {
                         onChange={e=>setContent(e.target.value)}
                         // onBlur={handleContentBlur}
                         >
-                    </textarea>
+                    </textarea> */}
                     <div className ="editor_save_cancel">
                         <button type="submit">Save</button>
                         <button onClick={closeEditor}>Cancel</button>
