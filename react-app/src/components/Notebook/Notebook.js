@@ -73,7 +73,7 @@ const Notebook = () => {
                         <div className="notebook_title">
                             <NavLink to={`/notebooks/${notebook.id}`} className="notebook_link_note">
                                 <img src={Notebook_logo} className="notebook_main_logo" alt="notebook logo"></img>
-                                {notebook.title} ({Object.keys(notebook.notes).length} Notes)
+                                {notebook.title} ({Object.keys(notebook.notes).length})
                             </NavLink>
                         </div>
                         <div className="notebook_created_by">{user.username}</div>
