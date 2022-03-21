@@ -296,6 +296,7 @@ const Note = () => {
                             </div>
                             <div className="note_content" onClick={() => handleOpenEditor(note)}>{note.content}</div>
                             <div className="note_update">{note.updated_at.slice(5,11)}</div>
+                
                         </li>
                     ))}
                     </ul>

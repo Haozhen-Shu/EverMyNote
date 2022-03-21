@@ -87,7 +87,7 @@ const SignUpForm = () => {
   return (
      <div className="login_container">
       <img src={logo} alt="Logo" className="login_img"></img>
-      <h1 className="login_head">MyNotes</h1>
+      <h1 className="login_head">EverMyNote</h1>
       <p className="remember">Remember Everything is  Important</p>
       <div className="login_form_container"></div>
           <form onSubmit={onSignUp} className="signup_form">

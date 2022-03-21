@@ -16,7 +16,7 @@ const Notebook = () => {
     const user = useSelector(state =>state.session.user)
     const dispatch = useDispatch()
     const notebooks = useSelector(state=> state.notebook.notebooks)
-    // console.log(notebooks)
+    console.log(notebooks)
     const [overlayCreate, setOverlayCreate] = useState(false)
     const [overlayEdit, setOverlayEdit] = useState(false)
     const [showNewNotebookForm, setShowNotebookForm] = useState(false)
@@ -73,7 +73,7 @@ const Notebook = () => {
                         <div className="notebook_title">
                             <NavLink to={`/notebooks/${notebook.id}`} className="notebook_link_note">
                                 <img src={Notebook_logo} className="notebook_main_logo" alt="notebook logo"></img>
-                                {notebook.title}
+                                {notebook.title} ({Object.keys(notebook.notes).length} Notes)
                             </NavLink>
                         </div>
                         <div className="notebook_created_by">{user.username}</div>
