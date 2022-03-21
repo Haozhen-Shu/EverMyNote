@@ -13,6 +13,7 @@ import { useParams, NavLink, useHistory } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
 // import EditNote from './EditNote';
 import TextEditor from './textEditor';
+import { EditorState } from "draft-js";
 
 
 const Note = () => {
@@ -35,6 +36,12 @@ const Note = () => {
     const history = useHistory();
     const [preNoteTitle, setPreNoteTitle] = useState("")
     // const new_content = editorState.getCurrentContent().getPlainText('\u0001')
+    
+    const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+
+    const [convertedContent, setConvertedContent] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -144,6 +151,8 @@ const Note = () => {
         document.querySelector(".note_editor_container").classList.add("hidden")
         setTitle("")
         setContent("")
+        setEditorState(null)
+        // setConvertedContent(null)
     }
 
     const closeEditor = () => {
@@ -214,6 +223,7 @@ const Note = () => {
     }, [dispatch])
     // console.log(notes)
     // console.log(currNote, "cccccccccc")
+   
     return (
         <div className="note_container">
             <div className="navbar">
@@ -326,7 +336,7 @@ const Note = () => {
                         // onBlur={handleTitleBlur}
                         >
                     </input>
-                    <TextEditor  setContent={setContent} />
+                    <TextEditor  setContent={setContent}/>
                     {/* <ReactQuill theme="snow" placeholder="Satrt witing" onBlur={handleContentBlur} onChange={e=>setContent(e.target.value)} /> */}
                     {/* <textarea
                         className="note_editor_content"
@@ -380,7 +390,7 @@ const Note = () => {
                         >
                         </input>
                         {/* <ReactQuill theme="snow" placeholder="Satrt witing" onBlur={handleContentBlur} onChange={e=>setContent(e.target.value)} /> */}
-                        <textarea
+                        {/* <textarea
                             className="note_edit_editor_content"
                             rows="17"
                             cols="65"
@@ -390,7 +400,10 @@ const Note = () => {
                             onChange={e => setCurrNoteContent(e.target.value)}
                         // onBlur={handleContentBlur}
                         >
-                        </textarea>
+                        </textarea> */}
+                        <TextEditor 
+                        content = {content}
+                        setContent={setContent} />
                         <div className="editor_edit_save_cancel">
                             <button type="submit">Save</button>
                             <button onClick={closeEditEditor}>Cancel</button>
