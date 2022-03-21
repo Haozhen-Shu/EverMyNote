@@ -14,6 +14,7 @@ import LogoutButton from '../auth/LogoutButton';
 // import EditNote from './EditNote';
 import TextEditor from './textEditor';
 import { EditorState } from "draft-js";
+import MyEditor from "./Text";
 
 
 const Note = () => {
@@ -134,6 +135,10 @@ const Note = () => {
     
     const handleNewNote = () => {
         document.querySelector(".note_editor_container").classList.remove("hidden")
+        setTitle("")
+        setContent("")
+        setEditorState(null)
+         setConvertedContent(null)
     }
 
     
@@ -148,11 +153,11 @@ const Note = () => {
         }
         await dispatch(createOneNote(userid, notebookid, noteVal))
         // console.log(notes)
-        document.querySelector(".note_editor_container").classList.add("hidden")
         setTitle("")
         setContent("")
         setEditorState(null)
-        // setConvertedContent(null)
+        setConvertedContent(null)
+        document.querySelector(".note_editor_container").classList.add("hidden")
     }
 
     const closeEditor = () => {
@@ -212,6 +217,10 @@ const Note = () => {
 
     const handleFullscreen = () => {
         document.querySelector(".note_edit_editor_container").classList.toggle("fullscreen")
+    }
+
+    const handleFullscreenCreate = () => {
+         document.querySelector(".note_editor_container").classList.toggle("fullscreen")
     }
 
     // useEffect(()=> {
@@ -307,7 +316,7 @@ const Note = () => {
                     <div className="note_editor_header">
                         <div className="note_editor_fullscreen_move">
                             <button className="fullscreen_btn"> 
-                                <img className="fullscreen_img" src={fullscreen_logo} alt="fullscreen button" onClick={handleFullscreen}></img>
+                                <img className="fullscreen_img" src={fullscreen_logo} alt="fullscreen button" onClick={handleFullscreenCreate}></img>
                             </button>
                             <button className="back_to_notebook">
                                 <img className="note_editor_notebook_logo" src={notebook_logo} alt="notebook logo"></img>
@@ -337,6 +346,7 @@ const Note = () => {
                         // onBlur={handleTitleBlur}
                         >
                     </input>
+                    {/* <MyEditor /> */}
                     <TextEditor  setContent={setContent}/>
                     {/* <ReactQuill theme="snow" placeholder="Satrt witing" onBlur={handleContentBlur} onChange={e=>setContent(e.target.value)} /> */}
                     {/* <textarea
@@ -403,8 +413,8 @@ const Note = () => {
                         >
                         </textarea> */}
                         <TextEditor 
-                        content = {content}
-                        setContent={setContent} />
+                        content = {editorState}
+                        setContent={setEditorState} />
                         <div className="editor_edit_save_cancel">
                             <button type="submit">Save</button>
                             <button onClick={closeEditEditor}>Cancel</button>

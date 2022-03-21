@@ -1,55 +1,41 @@
-const {Editor, EditorState} = Draft;
+import {Editor, EditorState, RichUtils} from 'draft-js';
+import React from 'react';
 
-      class PlainTextEditorExample extends React.Component {
-        constructor(props) {
-          super(props);
-          this.state = {editorState: EditorState.createEmpty()};
-          this.onChange = (editorState) => this.setState({editorState});
-          this.logState = () => console.log(this.state.editorState.toJS());
-          this.setDomEditorRef = ref => this.domEditor = ref;
-          this.focus = () => this.domEditor.focus();
-        }
-                
-        componentDidMount(){
-          this.domEditor.focus()
-        }
-        
-        render() {
-          return (
-            <div style={styles.root}>
-              <div style={styles.editor} onClick={this.focus}>
-                <Editor
-                  editorState={this.state.editorState}
-                  onChange={this.onChange}
-                  placeholder="Enter some text..."
-                  ref={this.setDomEditorRef}
-                />
-              </div>
-              <input
-                onClick={this.logState}
-                style={styles.button}
-                type="button"
-                value="Log State"
-              />
-            </div>
-          );
-        }
-      }
+class MyEditor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {editorState: EditorState.createEmpty()};
+    this.onChange = editorState => this.setState({editorState});
+    this.handleKeyCommand = this.handleKeyCommand.bind(this);
+  }
 
-      const styles = {
-        root: {
-          fontFamily: '\'Helvetica\', sans-serif',
-          padding: 20,
-          width: 600,
-        },
-        editor: {
-          border: '1px solid #ccc',
-          cursor: 'text',
-          minHeight: 80,
-          padding: 10,
-        },
-        button: {
-          marginTop: 10,
-          textAlign: 'center',
-        },
-      };
+  handleKeyCommand(command, editorState) {
+    const newState = RichUtils.handleKeyCommand(editorState, command);
+
+    if (newState) {
+      this.onChange(newState);
+      return 'handled';
+    }
+
+    return 'not-handled';
+  }
+
+   _onBoldClick() {
+    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
+  }
+render() {
+    return (
+      <div>
+      <button onClick={this._onBoldClick.bind(this)}>Bold</button>
+      <Editor
+        editorState={this.state.editorState}
+        handleKeyCommand={this.handleKeyCommand}
+        onChange={this.onChange}
+      />
+      </div>
+    );
+  }
+}
+
+
+export default MyEditor;

@@ -253,6 +253,10 @@ const NotesPage = () => {
         document.querySelector(".note_edit_editor_container").classList.toggle("fullscreen")
     }
 
+    const handleFullscreenCreate = () => {
+        document.querySelector(".note_editor_container").classList.toggle("fullscreen")
+    }
+
     useEffect(() => {
         dispatch(getUserNotes(userid))
     }, [dispatch])
@@ -345,7 +349,7 @@ const NotesPage = () => {
                     <div className="note_editor_header">
                         <div className="note_editor_fullscreen_move">
                             <button className="fullscreen_btn">
-                                <img className="fullscreen_img" src={fullscreen_logo} alt="fullscreen button" onClick={handleFullscreen}></img>
+                                <img className="fullscreen_img" src={fullscreen_logo} alt="fullscreen button" onClick={handleFullscreenCreate}></img>
                             </button>
                             {/* <button className="back_to_notebook">
                                 <img className="note_editor_notebook_logo" src={notebook_logo} alt="notebook logo"></img>
