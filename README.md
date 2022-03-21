@@ -31,3 +31,9 @@ PostgreSQL is the the database of choice because it is simple to work with.
 
 ## Next Step
 Search may be a good feature for next step because the users can use search to get the access to the notebook and notes very quickly. Also, share may be a good feature too because the users can share their notes with their friends, and it will build the connections between the users.
+
+## Screenshots
+![Screen Shot 2022-03-21 at 1 56 41 PM](https://user-images.githubusercontent.com/85038267/159362713-271919af-51cb-4e6b-a80e-d07660798d99.png)
+
+
+![Screen Shot 2022-03-21 at 1 57 05 PM](https://user-images.githubusercontent.com/85038267/159362754-a34f210b-110c-47a5-a974-05ad6089182d.png)
