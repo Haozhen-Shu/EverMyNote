@@ -43,7 +43,7 @@ const NavBar = () => {
   const handleSearch = () => {
     if (allnotebooks) {
       for (let i = 0; i < allnotebooks.length; i++) {
-        if (searchContent == allnotebooks[i].title) {
+        if (searchContent.toLowerCase() == allnotebooks[i].title.toLowerCase()) {
           // console.log(searchContent, "ccccccc")
           // console.log(allnotebooks[i].title, "tttttt")
           history.push(`/notebooks/${allnotebooks[i].id}`)
@@ -55,10 +55,13 @@ const NavBar = () => {
     // console.log(allnotes, "tttttt")
      if (allnotes) {
       for (let i = 0; i < allnotes.length; i++) {
-        if (searchContent == allnotes[i].title) {
+        if (searchContent.toLowerCase() == allnotes[i].title.toLowerCase() || 
+            allnotes[i].content.toLowerCase().includes(searchContent.toLowerCase())) {
           // console.log(searchContent, "ccccccc")
           // console.log(allnotes[i].title, "tttttt")
           history.push(`/notebooks/${allnotes[i].notebookid}`)
+          // allnotes[i].querySelector(".note_info").classList("border")
+          
         }
       }
     // } else {
@@ -77,7 +80,7 @@ const NavBar = () => {
           <p>Welcome {user.username}</p>
         </div>
       </div>
-      {/* <div className="navbar_search">
+      <div className="navbar_search">
         <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" className="C1Pw2rSHz9BEf3xLKAgU"><path fillRule="evenodd" clipRule="evenodd" d="M13.959 15.127c-2.294 1.728-5.577 1.542-7.68-.556-2.303-2.297-2.318-6.02-.034-8.312 2.285-2.293 6.004-2.29 8.307.009 2.103 2.097 2.299 5.381.579 7.682a.86.86 0 01.055.05l4.028 4.035a.834.834 0 01-1.179 1.179l-4.028-4.035a.869.869 0 01-.048-.052zm-.553-1.725c-1.63 1.635-4.293 1.641-5.95-.012s-1.66-4.318-.03-5.954c1.629-1.635 4.293-1.64 5.95.013 1.657 1.653 1.659 4.318.03 5.953z" fill="currentColor"></path></svg>
         <form className="search_form" role="search" onSubmit={handleSearch}>
           <input
@@ -90,7 +93,7 @@ const NavBar = () => {
           onChange={e => setSearchContent(e.target.value)}
           />
         </form>
-      </div> */}
+      </div>
       <button className="new_note">
         <div className="new_note_icon">+</div>
         <div className="add_new_note" >
@@ -116,7 +119,7 @@ const NavBar = () => {
         <a href="https://www.linkedin.com/in/haozhen-shu-a5136ab7/" target="_blank" rel="noreferrer noopener">
             <img src={linkedIn_logo} className="linkedIn_icon"  alt="linkedin logo"/>
         </a>
-        <a href="https://github.com/Haozhen-Shu/MyNotes" target="_blank" rel="noreferrer noopener">
+        <a href="https://github.com/Haozhen-Shu/EverMyNote" target="_blank" rel="noreferrer noopener">
            <img src={github_logo} className="github_icon" alt="github logo"/>
         </a> 
       </div>
