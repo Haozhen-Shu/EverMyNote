@@ -9,6 +9,8 @@ const TextEditor = ({setContent, content}) => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+
+  console.log(editorState, "editorState")
   const [convertedContent, setConvertedContent] = useState(null);
   const handleEditorChange = (state) => {
     setEditorState(state);

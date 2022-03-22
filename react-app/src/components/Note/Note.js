@@ -13,7 +13,7 @@ import { useParams, NavLink, useHistory } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
 // import EditNote from './EditNote';
 import TextEditor from './textEditor';
-import { EditorState } from "draft-js";
+import { EditorState, ContentState, RichUtils, Modifier } from "draft-js";
 
 
 const Note = () => {
@@ -37,9 +37,9 @@ const Note = () => {
     const [preNoteTitle, setPreNoteTitle] = useState("")
     // const new_content = editorState.getCurrentContent().getPlainText('\u0001')
     
-    const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+//     const [editorState, setEditorState] = useState(() =>
+//     EditorState.createEmpty()
+//   );
 
     const [convertedContent, setConvertedContent] = useState(null);
 
@@ -133,6 +133,10 @@ const Note = () => {
     }
     
     const handleNewNote = () => {
+         if (this){
+        const editorState = EditorState.push(this.state.editorState, ContentState.createFromText(''));
+        this.setState({editorState})
+        }
         document.querySelector(".note_editor_container").classList.remove("hidden")
     }
 
@@ -151,8 +155,11 @@ const Note = () => {
         document.querySelector(".note_editor_container").classList.add("hidden")
         setTitle("")
         setContent("")
-        setEditorState(null)
-        // setConvertedContent(null)
+        if (this){
+        const editorState = EditorState.push(this.state.editorState, ContentState.createFromText(''));
+        this.setState({editorState})
+        }
+       
     }
 
     const closeEditor = () => {
@@ -166,6 +173,13 @@ const Note = () => {
           setCurrNoteContent(note.content)
           setCurrNoteTitle(note.title)
           setPreNoteTitle(note.title)
+        //   if (this){
+        //   setCurrNoteContent(this.state.editorState)
+        //   }
+        //   if (this){
+        // const editorState = EditorState.push(this.state.editorState, ContentState.createFromText(''));
+        // this.setState({editorState})
+        // }
         //   console.log(currNoteContent)
         }
         document.querySelector(".note_editor_container").classList.add("hidden")
@@ -185,6 +199,7 @@ const Note = () => {
             title: currNoteTitle,
             content: currNoteContent
         }
+        //  setEditorState(content)
         const data = await dispatch(editOneNote(userid, notebookid, noteid, noteVal))
         if (data.errors){
             setErrorsEdit(data.errors)
@@ -212,6 +227,10 @@ const Note = () => {
 
     const handleFullscreen = () => {
         document.querySelector(".note_edit_editor_container").classList.toggle("fullscreen")
+    }
+
+    const handleFullscreenCreate = () => {
+        document.querySelector(".note_editor_container").classList.toggle("fullscreen")
     }
 
     // useEffect(()=> {
@@ -307,7 +326,7 @@ const Note = () => {
                     <div className="note_editor_header">
                         <div className="note_editor_fullscreen_move">
                             <button className="fullscreen_btn"> 
-                                <img className="fullscreen_img" src={fullscreen_logo} alt="fullscreen button" onClick={handleFullscreen}></img>
+                                <img className="fullscreen_img" src={fullscreen_logo} alt="fullscreen button" onClick={handleFullscreenCreate}></img>
                             </button>
                             <button className="back_to_notebook">
                                 <img className="note_editor_notebook_logo" src={notebook_logo} alt="notebook logo"></img>
@@ -337,9 +356,9 @@ const Note = () => {
                         // onBlur={handleTitleBlur}
                         >
                     </input>
-                    <TextEditor  setContent={setContent}/>
+                    {/* <TextEditor  setContent={setContent}/> */}
                     {/* <ReactQuill theme="snow" placeholder="Satrt witing" onBlur={handleContentBlur} onChange={e=>setContent(e.target.value)} /> */}
-                    {/* <textarea
+                    <textarea
                         className="note_editor_content"
                         id="content"
                         rows="17"
@@ -349,7 +368,7 @@ const Note = () => {
                         onChange={e=>setContent(e.target.value)}
                         // onBlur={handleContentBlur}
                         >
-                    </textarea> */}
+                    </textarea>
                     <div className ="editor_save_cancel">
                         <button type="submit">Save</button>
                         <button onClick={closeEditor}>Cancel</button>
@@ -391,7 +410,7 @@ const Note = () => {
                         >
                         </input>
                         {/* <ReactQuill theme="snow" placeholder="Satrt witing" onBlur={handleContentBlur} onChange={e=>setContent(e.target.value)} /> */}
-                        {/* <textarea
+                        <textarea
                             className="note_edit_editor_content"
                             rows="17"
                             cols="65"
@@ -401,10 +420,10 @@ const Note = () => {
                             onChange={e => setCurrNoteContent(e.target.value)}
                         // onBlur={handleContentBlur}
                         >
-                        </textarea> */}
-                        <TextEditor 
+                        </textarea>
+                        {/* <TextEditor 
                         content = {content}
-                        setContent={setContent} />
+                        setContent={setContent} /> */}
                         <div className="editor_edit_save_cancel">
                             <button type="submit">Save</button>
                             <button onClick={closeEditEditor}>Cancel</button>
