@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { EditorState } from "draft-js";
+import React, { useState, useEffect } from "react";
+import { EditorState, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
 import DOMPurify from "dompurify";
@@ -10,9 +10,21 @@ const TextEditor = ({setContent, content}) => {
     EditorState.createEmpty()
   );
 
-  console.log(editorState, "editorState")
   const [convertedContent, setConvertedContent] = useState(null);
+
+  useEffect(() => {
+    const newState = EditorState.push(editorState, ContentState.createFromText(''))
+    setEditorState(newState)
+    setConvertedContent(null)
+    // editorState(null)
+    // .getCurrentContent()
+    // setEditorState(editorState)
+  }, [])
+
+  // console.log(editorState, "editorState")
   const handleEditorChange = (state) => {
+    console.log(state, "'sssssssss")
+    console.log(editorState, "state")
     setEditorState(state);
     convertContentToHTML();
   };
