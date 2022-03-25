@@ -35,6 +35,9 @@ const NotesPage = () => {
     const [searchContent, setSearchContent] = useState("")
     const [allTitles, setAllTitles] = useState()
     const history = useHistory();
+    const [matchedNotes, setMatchedNotes] = useState([]);
+    const [showAllNotes, setShowAllNotes] = useState(true);
+    const [showMatchedNotes, setShowMatchedNotes] = useState(false)
 
     // search 
     useEffect(() => {
@@ -54,35 +57,7 @@ const NotesPage = () => {
     }
 
 
-   const handleSearch = () => {
-    if (allnotebooks) {
-      for (let i = 0; i < allnotebooks.length; i++) {
-        if (searchContent.toLowerCase() == allnotebooks[i].title.toLowerCase()) {
-          // console.log(searchContent, "ccccccc")
-          // console.log(allnotebooks[i].title, "tttttt")
-          history.push(`/notebooks/${allnotebooks[i].id}`)
-        }
-      }
-    }
-
-    // console.log(searchContent, "ccccccc")
-    // console.log(allnotes, "tttttt")
-     if (allnotes) {
-      for (let i = 0; i < allnotes.length; i++) {
-        if (searchContent.toLowerCase() == allnotes[i].title.toLowerCase() || 
-            allnotes[i].content.toLowerCase().includes(searchContent.toLowerCase())) {
-          // console.log(searchContent, "ccccccc")
-          // console.log(allnotes[i].title, "tttttt")
-          history.push(`/notebooks/${allnotes[i].notebookid}`)
-          // allnotes[i].querySelector(".note_info").classList("border")
-          
-        }
-      }
-    // } else {
-    //   return "Notebook or note not found!"
-    }
-  }
-
+  
     // Error handling
 
     let titleList = [];
@@ -261,14 +236,21 @@ const NotesPage = () => {
         dispatch(getUserNotes(userid))
     }, [dispatch])
     
-    // console.log(notes)
-    // useEffect(() => {
-    //     dispatch(getUserOneNote(userid, notebookid)).then(res => setNotebook(res.notebook))
-    // }, [dispatch])
-
-    // console.log(currNote, "cccccccccc")
-    // console.log(notebookidList, "nnnnnnnnn")
-    // console.log(notebookid, "notebookid")
+    // search Notebooks
+    const handleSearchNotes = () => {
+        if (searchContent == "" || !notes) {
+            setMatchedNotes([])
+        } else {
+            const matchedResult = notes.filter(note => {
+                return (note.title.toLowerCase() == searchContent.toLowerCase()) || (note.title.toLowerCase().includes(searchContent.toLowerCase())) || 
+                    (note.content.toLowerCase().includes(searchContent.toLowerCase()))
+            })
+            setMatchedNotes(matchedResult)
+            setShowAllNotes(false)
+            setShowMatchedNotes(true)
+            document.querySelector(".new_note").classList.add("hidden")
+        }
+    }
     return (
         <div className="note_container">
             <div className="navbar">
@@ -280,14 +262,14 @@ const NotesPage = () => {
                 </div>
                 <div className="navbar_search">
                     <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" className="C1Pw2rSHz9BEf3xLKAgU"><path fillRule="evenodd" clipRule="evenodd" d="M13.959 15.127c-2.294 1.728-5.577 1.542-7.68-.556-2.303-2.297-2.318-6.02-.034-8.312 2.285-2.293 6.004-2.29 8.307.009 2.103 2.097 2.299 5.381.579 7.682a.86.86 0 01.055.05l4.028 4.035a.834.834 0 01-1.179 1.179l-4.028-4.035a.869.869 0 01-.048-.052zm-.553-1.725c-1.63 1.635-4.293 1.641-5.95-.012s-1.66-4.318-.03-5.954c1.629-1.635 4.293-1.64 5.95.013 1.657 1.653 1.659 4.318.03 5.953z" fill="currentColor"></path></svg>
-                    <form className="search_form" role="search" onSubmit={handleSearch}>
+                    <div className="search_form" role="search" onClick={handleSearchNotes}>
                         <input
                             className="search"
-                            placeholder="Search"
+                            placeholder="Search Notes"
                             value={searchContent}
                             onChange={e => setSearchContent(e.target.value)}
                         />
-                    </form>
+                    </div>
                 </div>
                 <button className="new_note" onClick={handleNewNote}>
                     <div className="new_note_icon">+</div>
@@ -325,13 +307,21 @@ const NotesPage = () => {
                     <div className="notes_img_notes">
                         <img src={note_logo} className="note_main_img" alt="notebook logo" />
                     </div>
-                    <div className="notes_count">
-                        {notes && notes.length} Notes
-                    </div>
+                    {showAllNotes && 
+                        <div className="notes_count">
+                            {notes && notes.length} Notes
+                        </div>
+                    }
+                    {showMatchedNotes && 
+                        <div className="notes_count">
+                            {matchedNotes && matchedNotes.length} Notes
+                        </div>
+                    }
                 </div>
                 <div className="notes_container">
                     <ul className="notes_list">
-                        {notes && notes.map(note => (
+                        { showAllNotes && 
+                        notes && notes.map(note => (
                             <li key={note.title} className="note_info" >
                                 <div className="note_title_delete">
                                     <div className="note_title" onClick={() => handleOpenEditor(note)}>{note.title}</div>
@@ -341,6 +331,17 @@ const NotesPage = () => {
                                 <div className="note_update" onClick={() => handleOpenEditor(note)}>{note.updated_at.slice(5, 11)}</div>
                             </li>
                         ))}
+                        {showMatchedNotes &&
+                            matchedNotes && matchedNotes.map(note => (
+                                <li key={note.title} className="note_info" >
+                                    <div className="note_title_delete">
+                                        <div className="note_title" onClick={() => handleOpenEditor(note)}>{note.title}</div>
+                                        <button onClick={() => handleDelete(note)}>Delete</button>
+                                    </div>
+                                    <div className="note_content" onClick={() => handleOpenEditor(note)}>{note.content}</div>
+                                    <div className="note_update" onClick={() => handleOpenEditor(note)}>{note.updated_at.slice(5, 11)}</div>
+                                </li>
+                            ))}
                     </ul>
                 </div>
             </div>

@@ -14,7 +14,7 @@ import LogoutButton from '../auth/LogoutButton';
 // import EditNote from './EditNote';
 import TextEditor from './textEditor';
 import { EditorState, ContentState, RichUtils, Modifier, SelectionState } from "draft-js";
-
+import TextEditorEdit from "./textEditorEdit";
 
 const Note = () => {
     const dispatch = useDispatch()
@@ -35,6 +35,7 @@ const Note = () => {
     const [allTitles, setAllTitles] = useState()
     const history = useHistory();
     const [preNoteTitle, setPreNoteTitle] = useState("")
+    
     // const new_content = editorState.getCurrentContent().getPlainText('\u0001')
     
 //     const [editorState, setEditorState] = useState(() =>
@@ -244,6 +245,7 @@ const Note = () => {
     }, [dispatch])
     // console.log(notes)
     // console.log(currNote, "cccccccccc")
+
    
     return (
         <div className="note_container">
@@ -423,9 +425,9 @@ const Note = () => {
                         // onBlur={handleContentBlur}
                         >
                         </textarea> */}
-                        <TextEditor 
-                        content = {content}
-                        setContent={setContent} />
+                        {/* <TextEditorEdit
+                        value = {currNoteContent}
+                         /> */}
                         <div className="editor_edit_save_cancel">
                             <button type="submit">Save</button>
                             <button onClick={closeEditEditor}>Cancel</button>

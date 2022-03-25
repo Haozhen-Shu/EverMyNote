@@ -18,6 +18,10 @@
 
 .notebook_header{
     height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .notebook_link_note{
@@ -39,6 +43,7 @@ h1{
     display: flex;
     align-items: center;
     padding-bottom: 10px;
+    justify-content: space-between;
 }
 
 .newNotebook_modal_title{
@@ -55,9 +60,9 @@ h1{
 
 .new_notebook{
     display: flex;
-    justify-content: space-around;
-    padding-left: 30px;
-    width: 200px;
+    justify-content: flex-end;
+    /* padding-left: 30px; */
+    width: 153px;
     text-align: center;
     font-size: 14px;
     line-height: 16px;
@@ -106,4 +111,15 @@ li:nth-child  {
     display: flex;
     justify-content: space-around;
     background: light green;
+}
+
+.search_input_notebooks{
+    display:flex;
+    justify-content: flex-end;
+    width: 200px;
+    height: 30px;
+}
+
+.search_Notebook{
+    width: 180px;
 }
