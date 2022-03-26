@@ -35,6 +35,10 @@ const Note = () => {
     const [allTitles, setAllTitles] = useState()
     const history = useHistory();
     const [preNoteTitle, setPreNoteTitle] = useState("")
+    const [editorState, setEditorState] = useState(() =>
+        EditorState.createEmpty()
+    );
+   
     
     // const new_content = editorState.getCurrentContent().getPlainText('\u0001')
     
@@ -67,24 +71,6 @@ const Note = () => {
     }
     // console.log(allnotebooks, "kkkkkk");
     // console.log(allnotes,"eeeeee")
-
-    const handleSearch = () => {
-        if (allnotebooks) {
-            for (let i = 0; i < allnotebooks.length; i++) {
-                if (searchContent.toLowerCase() == allnotebooks[i].title.toLowerCase()) {
-                    history.push(`/notebooks/${allnotebooks[i].id}`)
-                }
-            }
-        } else if (allnotes) {
-            for (let i = 0; i < allnotes.length; i++) {
-                if (searchContent.toLowerCase() == allnotes[i].title.toLowerCase()) {
-                    history.push(`/notebooks/${allnotes[i].notebookid}`)
-                }
-            }
-        } else {
-            return "Notebook or note not found!"
-        }
-    }
 
     let titleList = []
     if (notebooks){
@@ -176,6 +162,10 @@ const Note = () => {
           setCurrNoteContent(note.content)
           setCurrNoteTitle(note.title)
           setPreNoteTitle(note.title)
+          if (this) {
+              const newState = EditorState.push(editorState, currNoteContent)
+              setEditorState(newState)
+          }
         //   if (this){
         //   setCurrNoteContent(this.state.editorState)
         //   }
@@ -425,9 +415,9 @@ const Note = () => {
                         // onBlur={handleContentBlur}
                         >
                         </textarea> */}
-                        {/* <TextEditorEdit
+                        <TextEditorEdit
                         value = {currNoteContent}
-                         /> */}
+                         />
                         <div className="editor_edit_save_cancel">
                             <button type="submit">Save</button>
                             <button onClick={closeEditEditor}>Cancel</button>
