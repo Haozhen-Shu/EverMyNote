@@ -38,13 +38,6 @@ const Note = () => {
     const [editorState, setEditorState] = useState(() =>
         EditorState.createEmpty()
     );
-   
-    
-    // const new_content = editorState.getCurrentContent().getPlainText('\u0001')
-    
-//     const [editorState, setEditorState] = useState(() =>
-//     EditorState.createEmpty()
-//   );
   
 
     const [convertedContent, setConvertedContent] = useState(null);
