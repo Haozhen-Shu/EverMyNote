@@ -18,7 +18,6 @@ const TextEditor = ({ setContent, content }) => {
     setConvertedContent(null)
   }, [])
 
-  // console.log(editorState, "editorState")
   const handleEditorChange = (state) => {
     console.log(state, "'sssssssss")
     console.log(editorState, "state")
