@@ -16,9 +16,6 @@ const TextEditor = ({ setContent, content }) => {
     const newState = EditorState.push(editorState, ContentState.createFromText(''))
     setEditorState(newState)
     setConvertedContent(null)
-    // editorState(null)
-    // .getCurrentContent()
-    // setEditorState(editorState)
   }, [])
 
   // console.log(editorState, "editorState")
